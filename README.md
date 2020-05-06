@@ -12,7 +12,7 @@
 
 <br/>
 
-<h2>1. How to run</h2>
+## 1. How to run
 
 <h4>접속 URL, 테스트 계정</h4>
 
