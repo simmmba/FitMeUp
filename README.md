@@ -4,21 +4,21 @@
 
 <h2>[목차]</h2>
 
-1. [How to run](#How to run)
-2. [서비스 소개](#서비스 소개)
-3. [서비스 설명](#서비스 설명)
-4. [개발 과정](#개발 과정)
-5. [팀원 소개](#팀원 소개)
+1. [How to run](#How-to-run)
+2. [서비스 소개](#서비스-소개)
+3. [서비스 설명](#서비스-설명)
+4. [개발 과정](#개발-과정)
+5. [팀원 소개](#팀원-소개)
 
 <br/>
 
-<h2 id="index1">1. How to run</h2>
+<h2>1. How to run</h2>
 
-<h5>접속 URL, 테스트 계정</h5>
+<h4>접속 URL, 테스트 계정</h4>
 
 
 
-<h5>개발 환경</h5>
+<h4>개발 환경</h4>
 
 **Frontend**
 
@@ -34,7 +34,9 @@ npm start
 cd backend
 ```
 
-<br/>**기술 스택**
+<br/>
+
+<h4>기술 스택</h4>
 
 * frontend : React.js
 * Backend :
@@ -42,18 +44,38 @@ cd backend
 
 <br/>
 
-<h2 id="index2">2. 서비스 소개</h2>
+<h2>2. 서비스 소개</h2>
 
 <br/>
 
-<h2 id="index3">3. 서비스 설명</h2>
+<h2>3. 서비스 설명</h2>
 
 <br/>
 
-<h2 id="index4">4. 개발 과정</h2>
+<h2>4. 개발 과정</h2>
+
+<h4>git branch 구조</h4>
+
+* master
+  * dev
+    * front
+      * front-login
+      * front-search
+    * back
+      * back-login
+      * back-search
 
 <br/>
 
-<h2 id="index5">5. 팀원 소개</h2>
+<h4>Commit Rule</h4>
+
+```
+날짜 | 내용(영어로) | 이름(DE, 대문자), (JIRA 이슈번호)
+0506 | update readme | DE, (JIRA 이슈번호)
+```
+
+<br/>
+
+<h2>5. 팀원 소개</h2>
 
 <br/>
