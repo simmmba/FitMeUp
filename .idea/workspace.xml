@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ab8accb6-3b35-4066-82c5-982a28dddc28" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/.idea/vcs.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1c1I82nZikvYICa7g7WcEofFDA6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ab8accb6-3b35-4066-82c5-982a28dddc28" name="Default Changelist" comment="" />
+      <created>1589689509627</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589689509627</updated>
+      <workItem from="1589689511368" duration="23000" />
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="421" y="82" key="FileChooserDialogImpl" timestamp="1589689522273">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="82" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1589689522273" />
+    <state x="37" y="24" key="new project wizard" timestamp="1589689533231">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="37" y="24" key="new project wizard/0.0.1280.680@0.0.1280.680" timestamp="1589689533231" />
+  </component>
+</project>
