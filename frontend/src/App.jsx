@@ -1,20 +1,21 @@
-import React from 'react';
-import './App.scss';
+import React from "react";
+import "./App.scss";
 
-import {BrowserRouter, Switch, Redirect, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import Main from "../src/components/Main/Main"
 
 function App() {
-    return (
-        <div className="App">
-            프로젝트 시작합시다!
-            <BrowserRouter>
-                <Switch>
-                    {/*<Route></Route>*/}
-                </Switch>
-            </BrowserRouter>
-        </div>
-    );
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Switch>
+          {/* 마식당 시작 메인 페이지 */}
+          <Route path="/" component={Main} />
+        </Switch>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
