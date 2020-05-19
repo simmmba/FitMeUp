@@ -1,0 +1,34 @@
+@import "../../styles/utils.scss";
+
+.Header {
+
+    @include a;
+
+    font-family: $main_font;
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    top: 0px;
+    left: 0px;
+    font-size: 14px;
+    padding: 10px;
+    background: #fff;
+
+    .logo{
+        font-size: 20px;
+        font-family: $logo-font;
+        margin-top: -5px;
+    }
+
+    .header_user{
+        text-align: right;
+
+        a {
+            margin-left: 10px;
+        }
+    }
+}
+
+.header_margin{
+    margin-bottom: 40px;
+}

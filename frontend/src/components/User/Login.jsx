@@ -26,6 +26,7 @@ class Signup extends React.Component {
       alert("로그아웃 후 진행해주세요");
       history.goBack("");
     }
+
   }
 
   // 유저 타입 지정 - general, stylelist
@@ -119,28 +120,8 @@ class Signup extends React.Component {
       <>
         <Header></Header>
         <div className="User">
-          <div className="Signup">
-            <div className="title">회원가입</div>
-
-            {/* user_type 선택 */}
-            <div className="user_type">
-              {/* 라디오 버튼 default check */}
-              <input
-                type="radio"
-                name="user_type"
-                id="general"
-                onChange={this.changeType}
-                defaultChecked
-              />
-              <label htmlFor="general">개인</label>
-              <input
-                type="radio"
-                name="user_type"
-                id="stylist"
-                onChange={this.changeType}
-              />
-              <label htmlFor="stylist">스타일 리스트</label>
-            </div>
+          <div className="Login">
+            <div className="title">로그인</div>
 
             {/* 간편 로그인 버튼 선택 */}
             <div>
@@ -168,7 +149,7 @@ class Signup extends React.Component {
             </div>
             {/* login으로 가기 */}
             <div className="changeForm">
-              계정이 있다면? <NavLink to="/login">로그인</NavLink>
+              아직 계정이 없나요? <NavLink to="/signup">회원가입</NavLink>
             </div>
           </div>
         </div>

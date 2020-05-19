@@ -1,4 +1,8 @@
-.Main{
-    text-align: center;
+@import "../../styles/utils.scss";
 
+.Main{
+    background: $gray;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
 }
