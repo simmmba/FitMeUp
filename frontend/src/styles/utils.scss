@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "S-CoreDream-5Medium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "S-CoreDream-4Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-4Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@import url("https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+
+$red: #d14d56;
+$red_hover: rgb(170, 49, 57);
+$gray: #eaeaea;
+$main_font: "S-CoreDream-5Medium";
+$sub_font: "S-CoreDream-4Regular";
+$logo_font: "Racing Sans One", cursive;
+$eng_font: "Open Sans", sans-serif;
+
+// 재사용되는 스타일 블록을 함수처럼 사용할 수 있음
+@mixin button($width, $size) {
+  width: $width;
+  padding: 10px;
+  text-align: center;
+  font-weight: bolder;
+  font-size: $size;
+  background-color: $red;
+  color: white;
+  cursor: pointer;
+
+  &:hover{
+    background: $red_hover;
+  }
+}
+
+@mixin a {
+    // 링크 사용시 자동 css 제거
+    a {
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+      &:hover {
+        color: $red;
+      }
+    }
+}
+
+// 가로 세로 중앙 정렬
+// https://m.blog.naver.com/PostView.nhn?blogId=kira4195&logNo=221161971714&proxyReferer=https:%2F%2Fwww.google.com%2F
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
