@@ -1,17 +1,19 @@
 import React from "react";
 import "./App.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import Main from "../src/components/Main/Main"
+import Main from "../src/components/Main/Main";
+import ConsultRequire from "./components/ConsultRequire/ConsultRequire";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Switch>
-          {/* 마식당 시작 메인 페이지 */}
-          <Route path="/" component={Main} />
+          <Route path="/" component={Main} exact />
+          <Route path="/consult" component={ConsultRequire} />
         </Switch>
       </BrowserRouter>
     </div>
