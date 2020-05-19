@@ -11,7 +11,7 @@ npm start
 
 
 
-#### 2. 디렉토리 구조
+#### 2. 디렉토리 구조  
 
 - config : DB 설정
 
@@ -35,6 +35,7 @@ sequelize-auto -o "./models" -d fmu -h yourhost -u root -p 3306 -x yourpassword 
   - model 간 관계
   - cascade
   - auto-increment (직접 입력)
+- auto injection 을 할 경우 기존의 model 파일이 덮어 씌어지므로 다른 경로에 auto injection 후 새로 생성되거나 바뀐 model만 옮겨준다.
 
 
 
@@ -42,6 +43,7 @@ sequelize-auto -o "./models" -d fmu -h yourhost -u root -p 3306 -x yourpassword 
 
 - DB에서 table을 정의 후 sequlize-auto했을 경우 table 의 column명이 대문자일 때 버그가 발생한다
 - table 정의 시 column을 소문자로 작성하거나 auto injection 후 model에서 소문자로 변경하면 해결
+- auto-increment 경우 auto-injection 후 직접 작성해줘야 한다.
 
 ## 기술스택
 
