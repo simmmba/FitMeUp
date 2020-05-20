@@ -1,9 +1,10 @@
 import React from "react";
 import "./Main.scss";
 
-import Header from "../Common/Header"
+import Header from "../Common/Header";
+import { NavLink } from "react-router-dom";
 
-class Home extends React.Component {
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,12 +15,18 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="Main">
+      <>
         <Header></Header>
-        adasd
-      </div>
+        <div className="Main">
+          <div className="Main_">
+            <NavLink to="/match">
+              <div className="stylelist_btn">현재 상담 요청 내역</div>
+            </NavLink>
+          </div>
+        </div>
+      </>
     );
   }
 }
 
-export default Home;
+export default Main;

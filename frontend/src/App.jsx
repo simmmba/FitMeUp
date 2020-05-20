@@ -8,6 +8,7 @@ import Main from "../src/components/Main/Main"
 import Signup from "../src/components/User/Signup"
 import SignupDetail from "../src/components/User/SignupDetail"
 import Login from "../src/components/User/Login"
+import Matching from "../src/components/Matching/Matching"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signup" component={Signup} exact />
           <Route path="/signup/detail" component={SignupDetail} exact />
           <Route path="/login" component={Login} />
+          <Route path="/match" component={Matching} />
         </Switch>
       </BrowserRouter>
     </div>

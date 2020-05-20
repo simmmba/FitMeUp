@@ -1,0 +1,42 @@
+@import "../../styles/utils.scss";
+
+.MatchingList {
+
+    // 세로 가운데 정렬
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 100px;
+    cursor: pointer;
+
+    .style_conditions{
+        // 차지할 수 있는 모든 영역 차지
+        flex: 1;
+        display: flex;
+        align-items: center;
+        .items{
+            display: flex;
+            align-items: center;
+            width: 80px;
+            height: 80px;
+            border: 1.3px solid $gray;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+    }
+    .remove{
+        display: flex;
+        align-items: center;
+        font-size: 30px;
+
+        &:hover{
+            color: $red;
+        }
+    }
+
+    // 엘리먼트 사이사이에 테두리를 넣어 줌
+    & + & {
+        border-top: 1px solid #dee2e6;
+    }
+}

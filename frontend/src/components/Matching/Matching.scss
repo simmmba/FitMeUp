@@ -1,0 +1,40 @@
+@import "../../styles/utils.scss";
+
+.Matching {
+    font-family: $sub-font;
+
+    .tab {
+        @include tab;
+
+        .focus {
+            position: absolute;
+            top: 43px;
+            left: calc(50% - 50px);
+            width: 100px;
+            height: 2px;
+            background: $red;
+            margin: 0 auto;
+        }
+    }
+
+    .condition {
+        display: flex;
+        @include maxcenter;
+        div {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 8px;
+            border: 1px solid rgb(184, 184, 184);
+            cursor: pointer;
+        }
+        font-family: $main-font;
+        padding: 10px;
+        padding-bottom: 0px;
+    }
+
+    .list {
+        @include maxcenter;
+        // padding: 10px;
+        padding-top: 0px;
+    }
+}

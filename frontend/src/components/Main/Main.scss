@@ -1,8 +1,17 @@
 @import "../../styles/utils.scss";
 
-.Main{
-    background: $gray;
-    width: 100%;
-    height: 100vh;
-    margin: 0;
+.Main {
+
+    height: 120vh;
+    .Main_ {
+        width: 100%;
+        background: $gray;
+        height: 300px;
+        .stylelist_btn {
+            position: absolute;
+            top: 150px;
+            left: 100px;
+            @include button(300, 18);
+        }
+    }
 }
