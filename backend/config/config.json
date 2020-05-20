@@ -9,7 +9,7 @@
     "operatorsAliases": false,
     "define": {
       "timestamps": false,
-      "underscored" : true
+      "underscored" : false
   }
   },
   "test": {
