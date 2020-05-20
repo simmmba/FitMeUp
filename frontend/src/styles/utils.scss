@@ -11,7 +11,7 @@
   font-style: normal;
 }
 @import url("https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap");
 
 $red: #d14d56;
 $red_hover: rgb(170, 49, 57);
@@ -23,30 +23,65 @@ $eng_font: "Open Sans", sans-serif;
 
 // 재사용되는 스타일 블록을 함수처럼 사용할 수 있음
 @mixin button($width, $size) {
-  width: $width;
+  width: $width * 1px;
   padding: 10px;
   text-align: center;
   font-weight: bolder;
-  font-size: $size;
+  font-size: $size * 1px;
   background-color: $red;
   color: white;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background: $red_hover;
   }
 }
 
 @mixin a {
-    // 링크 사용시 자동 css 제거
-    a {
-      text-decoration: none;
-      color: black;
-      cursor: pointer;
-      &:hover {
-        color: $red;
-      }
+  // 링크 사용시 자동 css 제거
+  a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    &:hover {
+      color: $red;
     }
+  }
+}
+
+@mixin input_default {
+    // 인풋 기본 스타일 초기화
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+@mixin input($width) {
+
+  @include input_default;
+
+  width: 1px * $width;
+  padding: 7px;
+  background: white;
+  border: 1px solid rgb(126, 126, 126);
+  // font-size: $size * 1px;
+}
+
+@mixin input_button($width) {
+  
+  @include input_default;
+
+  width: 1px * $width;
+  padding: 7px;
+  background-color: $red;
+  color: white;
+  border: 1px solid $red;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: $red_hover;
+  }
 }
 
 // 가로 세로 중앙 정렬
@@ -56,4 +91,13 @@ $eng_font: "Open Sans", sans-serif;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+// 드래그 안되게
+@mixin drag {
+  -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
