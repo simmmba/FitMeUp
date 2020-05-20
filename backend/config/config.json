@@ -8,7 +8,7 @@
     "timezone": "+09:00",
     "operatorsAliases": false,
     "define": {
-      "timestamps": false,
+      "timestamps": true,
       "underscored" : false
   }
   },
