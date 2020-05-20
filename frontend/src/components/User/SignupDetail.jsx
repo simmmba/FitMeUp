@@ -2,32 +2,28 @@ import React from "react";
 import "./User.scss";
 
 import Header from "../Common/Header";
-
-import withFirebaseAuth from "react-with-firebase-auth";
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import firebaseConfig from "../../firebaseConfig";
-
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const firebaseAppAuth = firebaseApp.auth();
+import Certification from "../User/Certification";
 
 class SignupDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: false,
-      code: "",
-      age: 30,
-      gender: "여자",
-      nickname: "",
-      isnicknameVaild: true,
+      type: "",
       provider: "",
       api_id: "",
+
+      nickname: "",
+
+      gender: "여자",
+      age: 27,
+
+      agree: false,
     };
   }
 
+  years = [1,2,3,4,5,6,7,8,9];
+
   componentDidMount() {
-    
     // 바로 들어온건지 확인하기
     // 만약 값이 없으면 이동
     const { history, location } = this.props;
@@ -38,72 +34,61 @@ class SignupDetail extends React.Component {
       this.setState({
         provider: location.state.provider,
         api_id: location.state.api_id,
+        type: location.state.type,
       });
     }
-
-    // 본인인증
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-      }
-    );
   }
-
-  onClick() {
-    const phoneNumber = "+8201079396800";
-    const appVerifier = window.recaptchaVerifier;
-    firebase
-      .auth()
-      .signInWithPhoneNumber(phoneNumber, appVerifier)
-      .then((confirmResult) => {
-        // success
-        window.confirmationResult = confirmResult;
-        console.log(confirmResult);
-      })
-      .catch((error) => {
-        // error
-        console.log(error);
-      });
-  }
-
-  onCheck = () => {
-    window.confirmationResult
-      .confirm(this.state.code)
-      .then(function (result) {
-        console.log(result);
-      })
-      .catch(function (error) {
-      });
-  };
 
   onChange = (e) => {
     this.setState({
-      code: e.target.value,
+      [e.target.name]: e.target.value,
     });
-  };
+  }
 
   render() {
-    const { user, signOut } = this.props;
-    console.log(this.props.user && user.providerData[0]);
     return (
       <>
         <Header></Header>
         <div className="User">
           <div className="SignupDetail">
             <div className="title">회원가입</div>
-            {user ? (
-              <button onClick={signOut}>Sign out</button>
-            ) : (
+            {/* 약관 동의 부분 */}
+            <div className="row">
+              <div className="col-1">
+                <input type="checkbox" id="checkbox"></input>
+              </div>
+              <div className="col-11">
+                <label for="checkbox">전체동의 (필수)</label>
+                <div>핏미업 서비스 이용약관, 개인정보 수집 및 이용동의</div>
+              </div>
+            </div>
+            {/* 전문가일때만 뜨게 */}
+            {this.state.type === "stylist" && <Certification />}
+
+            {/* 닉네임 입력 */}
+            <div className="nickname">
               <input
-                id="recaptcha-container"
-                type="button"
-                onClick={this.onClick}
-                value="클릭"
-              />
-            )}
-            <input value={this.state.code} onChange={this.onChange}></input>
-            <input type="button" onClick={this.onCheck} value="확인" />
+                type="text"
+                name="name"
+                // onChange={this.onChange}
+                className="input_nickname"
+                placeholder="닉네임을 입력해주세요 (2~8자)"
+              ></input>
+            </div>
+            <div className="additional_info">
+              <select>
+                <option defaultValue>여자</option>
+                <option>남자</option>
+              </select>
+              <input
+                type="number"
+                name="age"
+                onChange={this.onChange}
+                className="input_age"
+                placeholder="나이"
+                value={this.state.age}
+              ></input>
+            </div>
             <div className="complete_btn">가입 완료</div>
           </div>
         </div>
@@ -112,10 +97,4 @@ class SignupDetail extends React.Component {
   }
 }
 
-export default withFirebaseAuth({
-  firebaseAppAuth,
-})(SignupDetail);
-
-//https://medium.com/firebase-developers/how-to-setup-firebase-authentication-with-react-in-5-minutes-maybe-10-bb8bb53e8834
-//https://firebase.google.com/docs/auth/web/phone-auth
-//https://stackoverflow.com/questions/51512893/firebase-phone-auth-react-js
+export default SignupDetail;

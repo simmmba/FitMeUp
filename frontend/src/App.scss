@@ -9,6 +9,7 @@
 
   // input 클릭시 생기는 파란 줄 없애기
   input:focus {outline:none;}
+  select:focus {outline:none;}
 }
 
 body{

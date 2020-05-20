@@ -4,6 +4,7 @@
     font-family: $sub_font;
     @include center;
     @include a;
+    @include drag;
 
     .title {
         font-family: $main_font;
@@ -92,8 +93,73 @@
         }
     }
 
-    .complete_btn{
+    .row {
+        width: 300px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 25px;
+
+        .col-1,
+        .col-11 {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .col-1 {
+            input[type="checkbox"] {
+                width: 19px;
+                height: 19px;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                -o-appearance: none;
+                appearance: none;
+                outline: none;
+                box-shadow: none;
+                transform: translate(0, 1px);
+                border: 2px solid $red;
+                border-radius: 4px;
+            }
+
+            input[type="checkbox"]:checked {
+                background-color: $red;
+            }
+        }
+
+        .col-11 {
+            div {
+                font-size: 12.35px;
+            }
+        }
+    }
+
+    .nickname {
+        margin-bottom: 20px;
+        .input_nickname {
+            @include input(300);
+        }
+    }
+
+    .additional_info {
+        select {
+            width: 145px; /* 원하는 너비설정 */
+            padding: 7px; /* 여백으로 높이 설정 */
+            font-family: inherit; /* 폰트 상속 */
+            background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
+            border: 1px solid rgb(126, 126, 126);
+            border-radius: 0px; /* iOS 둥근모서리 제거 */
+            -webkit-appearance: none; /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .input_age {
+            margin-left: 10px;
+            @include input(145);
+        }
+    }
+
+    .complete_btn {
         margin-top: 30px;
-        @include button(250,10);
+        @include button(300, 18);
     }
 }
