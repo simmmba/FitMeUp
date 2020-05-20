@@ -1,59 +1,140 @@
 import { Consult } from "../models"
 import { User } from "../models"
 import {Op} from "Sequelize"
-// 유저 생성
-export const create_consult = async function (req, res, err) {
 
+// 상담요청 생성
+export const create_consult = (req, res) => {
     try {
         // body로 부터 param 추출
         const {
             target, req_user, category, gender, top, bottom, want, current_img, height, weight, price, contents, start_time, end_time
         } = req.body;
 
-        //////// 요청 대상 확인
-        // 특정 대상이 존재할 경우
+        // 특정 대상이 존재할 경우 올바른 대상인지 확인
         if(target){
-            const {
-                type, gender, age, nickname, profile_img, platform, api_id, name, belong, occupation, phone,
-            } = target;
-            // 올바른 대상인지 확인
-            const user_exist = await User.findOne({where:{api_id:api_id}})
-            if(type !== 'stylist' || !user_exist){
-                console.log("consultController.js's create_consult method occurred error. Couldn't find target.")
-                throw new Error("You select a wrong target. It is a incorrect stylist.")
-            }else{
-                Consult.create({
-
+            User.findOne({where:{api_id:target.api_id}})
+                .then((user) =>{
+                    if(target['type'] !== 'stylist' || !user){
+                        console.log("consultController.js's create_consult method occurred error. Couldn't find target.")
+                        throw new Error("You select a wrong target. It is a incorrect stylist.")
+                    }
                 })
-            }
         }
-        // 특정 대상이 존재하지 않은 경우
-        else {
-            const new_consult = await consult.create({
-                type, gender, age, nickname, profile_img, platform, api_id, name, belong, occupation,phone
-            });
-
-            if (new_user) {
-                res.json({ result: "Success", user: new_user });
-            } else {
-                res.json({ result: "Fail", detail: "not create" });
-            }
-        }
+        
+        Consult.create({
+            target : target? target.user_id:null,
+            req_user : req_user.user_id,
+            category,
+            gender,
+            top,
+            bottom,
+            height,
+            weight,
+            price,
+            contents,
+            start_time,
+            end_time
+        }).then(()=>{
+            res.json({result:"Success"})
+        })
     } catch (err) {
-        console.log(err);
+        console.log("consultController.js create_consult method\n ==> " +err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
     }
 }
-// 상담요청 생성
-export const update_consult = (req, res) => {}
+// 상담요청 수정
+export const update_consult = (req, res) => {
+    try{
+        // 파라미터 추출
+        const {
+            consult_id, target, req_user, category, gender, top, bottom, want, current_img, height, weight, price, contents, start_time, end_time
+        } = req.body;
+
+        Consult.update({
+            target : target?target.user_id:null,
+            req_user : req_user.user_id,
+            category,
+            gender,
+            top,
+            bottom,
+            height,
+            weight,
+            price,
+            contents,
+            start_time,
+            end_time
+        },{
+            where:{consult_id : consult_id}
+        }).then(() => {
+            res.json({result:"Success"})
+        })
+    }catch(err){
+        console.log("consultController.js update_consult method\n ==> " +err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 // 상담요청 삭제
-export const delete_consult = (req, res) => {}
+export const delete_consult = (req, res) => {
+    try{
+        // 파라미터 추출
+        const {
+            consult_id, user_id
+        } = req.body;
+
+        Consult.destroy({
+            where:{consult_id : consult_id, req_id : user_id}
+        }).then(() => {
+                res.json({result:"Success"})
+            })
+    }catch(err){
+        console.log("consultController.js delete_consult method\n ==> " +err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 // 스타일리스트 지정 없이 요청한 전체 상담리스트
-export const read_consults = (req, res) => {}
+export const read_consults = (req, res) => {
+    try{
+        Consult.findAll({
+            where:{state:'wait'}
+        })
+            .then((consults) => {
+                res.json({result:"Success", list: consults})
+            })
+    }catch(err){
+        console.log("consultController.js read_consults method\n ==> " +err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 // 내가 상담요청한 목록
-export const read_myconsults = (req, res) => {}
+export const read_myconsults = (req, res) => {
+    try{
+        const {user_id} = req.query;
+        Consult.findAll({
+            where:{req_id:user_id}
+        })
+            .then((consults) => {
+                res.json({result:"Success", list: consults})
+            })
+    }catch(err){
+        console.log("consultController.js read_myconsults method\n ==> " +err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 // 상담 검색
-export const search_consults = (req, res) => {}
+export const search_consults = (req, res) => {
+    try{
+        const {option, keyword} = req.query;
+        Consult.findAll({
+            where:{req_id:user_id}
+        })
+            .then((consults) => {
+                res.json({result:"Success", list: consults})
+            })
+    }catch(err){
+        console.log("consultController.js read_myconsults method\n ==> " +err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 // 스타일리스트에게 요청한 상담리스트
 export const read_recv_consults = (req, res) => {}
 // 스타일리스트에게 요청한 상담 수락/거절
