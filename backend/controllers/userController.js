@@ -1,4 +1,4 @@
-import { user } from "../models"
+import { User } from "../models"
 import {Op} from "Sequelize"
 // 유저 생성
 export const create_user = async function (req, res, ) {
@@ -10,14 +10,14 @@ export const create_user = async function (req, res, ) {
         } = req.body;
 
         // 가입된 회원 여부 확인
-        const user_exist = await user.findOne({ where: { api_id: api_id } })
+        const user_exist = await User.findOne({ where: { api_id: api_id } })
         
         if (user_exist) {
             // res.json( {result: "Fail", detail: "user exist"});
             throw new Error("user exist");
         }
         else {
-            const new_user = await user.create({
+            const new_user = await User.create({
                 type, gender, age, nickname, profile_img, platform, api_id, name, belong, occupation,phone
             });
 
@@ -37,7 +37,7 @@ export const read_user = async (req, res) => {
     try {
 
         const { user_id } = req.query
-        const user_find = await user.findOne({ where: { id:user_id } })
+        const user_find = await User.findOne({ where: { id:user_id } })
         // delete user.dataValues.password
         // delete user.dataValues.auth
         if (user_find) {
@@ -57,7 +57,7 @@ export const update_user = async (req, res) => {
         
         console.log(req.body);
         
-        let user_update = await user.update({ type, gender, age, nickname, profile_img, platform,name, phone }, {
+        let user_update = await User.update({ type, gender, age, nickname, profile_img, platform,name, phone }, {
             where: { api_id}
         })
         
@@ -72,7 +72,7 @@ export const update_user = async (req, res) => {
 export const delete_user = async (req, res) => {
     const {api_id} = req.body
     try {
-        let user_delete = await user.destroy({ where: {api_id} })
+        let user_delete = await User.destroy({ where: {api_id} })
         res.json({result:"Success"});
     } catch (err) {
         console.log(err);
@@ -84,7 +84,7 @@ export const login = async (req, res) => {
     try {
         
         const { api_id, platform } = req.query
-        let user_find = await user.findOne({ where: { api_id, platform } })
+        let user_find = await User.findOne({ where: { api_id, platform } })
         // delete user.dataValues.password
         // delete user.dataValues.auth
         if (user_find) {
@@ -102,7 +102,7 @@ export const duplicate = async (req,res) => {
     
     try {
         const {nickname} = req.query
-        let is_exist = await user.findOne({where : {nickname}})
+        let is_exist = await User.findOne({where : {nickname}})
         console.log(is_exist);
         
         if(is_exist){
@@ -120,7 +120,7 @@ export const duplicate = async (req,res) => {
 
 export const stylist_list = async (req, res) => {
     try {
-        let list = await user.findAll({where:{type:"stylist"}})
+        let list = await User.findAll({where:{type:"stylist"}})
         
         res.json({result : "Success", stylists : list})
         
@@ -136,9 +136,9 @@ export const search = async (req, res) => {
         let stylist_search;
         let word = '%'+keyword+'%'
         if(option === "nickname"){
-            stylist_search = await user.findAll({where:{nickname:{[Op.like]:word}, type:"stylist"}})
+            stylist_search = await User.findAll({where:{nickname:{[Op.like]:word}, type:"stylist"}})
         }else{
-            stylist_search = await user.findAll({where:{
+            stylist_search = await User.findAll({where:{
                 [Op.or]:[
                     {nickname:{[Op.like]:word}},
                     {name:{[Op.like]:word}},
