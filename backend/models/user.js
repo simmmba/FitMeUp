@@ -58,7 +58,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(30),
       allowNull: true,
       unique: true
-    }
+    },
+
   }, {
     tableName: 'user'
   });

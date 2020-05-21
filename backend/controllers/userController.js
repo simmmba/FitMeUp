@@ -55,7 +55,6 @@ export const update_user = async (req, res) => {
     try {
         const { type, gender, age, nickname, profile_img, platform, api_id, name, phone } = req.body;
         
-        console.log(req.body);
         
         let user_update = await User.update({ type, gender, age, nickname, profile_img, platform,name, phone }, {
             where: { api_id}
@@ -70,9 +69,9 @@ export const update_user = async (req, res) => {
 }
 
 export const delete_user = async (req, res) => {
-    const {api_id} = req.body
+    const {id} = req.body
     try {
-        let user_delete = await User.destroy({ where: {api_id} })
+        let user_delete = await User.destroy({ where: {id} })
         res.json({result:"Success"});
     } catch (err) {
         console.log(err);
@@ -98,24 +97,22 @@ export const login = async (req, res) => {
     }
 }
 
-export const duplicate = async (req,res) => {
-    
+export const dup_nickname = async (req,res) => {
     try {
         const {nickname} = req.query
         let is_exist = await User.findOne({where : {nickname}})
         console.log(is_exist);
         
         if(is_exist){
-            res.json({result : "Success", isDuplicate : false})
-        }else{
             res.json({result : "Success", isDuplicate : true})
+        }else{
+            res.json({result : "Success", isDuplicate : false})
         }
         
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
     }
-    
 } 
 
 export const stylist_list = async (req, res) => {
@@ -155,5 +152,21 @@ export const search = async (req, res) => {
     }
 }
 
-
+export const dup_phone = async (req,res) => {
+    try {
+        const {phone} = req.query
+        let is_exist = await User.findOne({where : {phone}})
+        console.log(is_exist);
+        
+        if(is_exist){
+            res.json({result : "Success", isDuplicate : true})
+        }else{
+            res.json({result : "Success", isDuplicate : false})
+        }
+        
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+} 
 
