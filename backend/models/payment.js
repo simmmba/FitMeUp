@@ -16,6 +16,10 @@ module.exports = function(sequelize, DataTypes) {
         key: 'ID'
       }
     },
+    type: {
+      type : DataTypes.STRING(30),
+      allowNull : false,
+    },
     target: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
@@ -28,11 +32,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true
     },
-    reg_time: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    }
   }, {
     tableName: 'payment'
   });
