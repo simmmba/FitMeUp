@@ -12,6 +12,7 @@ import dotenv from 'dotenv' // 환경변수
 //routing
 import userRouter from './routes/userRouter'
 import consultRouter from './routes/consultRouter'
+import reviewRouter from './routes/reviewRouter'
 
 dotenv.config();
 
