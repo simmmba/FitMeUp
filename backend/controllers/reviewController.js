@@ -48,7 +48,7 @@ export const read_reviews = (req, res) => {
         source: user_id
       }
     }).then(reviews => {
-      res.json({ result: 'Fail', list: reviews })
+      res.json({ result: 'Success', list: reviews })
     })
   } catch (err) {
     console.log('reviewController.js read_reviews method\n ==> ' + err)
@@ -59,20 +59,69 @@ export const read_reviews = (req, res) => {
 }
 
 // 리뷰 수정
-export const read_reviews = (req, res) => {
+export const update_review = (req, res) => {
   try {
     // body로 부터 param 추출
-    const { review_id, contents, score } = req.query
+    const { review_id, contents, score } = req.body
 
-    Review.findAll({
-      where: {
-        source: user_id
+    Review.update(
+      {
+        contents: contents,
+        score: score
+      },
+      {
+        where: {
+          id: review_id
+        }
       }
-    }).then(reviews => {
-      res.json({ result: 'Fail', list: reviews })
+    ).then(() => {
+      res.json({ result: 'Success' })
     })
   } catch (err) {
-    console.log('reviewController.js read_reviews method\n ==> ' + err)
+    console.log('reviewController.js update_review method\n ==> ' + err)
+    res
+      .status(500)
+      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+  }
+}
+
+// 리뷰 삭제
+export const delete_review = (req, res) => {
+  try {
+    // body로 부터 param 추출
+    const { review_id } = req.body
+
+    Review.destroy({
+      where: {
+        id: review_id
+      }
+    }).then(() => {
+      res.json({ result: 'Success' })
+    })
+  } catch (err) {
+    console.log('reviewController.js delete_review method\n ==> ' + err)
+    res
+      .status(500)
+      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+  }
+}
+
+
+// 나에게 등록된 리뷰 불러오기
+export const read_receive_reviews = (req, res) => {
+  try {
+    // path로 부터 query 추출
+    const { user_id } = req.query
+
+    Review.destroy({
+      where: {
+        target: user_id
+      }
+    }).then(() => {
+      res.json({ result: 'Success' })
+    })
+  } catch (err) {
+    console.log('reviewController.js delete_review method\n ==> ' + err)
     res
       .status(500)
       .json({ result: 'Fail', detail: '500 Internal Server Error' })
