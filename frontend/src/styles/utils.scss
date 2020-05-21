@@ -102,6 +102,15 @@ $eng_font: "Open Sans", sans-serif;
   margin: 0 auto;
 }
 
+// 센터로 만들기
+// 위 아래
+@mixin itemcenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 // 드래그 안되게
 @mixin drag {
   -ms-user-select: none;
@@ -118,13 +127,18 @@ $eng_font: "Open Sans", sans-serif;
   font-family: $main-font;
   cursor: pointer;
 
-  .row{
+  .row {
     @include maxcenter;
 
-    .col-4{
+    .col-4 {
       padding-top: 10px;
       padding-bottom: 10px;
     }
-    
   }
+}
+
+@mixin circle($size) {
+  width: $size * 1px;
+  height: $size * 1px;
+  border-radius: $size * 0.5px;
 }

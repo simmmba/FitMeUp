@@ -58,7 +58,7 @@ class SignupDetail extends React.Component {
                 <input type="checkbox" id="checkbox"></input>
               </div>
               <div className="col-11">
-                <label for="checkbox">전체동의 (필수)</label>
+                <label htmlFor="checkbox">전체동의 (필수)</label>
                 <div>핏미업 서비스 이용약관, 개인정보 수집 및 이용동의</div>
               </div>
             </div>

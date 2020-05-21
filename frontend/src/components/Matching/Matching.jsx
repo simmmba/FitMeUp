@@ -13,6 +13,10 @@ const Matching = () => {
     ["tab3", "내 옷"],
   ];
 
+  let match = [
+
+  ]
+
   // tab을 바꾸면 axois 새로 호출 및 표시
   const clickTab = (e) => {
     setTab(e.target.id);
@@ -38,15 +42,15 @@ const Matching = () => {
         </div>
         <div className="condition">
           {/* <div className="charge">상담 수 (127)</div> */}
-          <div className="gender_filter">성별 여자</div>
+          <div className="gender_filter">성별 <span>여자</span></div>
           <div className="time_filter">최신순</div>
         </div>
         {/* 상담 신청 목록 */}
         <div className="list">
-          <MatchingList></MatchingList>
-          <MatchingList></MatchingList>
-          <MatchingList></MatchingList>
-          <MatchingList></MatchingList>
+          <MatchingList match={match}></MatchingList>
+          <MatchingList match={match}></MatchingList>
+          <MatchingList match={match}></MatchingList>
+          <MatchingList match={match}></MatchingList>
         </div>
       </div>
     </>

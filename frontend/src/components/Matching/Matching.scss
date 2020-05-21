@@ -21,11 +21,20 @@
         display: flex;
         @include maxcenter;
         div {
-            display: inline-block;
-            margin-right: 20px;
-            padding: 8px;
-            border: 1px solid rgb(184, 184, 184);
             cursor: pointer;
+            display: inline-block;
+            margin-right: 10px;
+            padding: 8px;
+            // border: 1px solid rgb(223, 223, 223);
+            box-shadow: 0 0 0 1px rgb(223, 223, 223) inset;
+
+            span{
+                color: $red;
+            }
+
+            &:hover{
+                box-shadow: 0 0 0 2px $red inset;
+            }
         }
         font-family: $main-font;
         padding: 10px;
