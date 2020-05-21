@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('review', {
+  return sequelize.define('Review', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
-        model: 'user',
+        model: 'User',
         key: 'ID'
       }
     },
@@ -20,18 +20,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
-        model: 'user',
+        model: 'User',
         key: 'ID'
       }
     },
     contents: {
       type: DataTypes.STRING(1000),
       allowNull: true
-    },
-    reg_time: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
     score: {
       type: "DOUBLE",
