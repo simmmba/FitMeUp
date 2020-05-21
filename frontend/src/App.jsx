@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Main from "../src/components/Main/Main";
 import ConsultRequire from "./components/ConsultRequire/ConsultRequire";
+import Test from "./components/Supermarket/Test";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Switch>
           <Route path="/" component={Main} exact />
           <Route path="/consult" component={ConsultRequire} />
+          <Route path="/test" component={Test} />
         </Switch>
       </BrowserRouter>
     </div>

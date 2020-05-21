@@ -1,3 +1,69 @@
 .Main {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .reqBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #d14d56;
+    width: 200px;
+    height: 50px;
+
+    border: none;
+    color: white;
+    border-radius: 5px;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #b83b44;
+    }
+  }
+}
+
+.m {
+  .mHeader {
+    border-bottom: 1px solid white;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .mentionTop {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+
+    .mentionBottom {
+      color: grey;
+      margin: 20px 0 40px 0;
+    }
+
+    .selectBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #d14d56;
+      width: 200px;
+      height: 50px;
+      margin: 10px;
+
+      border: none;
+      color: white;
+      border-radius: 5px;
+      transition: 0.2s;
+
+      &:hover {
+        color: white;
+        text-decoration: none;
+        background-color: #b83b44;
+      }
+    }
+  }
 }
