@@ -2,9 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
+import { Provider } from "mobx-react";
+import RootStore from "./stores";
+const root = new RootStore();
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider {...root}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );

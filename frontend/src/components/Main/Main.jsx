@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import "./Main.scss";
+import Counter from "../Supermarket/Counter3";
+import SuperMarket from "../Supermarket/SuperMarket";
 
-const Home = () => {
+const Main = ({ setConsult, reset }) => {
   const [login, setLogin] = useState(false);
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   useEffect(() => {
     // 로그인 확인하기
@@ -20,29 +22,45 @@ const Home = () => {
 
   return (
     <div className="Main">
-      <div>로그인하기</div>
-      <div>회원가입하기</div>
-      <NavLink to={`/consult`}>실시간 상담 요청</NavLink>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
+      <button className="reqBtn" onClick={handleShow}>
+        실시간 상담 요청
+      </button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+      <Modal className="m" show={show} onHide={handleClose}>
+        <Modal.Header className="mHeader" closeButton></Modal.Header>
+        <Modal.Body className="body">
+          <div className="mentionTop">스타일리스트에게 상담 받기 위해</div>
+          <div className="mentionTop">원하는 서비스를 선택해주세요!</div>
+          <div className="mentionBottom">47,505명의 스타일리스트가 활동 중이에요.</div>
+          <Link
+            className="selectBtn"
+            to={`/consult`}
+            onClick={() => {
+              setConsult("category", "코디 추천");
+              reset();
+            }}
+          >
+            코디 추천 받기
+          </Link>
+          <Link
+            className="selectBtn"
+            to={`/consult`}
+            onClick={() => {
+              setConsult("category", "내 옷 추천");
+              reset();
+            }}
+          >
+            내 옷 추천 받기
+          </Link>
+          <br />
+          <br />
+        </Modal.Body>
       </Modal>
     </div>
   );
 };
 
-export default Home;
+export default inject(({ consultRequire }) => ({
+  setConsult: consultRequire.setConsult,
+  reset: consultRequire.reset,
+}))(observer(Main));
