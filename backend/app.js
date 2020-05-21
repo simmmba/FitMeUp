@@ -11,6 +11,7 @@ import dotenv from 'dotenv' // 환경변수
 
 //routing
 import userRouter from './routes/userRouter'
+import paymentRouter from './routes/paymentRouter'
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ app.use(morgan('dev')) //logging
 // rounting
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-
+app.use('/payment',paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
