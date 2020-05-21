@@ -1,14 +1,14 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Review', {
+  return sequelize.define('Apply', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    source: {
+    stylist_id: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
@@ -16,23 +16,19 @@ module.exports = function(sequelize, DataTypes) {
         key: 'ID'
       }
     },
-    target: {
+    consult_id:{
       type: DataTypes.INTEGER(11),
       allowNull: true,
       references: {
-        model: 'User',
+        model: 'Consult',
         key: 'ID'
       }
     },
-    contents: {
-      type: DataTypes.STRING(1000),
-      allowNull: true
-    },
-    score: {
-      type: "DOUBLE",
+    state: {
+      type: DataTypes.STRING(100),
       allowNull: true
     }
   }, {
-    tableName: 'review'
+    tableName: 'request_for_consult'
   });
 };
