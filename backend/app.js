@@ -13,6 +13,7 @@ import dotenv from 'dotenv' // 환경변수
 import userRouter from './routes/userRouter'
 import paymentRouter from './routes/paymentRouter'
 import consultRouter from './routes/consultRouter'
+import reviewRouter from './routes/reviewRouter'
 
 dotenv.config();
 
