@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "ph253519#@",
+    "password": "root",
     "database": "fmu_db",
     "host": "127.0.0.1",
     "dialect": "mysql",
