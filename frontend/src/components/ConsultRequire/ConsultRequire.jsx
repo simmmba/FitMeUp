@@ -1,8 +1,9 @@
+// import "date-fns";
 import React, { useEffect } from "react";
 // import { NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Processing from "./Processing";
-import Gender from "./Gender";
+import GenderAge from "./GenderAge";
 import Size from "./Size";
 import WantStyle from "./WantStyle";
 import CurrentStyle from "./CurrentStyle";
@@ -13,15 +14,38 @@ import Result from "./Result";
 import Explain from "./Explain";
 import "./ConsultRequire.scss";
 
-const ConsultRequire = ({ questions, num, next, previous }) => {
+const ConsultRequire = ({ questions, num }) => {
   const question = () => {
     return <div className="question">{questions[num]}</div>;
   };
 
+  // const moveBtn = () => {
+  //   return (
+  //     <div className="btnBox">
+  //       {num > 0 ? (
+  //         <button className="preBtn" onClick={previous}>
+  //           이전
+  //         </button>
+  //       ) : (
+  //         <div className="empty"></div>
+  //       )}
+  //       {num < 6 ? (
+  //         <button className="nextBtn" onClick={next}>
+  //           다음
+  //         </button>
+  //       ) : (
+  //         <button className="nextBtn" onClick={next}>
+  //           신청 완료
+  //         </button>
+  //       )}
+  //     </div>
+  //   );
+  // };
+
   const answer = () => {
     switch (num) {
       case 0:
-        return <Gender />;
+        return <GenderAge />;
       case 1:
         return <Size />;
       case 2:
@@ -41,29 +65,6 @@ const ConsultRequire = ({ questions, num, next, previous }) => {
     }
   };
 
-  const moveBtn = () => {
-    return (
-      <div className="btnBox">
-        {num > 0 ? (
-          <button className="preBtn" onClick={previous}>
-            이전
-          </button>
-        ) : (
-          <div className="empty"></div>
-        )}
-        {num < 6 ? (
-          <button className="nextBtn" onClick={next}>
-            다음
-          </button>
-        ) : (
-          <button className="nextBtn" onClick={next}>
-            신청 완료
-          </button>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div className="consultRequire">
       <Processing />
@@ -71,7 +72,6 @@ const ConsultRequire = ({ questions, num, next, previous }) => {
         <div className="col-9 main">
           {question()}
           {answer()}
-          {moveBtn()}
         </div>
         <div className="col-3">
           <Explain />
@@ -83,8 +83,6 @@ const ConsultRequire = ({ questions, num, next, previous }) => {
 
 export default inject(({ consultRequire }) => ({
   questions: consultRequire.questions,
-  num: consultRequire.num,
   percent: consultRequire.percent,
-  next: consultRequire.next,
-  previous: consultRequire.previous,
+  num: consultRequire.num,
 }))(observer(ConsultRequire));
