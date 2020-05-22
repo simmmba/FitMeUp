@@ -182,7 +182,7 @@ class SignupDetail extends React.Component {
       .then((res) => {
         alert("회원가입에 성공했습니다.");
         history.push({
-          pathname: "/",
+          pathname: "/login",
         });
       })
       .catch((error) => {

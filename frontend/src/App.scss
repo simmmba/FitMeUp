@@ -1,12 +1,10 @@
-
-body{
-  margin: 0;
-  padding: 0;
-}
+@import "./styles/utils.scss";
 
 .App {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  font-family: $sub-font;
 }
 
 *:focus {

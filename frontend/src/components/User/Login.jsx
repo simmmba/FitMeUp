@@ -53,6 +53,7 @@ class Signup extends React.Component {
       .then((res) => {
 
         if(res.data.result === "Success"){
+          window.sessionStorage.setItem("user", JSON.stringify(res.data.user));
           history.push("/");
           return;
         }
