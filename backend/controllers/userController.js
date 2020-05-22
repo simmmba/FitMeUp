@@ -97,11 +97,28 @@ export const login = async (req, res) => {
     }
 }
 
+export const join_check = async (req, res) => {
+    try {
+        
+        const { api_id, platform } = req.body
+        let user_find = await User.findOne({ where: { api_id, platform } })
+        if (user_find) {
+            res.json({ result: "Success", detail: "Yes" });
+        } else {
+            res.json({ result: "Success", detail: "No" });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
+
+
+
 export const dup_nickname = async (req,res) => {
     try {
         const {nickname} = req.query
         let is_exist = await User.findOne({where : {nickname}})
-        console.log(is_exist);
         
         if(is_exist){
             res.json({result : "Success", isDuplicate : true})
