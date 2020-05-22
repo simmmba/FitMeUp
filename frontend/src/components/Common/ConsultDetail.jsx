@@ -18,7 +18,7 @@ const ConsultDetail = () => {
     <>
       <Header></Header>
       <div className="ConsultDetail">
-        <div className="sss">
+        <div className="processing">
           <div className="position">
             <br />
             <div className="type">내 옷 코디하기</div>
