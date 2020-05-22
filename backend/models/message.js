@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     readed: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+      type: DataTypes.INTEGER(1),
+      defaultValue: 0
     }
   }, {
     tableName: 'message'

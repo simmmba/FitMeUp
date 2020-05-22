@@ -9,14 +9,18 @@ export const get_received_list = async function(req, res) {
             }
         })
 
+        let unread_count = 0
         for (const m of message_list) {
             m.source = await remove_user_useless_field(await get_user(m.source))
             m.target = await remove_user_useless_field(await get_user(m.target))
+            if(!m.readed) unread_count++
         }
+
 
         return res.status(200).json({
             result: "Success",
-            messages: message_list
+            messages: message_list,
+            unread_count: unread_count
         })
     } catch(err) {
         console.log(err);
@@ -36,14 +40,17 @@ export const get_sent_list = async function(req, res) {
             }
         })
 
+        let unread_count = 0
         for (const m of message_list) {
             m.source = await remove_user_useless_field(await get_user(m.source))
             m.target = await remove_user_useless_field(await get_user(m.target))
+            if(!m.readed) unread_count++
         }
 
         return res.status(200).json({
             result: "Success",
-            messages: message_list
+            messages: message_list,
+            unread_count: unread_count
         })
     } catch(err) {
         console.log(err);
@@ -57,18 +64,25 @@ export const get_sent_list = async function(req, res) {
 export const get_detail = async function(req, res) {
     try {
         const { mid } = req.query;
-        const detail = await message.findOne({
+
+        const detail = await message.update({readed: 1}, {
+            where: {
+                id : mid
+            }
+        })
+
+        const m = await message.findOne({
             where: {
                 id: mid
             }
         })
 
-        detail.source = await get_user(detail.source)
-        detail.target = await get_user(detail.target)
+        m.source = await remove_user_useless_field(await get_user(m.source))
+        m.target = await remove_user_useless_field(await get_user(m.target))
 
         return res.status(200).json({
             result: "Success",
-            message: detail
+            message: m
         })
     } catch(err) {
         console.log(err);
@@ -77,6 +91,32 @@ export const get_detail = async function(req, res) {
             detail: "500 Internal Server Error"
         })
     }
+}
+
+export const send_message = async function(req, res) {
+     try {
+         const { source, target, contents } = req.body
+         const new_message = await message.create({source, target, contents})
+
+         if(new_message) {
+             return res.status(200).json({
+                 result: "Success",
+                 message: new_message
+             })
+         } else {
+             return res.status(500).json({
+                 result: "Fail"
+             })
+         }
+
+     } catch (err) {
+         console.log(err)
+         return res.status(500).json({
+             result: "Fail",
+             detail: "500 Internal Server Error"
+         })
+     }
+
 }
 
 const get_user = async function(uid) {
