@@ -1,0 +1,171 @@
+@import "../../styles/utils.scss";
+
+.User {
+    font-family: $sub_font;
+    @include center;
+    @include a;
+    @include drag;
+
+    .title {
+        font-family: $main_font;
+        font-size: 30px;
+        font-weight: bolder;
+        margin-bottom: 30px;
+    }
+
+    .user_type {
+        margin-bottom: 30px;
+    }
+
+    input[type="radio"] {
+        background-color: #ffff;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: 1px solid rgb(216, 216, 216);
+        width: 14px;
+        height: 14px;
+        margin-left: 0;
+        margin-right: 8px;
+        border-radius: 100%;
+        cursor: pointer;
+    }
+
+    input[type="radio"]:checked {
+        background-color: $red;
+        border: none;
+    }
+
+    label {
+        cursor: pointer;
+        font-size: 16px;
+        margin-right: 30px;
+    }
+
+    // 간편 로그인 버튼
+    .easy_login {
+        font-family: $eng_font;
+        outline: none;
+        border: 1px solid transparent;
+        text-align: center;
+        width: 250px;
+        height: 40px;
+        background: $red;
+        cursor: pointer;
+        font-size: 20px;
+        margin-bottom: 3vh;
+        color: white;
+
+        span {
+            font-family: $eng_font;
+            font-size: 20px;
+            color: white;
+            background: $red;
+            width: 100%;
+            height: 40px;
+
+            /* flex로 내부 내용 중앙 정렬*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &:hover {
+            background: $red_hover;
+
+            span {
+                background: $red_hover;
+            }
+        }
+    }
+
+    .changeForm {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        a {
+            color: $red;
+            margin-left: 5px;
+            font-weight: bolder;
+
+            &:hover {
+                color: $red_hover;
+            }
+        }
+    }
+
+    .row {
+        width: 300px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 25px;
+
+        .col-1,
+        .col-11 {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .col-1 {
+            input[type="checkbox"] {
+                width: 19px;
+                height: 19px;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                -o-appearance: none;
+                appearance: none;
+                outline: none;
+                box-shadow: none;
+                transform: translate(0, 1.5px);
+                border: 2px solid $red;
+                border-radius: 4px;
+            }
+
+            input[type="checkbox"]:checked {
+                background-color: $red;
+            }
+        }
+
+        .col-11 {
+            div {
+                font-size: 12.35px;
+            }
+        }
+    }
+
+    .nickname {
+        margin-bottom: 20px;
+        .input_nickname {
+            @include input(300);
+        }
+
+        .nickname_check{
+            margin-top: 5px;
+            font-size: 14px;
+            color: $red;
+        }
+    }
+
+    .additional_info {
+        select {
+            width: 145px; /* 원하는 너비설정 */
+            padding: 7px; /* 여백으로 높이 설정 */
+            font-family: inherit; /* 폰트 상속 */
+            background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
+            border: 1px solid rgb(126, 126, 126);
+            border-radius: 0px; /* iOS 둥근모서리 제거 */
+            -webkit-appearance: none; /* 네이티브 외형 감추기 */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .input_age {
+            margin-left: 10px;
+            @include input(145);
+        }
+    }
+
+    .complete_btn {
+        margin-top: 30px;
+        @include button(300, 18);
+    }
+}
