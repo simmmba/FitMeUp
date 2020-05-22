@@ -1,6 +1,6 @@
 import { User } from '../models'
 import { Review } from '../models'
-import { Op } from 'Sequelize'
+import { Op } from 'sequelize'
 
 // 리뷰 생성
 export const create_review = (req, res) => {
