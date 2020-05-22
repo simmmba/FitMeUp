@@ -1,6 +1,17 @@
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+*:focus {
+  outline: none !important;
+  box-shadow: none;
 
   // DB에서 값 받아왔을 때 enter 적용 되게
   // 박스 밖으로 넘어가면 자동 줄 바꿈
