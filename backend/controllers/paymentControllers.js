@@ -1,5 +1,5 @@
 import { User, Payment } from "../models"
-import { Op } from "Sequelize"
+import { Op } from "sequelize"
 
 export const charge = async function (req, res, ) {
 

@@ -1,7 +1,7 @@
 import { Consult } from '../models'
 import { User } from '../models'
 import { Apply } from '../models'
-import { Op } from 'Sequelize'
+import { Op } from 'sequelize'
 
 // 상담요청 생성
 export const create_consult = (req, res) => {
