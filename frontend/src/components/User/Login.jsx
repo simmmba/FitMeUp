@@ -1,5 +1,6 @@
 import React from "react";
 import "./User.scss";
+import axios from "axios";
 
 import { NavLink } from "react-router-dom";
 
@@ -11,9 +12,8 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_type: "general",
       api_id: "",
-      provider: "",
+      platform: "",
     };
   }
 
@@ -38,51 +38,38 @@ class Signup extends React.Component {
 
   // 회원 가입 되어있는 건지 확인
   checkId = () => {
-    const { history } = this.props;
-    history.push({
-      pathname: "/signup/detail",
-      state: {
-        type: this.state.user_type,
-        api_id: this.state.id,
-        provider: this.state.provider,
-      },
-    });
+    // const { history } = this.props;
+    // history.push({pathname: "/"});
 
-    // //axios 호출
-    // axios({
-    //   method: "get",
-    //   url: `${process.env.REACT_APP_URL}/user/join_check/${this.state.provider}/${this.state.id}`,
-    // })
-    //   // 회원 가입 안되있는 거면
-    //   .then((res) => {
-    //     //console.log(res);
-    //     // 회원가입이 되어 있으면
-    //     if (res.data === "YES") alert("이미 가입된 유저입니다");
-    //     // 회원가입이 안되있으면
-    //     else {
-    //       history.push({
-    //         pathname: "/signup/detail",
-    //         state: {
-    //           api_id: this.state.id,
-    //           provider: this.state.provider,
-    //           answer: this.context.state.answer,
-    //           survey_result: this.context.state.survey_result,
-    //         },
-    //       });
-    //       this.context.actions.reset();
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     alert("회원가입에 실패했습니다.");
-    //   });
+    //axios 호출
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_URL}/user/login`,
+      data : {
+        platform:this.state.platform,
+        api_id:this.state.api_id
+      }
+    })
+      // 회원 가입 안되있는 거면
+      .then((res) => {
+
+        if(res.data.detail === "user not found"){
+          alert("회원가입이 안된 유저입니다.");
+        }
+
+      })
+      .catch((error) => {
+
+          alert("로그인 실패했습니다.");
+        
+      });
   };
 
   // Google Login
   responseGoogle = (res) => {
     this.setState({
-      id: res.googleId,
-      name: res.profileObj.name,
-      provider: "google",
+      api_id: res.googleId,
+      platform: "google",
     });
 
     // 토큰 삭제
@@ -97,9 +84,8 @@ class Signup extends React.Component {
   responseKakao = (res) => {
     //console.log(res);
     this.setState({
-      id: res.profile.id,
-      name: res.profile.properties.nickname,
-      provider: "kakao",
+      api_id: res.profile.id,
+      platform: "kakao",
     });
 
     // 토큰 삭제

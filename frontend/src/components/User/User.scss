@@ -137,6 +137,12 @@
         .input_nickname {
             @include input(300);
         }
+
+        .nickname_check{
+            margin-top: 5px;
+            font-size: 14px;
+            color: $red;
+        }
     }
 
     .additional_info {
