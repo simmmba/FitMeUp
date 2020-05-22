@@ -26,11 +26,14 @@ $eng_font: "Open Sans", sans-serif;
   width: $width * 1px;
   padding: 10px;
   text-align: center;
-  font-weight: bolder;
+  font-family: $sub-font;
   font-size: $size * 1px;
   background-color: $red;
   color: white;
   cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  border-radius: 3px;
 
   a {
     text-decoration: none;
@@ -81,6 +84,8 @@ $eng_font: "Open Sans", sans-serif;
   border: 1px solid $red;
   text-align: center;
   cursor: pointer;
+  transition: 0.3s;
+  border-radius: 3px;
 
   &:hover {
     background: $red_hover;

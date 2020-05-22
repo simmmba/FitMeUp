@@ -38,8 +38,7 @@ class Signup extends React.Component {
 
   // 회원 가입 되어있는 건지 확인
   checkId = () => {
-    // const { history } = this.props;
-    // history.push({pathname: "/"});
+    const { history } = this.props;
 
     //axios 호출
     axios({
@@ -50,9 +49,13 @@ class Signup extends React.Component {
         api_id:this.state.api_id
       }
     })
-      // 회원 가입 안되있는 거면
+      // 로그인 안되있는 거면
       .then((res) => {
 
+        if(res.data.result === "Success"){
+          history.push("/");
+          return;
+        }
         if(res.data.detail === "user not found"){
           alert("회원가입이 안된 유저입니다.");
         }

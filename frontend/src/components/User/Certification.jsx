@@ -47,32 +47,34 @@ class Certification extends React.Component {
         // 이미 있는 번호면
         if (res.data.isDuplicate === true) {
           alert("이미 등록되어 있는 번호입니다.");
-          return;
+          this.onReset();
+        } else {
+          const phoneNumber = "+82" + this.state.phone;
+          const appVerifier = window.recaptchaVerifier;
+          firebase
+            .auth()
+            .signInWithPhoneNumber(phoneNumber, appVerifier)
+            .then((confirmResult) => {
+              // success
+              window.confirmationResult = confirmResult;
+              this.setState({
+                send: true,
+              });
+            })
+            .catch((error) => {
+              // error
+              if (error.code === "auth/too-many-requests") {
+                alert(
+                  "하루 최대 5번의 인증번호 전송이 가능합니다.\n내일 다시 시도해주세요"
+                );
+              } else {
+                alert(
+                  "인증번호 전송에 실패했습니다.\n잠시후 다시 시도해주세요"
+                );
+              }
+            });
         }
       });
-
-      const phoneNumber = "+82" + this.state.phone;
-      const appVerifier = window.recaptchaVerifier;
-      firebase
-        .auth()
-        .signInWithPhoneNumber(phoneNumber, appVerifier)
-        .then((confirmResult) => {
-          // success
-          window.confirmationResult = confirmResult;
-          this.setState({
-            send: true,
-          });
-        })
-        .catch((error) => {
-          // error
-          if (error.code === "auth/too-many-requests") {
-            alert(
-              "하루 최대 5번의 인증번호 전송이 가능합니다.\n내일 다시 시도해주세요"
-            );
-          } else {
-            alert("인증번호 전송에 실패했습니다.\n잠시후 다시 시도해주세요");
-          }
-        });
     } else {
       alert("핸드폰 번호 형식이 아닙니다");
     }

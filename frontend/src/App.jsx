@@ -20,7 +20,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/" component={Main} exact />
-          <Route path="/consult" component={ConsultRequire} />
+          <Route path="/consult" component={ConsultRequire} exact />
           <Route path="/test" component={Test} />
           <Route path="/signup" component={Signup} exact />
           <Route path="/signup/detail" component={SignupDetail} exact />
