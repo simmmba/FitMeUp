@@ -14,6 +14,7 @@ import userRouter from './routes/userRouter'
 import paymentRouter from './routes/paymentRouter'
 import consultRouter from './routes/consultRouter'
 import reviewRouter from './routes/reviewRouter'
+import messageRouter from "./routes/messageRouter";
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ app.use('/user', userRouter);
 app.use('/payment',paymentRouter);
 app.use('./consult', consultRouter);
 app.use('./review', reviewRouter);
-
+app.use('/message', messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

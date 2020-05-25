@@ -1,0 +1,113 @@
+.consultRequire {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    // border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    width: 80%;
+    min-height: 70vh;
+
+    .main {
+      // border: 1px solid black;
+      width: 100%;
+
+      .question {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin: 40px 0 30px 0;
+      }
+
+      .btnBox {
+        display: flex;
+        // flex-direction: column;
+        justify-content: flex-end;
+        // border: 1px solid black;
+        align-self: flex-end;
+        // align-items: flex-end;
+
+        margin: 50px 0 30px 0;
+
+        .empty {
+          width: 100px;
+          height: 50px;
+          border: none;
+        }
+
+        .preBtn {
+          background-color: white;
+          color: #d14d56;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            color: #b83b44;
+          }
+        }
+
+        .passBtn {
+          background-color: white;
+          color: #d14d56;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+          margin-right: 24px;
+
+          &:hover {
+            color: #b83b44;
+          }
+        }
+
+        .nextBtn {
+          background-color: #d14d56;
+          color: white;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            background-color: #b83b44;
+          }
+        }
+
+        .reqBtn {
+          background-color: #d14d56;
+          color: white;
+          font-weight: bold;
+          width: 170px;
+          height: 50px;
+
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            background-color: #b83b44;
+          }
+        }
+      }
+    }
+    .col-3 {
+      // border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  }
+}

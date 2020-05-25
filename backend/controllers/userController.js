@@ -82,7 +82,7 @@ export const delete_user = async (req, res) => {
 export const login = async (req, res) => {
     try {
         
-        const { api_id, platform } = req.query
+        const { api_id, platform } = req.body
         let user_find = await User.findOne({ where: { api_id, platform } })
         // delete user.dataValues.password
         // delete user.dataValues.auth

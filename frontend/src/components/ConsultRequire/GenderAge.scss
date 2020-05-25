@@ -1,0 +1,45 @@
+.genderBox {
+  width: 100%;
+
+  .gender {
+    background-color: #fff;
+    border: 1.5px solid #d5d5d5;
+    color: #5d5d5d;
+    font-weight: bold;
+    width: 50%;
+
+    &:hover {
+      color: #fff;
+      background-color: #d14d56;
+      font-weight: bold;
+      border: 1.5px solid #d14d56;
+    }
+  }
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #fff;
+  border: 1.5px solid #d14d56;
+  color: #d14d56;
+  font-weight: bold;
+  outline: none !important;
+  box-shadow: none;
+
+  &:hover {
+    color: #d14d56;
+    font-weight: bold;
+    background-color: #fff;
+  }
+}
+
+.form-control {
+  border: 2px solid #d5d5d5;
+
+  &:focus {
+    // outline: none !important;
+    border: 2px solid #d14d56;
+    box-shadow: none;
+  }
+}
