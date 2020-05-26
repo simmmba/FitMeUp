@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "fmu_db",
+    "database": "FMU_DB",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "timezone": "+09:00",

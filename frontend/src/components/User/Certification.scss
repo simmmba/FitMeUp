@@ -1,0 +1,30 @@
+@import "../../styles/utils.scss";
+
+.Certification {
+    .input_name {
+        @include input(300);
+        margin-bottom: 20px;
+    }
+
+    .phone {
+
+        margin-bottom: 20px;
+
+        // 인증번호 버튼
+        div{
+            display: none;
+        }
+
+        .input_phone {
+            display: inline-block;
+            @include input(240);
+            margin-right: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            @include input_button(50);
+            
+        }
+    }
+}
