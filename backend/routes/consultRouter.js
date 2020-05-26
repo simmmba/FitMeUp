@@ -4,6 +4,7 @@ const consultRouter = express.Router();
 let consult = require('../controllers/consultController')
 
 consultRouter.post("/req", consult.create_consult);
+consultRouter.get("/req", consult.read_consult);
 consultRouter.put("/req", consult.update_consult);
 consultRouter.delete("/req", consult.delete_consult);
 

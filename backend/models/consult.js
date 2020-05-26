@@ -40,10 +40,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(100),
       allowNull: true
     },
-    want: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
     height: {
       type: DataTypes.INTEGER(11),
       allowNull: true
@@ -61,11 +57,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(10),
       allowNull: true
     },
     end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(10),
       allowNull: true
     },
     state: {
