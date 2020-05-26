@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
+  const user = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -63,4 +63,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'user'
   });
+
+  user.associate = (models) => {
+    models.User.hasMany(models.Review,{
+      foreignKey:'target'
+    })
+  }
+
+  return user;
 };
