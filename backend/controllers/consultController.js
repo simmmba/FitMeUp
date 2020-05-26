@@ -18,7 +18,7 @@ export const create_consult = (req, res) => {
       current_img,
       height,
       weight,
-      price,
+      budget,
       contents,
       start_time,
       end_time
@@ -47,7 +47,7 @@ export const create_consult = (req, res) => {
       bottom,
       height,
       weight,
-      price,
+      budget,
       contents,
       start_time,
       end_time
@@ -77,7 +77,7 @@ export const update_consult = (req, res) => {
       current_img,
       height,
       weight,
-      price,
+      budget,
       contents,
       start_time,
       end_time
@@ -93,7 +93,7 @@ export const update_consult = (req, res) => {
         bottom,
         height,
         weight,
-        price,
+        budget,
         contents,
         start_time,
         end_time
