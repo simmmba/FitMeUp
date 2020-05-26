@@ -35,8 +35,8 @@ app.use(morgan('dev')) //logging
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/payment',paymentRouter);
-app.use('./consult', consultRouter);
-app.use('./review', reviewRouter);
+app.use('/consult', consultRouter);
+app.use('/review', reviewRouter);
 
 
 // catch 404 and forward to error handler
