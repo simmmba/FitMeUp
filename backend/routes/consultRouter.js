@@ -8,7 +8,7 @@ consultRouter.get("/req", consult.read_consult);
 consultRouter.put("/req", consult.update_consult);
 consultRouter.delete("/req", consult.delete_consult);
 
-consultRouter.get("/reqlist", consult.read_consults);
+consultRouter.post("/reqlist", consult.read_consults);
 consultRouter.get("/myreqlist", consult.read_myconsults);
 
 consultRouter.get("/reqsearch", consult.search_consults);

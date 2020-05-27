@@ -212,14 +212,64 @@ export const delete_consult = (req, res) => {
       .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
+
 // 스타일리스트 지정 없이 요청한 전체 상담리스트
 export const read_consults = (req, res) => {
   try {
-    Consult.findAll({
-      where: { state: "wait" },
-    }).then((consults) => {
-      res.json({ result: "Success", list: consults });
-    });
+    // param 추출
+    let { user_id, list, user_filter, date_filter, apply_filter } = req.body;
+    if (!user_filter) user_filter = "entire";
+    if (!date_filter) date_filter = "newest";
+    if (!apply_filter) apply_filter = "entire";
+
+    // 목록이 지정된 경우
+    if (list) {
+      // 유저 필터링
+      if (user_filter != "entire") {
+        list.forEach(async (e) => {
+          await User.findOne({ where: { id: e.user_id } }).then((user) => {
+            e.user_type = user.dataValues.type;
+          });
+        });
+
+      }
+      console.log(list);
+
+      // 생성 날짜 필터링
+      if (date_filter == "newest") {
+        list.sort(function (a, b) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+      } else {
+        list.sort(function (a, b) {
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        });
+      }
+
+      // 지원 여부 필터링
+      if (apply_filter != "entire") {
+        let new_list = [];
+
+        list.forEach((e) => {
+          if (e.applied == apply_filter) new_list.push(e);
+        });
+
+        list = new_list;
+      }
+
+      res.json({ result: "Success", list: list });
+    }
+    // 목록이 지정되지 않은 경우
+    else {
+      // 대기중이고 대상이 지정되지 않은 상담요청 불러오기
+      Consult.findAll({
+        where: { state: "requested", stylist_id: null },
+        order: [["updatedAt", "desc"]],
+      }).then((consults) => {
+        // 해당 상담요청에 내가 지원했는지 여부 확인 -- temp
+        res.json({ result: "Success", list: consults });
+      });
+    }
   } catch (err) {
     console.log("consultController.js read_consults method\n ==> " + err);
     res
@@ -227,9 +277,11 @@ export const read_consults = (req, res) => {
       .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
+
 // 내가 상담요청한 목록
 export const read_myconsults = (req, res) => {
   try {
+    // query 변수 지정
     const { user_id } = req.query;
     Consult.findAll({
       where: { user_id: user_id },
