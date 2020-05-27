@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -63,4 +63,13 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'user'
   });
+
+  User.associate = function (models){
+    User.hasMany(models.Apply,{
+      foreignKey:'stylist_id',
+      onDelete:'cascade',
+    })
+  }
+
+  return User;
 };
