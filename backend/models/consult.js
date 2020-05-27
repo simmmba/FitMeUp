@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Consult', {
+  const consult = sequelize.define('Consult', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -71,4 +71,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'consult'
   });
+
+  consult.associate = (models) =>{
+    consult.belongsTo(models.User,{
+      foreignKey:'stylist_id',
+      onDelete: 'cascade',
+    })
+  }
+  return consult;
 };
