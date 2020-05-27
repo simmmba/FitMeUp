@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define(
+  const review = sequelize.define(
     'Review',
     {
       id: {
@@ -46,5 +46,14 @@ module.exports = function (sequelize, DataTypes) {
     {
       tableName: 'review'
     }
-  )
+  );
+
+  review.associate = function (models) {
+    review.belongsTo(models.User, {
+      foreignKey : 'target',
+      onDelete: 'cascade',
+    });
+  };
+
+  return review
 }
