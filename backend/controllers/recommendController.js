@@ -62,16 +62,13 @@ export const recommend_by_consult = async (req, res) => {
         where: {portfolio_id: portfolio_id }
       })
       r.dataValues.portfolio_img = portfolio_img.dataValues.image_path
-      
-      console.log(r.dataValues);
-      
     }
     
 
 
     res.json({ result: "Success", recommends: recommends })
   } catch (err) {
-    console.log('recommendController.js recommend_by_score method\n ==> ' + err)
+    console.log('recommendController.js recommend_by_consult method\n ==> ' + err)
     res.status(500).json({ result: 'Fail', detail: '500 Internal Server Error' })
   }
 }
