@@ -69,6 +69,10 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey:'stylist_id',
       onDelete:'cascade',
     })
+
+    User.hasMany(models.Review,{
+      foreignKey:'target'
+    })
   }
 
   return User;
