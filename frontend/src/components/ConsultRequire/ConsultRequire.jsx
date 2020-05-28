@@ -10,7 +10,6 @@ import CurrentStyle from "./CurrentStyle";
 import Budget from "./Budget";
 import Time from "./Time";
 import Contents from "./Contents";
-import Result from "./Result";
 import Explain from "./Explain";
 import Header from "../Common/Header";
 import "./ConsultRequire.scss";
@@ -36,8 +35,6 @@ const ConsultRequire = ({ questions, num }) => {
         return <Time />;
       case 6:
         return <Contents />;
-      case 7:
-        return <Result />;
       default:
         return <div>여긴 어디 나는 누구</div>;
     }

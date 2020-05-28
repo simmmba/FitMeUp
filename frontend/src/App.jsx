@@ -10,13 +10,14 @@ import "slick-carousel/slick/slick-theme.css";
 import Main from "../src/components/Main/Main";
 import ConsultRequire from "./components/ConsultRequire/ConsultRequire";
 import Test from "./components/Supermarket/Test";
-import Signup from "../src/components/User/Signup"
-import SignupDetail from "../src/components/User/SignupDetail"
-import Login from "../src/components/User/Login"
-import Matching from "../src/components/Matching/Matching"
-import ConsultDetail from "../src/components/Common/ConsultDetail"
-import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail"
-import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite"
+import Signup from "../src/components/User/Signup";
+import SignupDetail from "../src/components/User/SignupDetail";
+import Login from "../src/components/User/Login";
+import Matching from "../src/components/Matching/Matching";
+import ConsultDetail from "../src/components/Common/ConsultDetail";
+import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
+import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
+import Stylist from "./components/Stylist/Stylist";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
           <Route path="/consult/detail" component={ConsultDetail} />
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
-
+          <Route path="/stylist" component={Stylist} />
         </Switch>
       </BrowserRouter>
     </div>

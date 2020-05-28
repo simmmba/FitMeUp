@@ -1,0 +1,6 @@
+@import "../../styles/utils.scss";
+
+.Stylist {
+  @include maxcenter;
+  margin-top: 100px;
+}
