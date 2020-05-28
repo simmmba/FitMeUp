@@ -73,6 +73,11 @@ module.exports = function(sequelize, DataTypes) {
     User.hasMany(models.Review,{
       foreignKey:'target'
     })
+
+    User.hasMany(models.Consult,{
+      foreignKey:'stylist_id'
+    })
+    
   }
 
   return User;
