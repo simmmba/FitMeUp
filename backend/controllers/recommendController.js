@@ -18,6 +18,14 @@ export const recommend_by_score = async (req, res) => {
 
     for (const r of recommends) {
       let stylist_id = r.dataValues.id;
+
+      let consult_cnt = await Consult.findOne({ 
+        attributes: [[sequelize.fn('count', sequelize.col('*')),'consult_cnt']],
+        where : {stylist_id : stylist_id}
+      });
+
+      r.dataValues.consult_cnt = consult_cnt.dataValues.consult_cnt;
+
       let portfolio = await Portfolio.findOne({
         where: {stylist_id: stylist_id }
       })
@@ -42,7 +50,7 @@ export const recommend_by_score = async (req, res) => {
 export const recommend_by_consult = async (req, res) => {
   try {
     let recommends = await Consult.findAll({ 
-      attributes: [['stylist_id','id'], [sequelize.fn('count', sequelize.col('*')),'cunsult_cnt']],
+      attributes: [['stylist_id','id'], [sequelize.fn('count', sequelize.col('*')),'consult_cnt']],
       where :{stylist_id : {[Op.ne]:null}},
       group : ['stylist_id'],
       include : [User],
@@ -52,16 +60,27 @@ export const recommend_by_consult = async (req, res) => {
 
     for (const r of recommends) {
       let stylist_id = r.dataValues.id;
+
+      let avg_score = await Review.findOne({ 
+        attributes: [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'review_cnt']],
+        where : {target: stylist_id}
+      })
+      console.log(avg_score.dataValues);
+      console.log(avg_score.dataValues);
+      
+      r.dataValues.avg_score = avg_score.dataValues.avg_score;
+      r.dataValues.review_cnt = avg_score.dataValues.review_cnt;
+
       let portfolio = await Portfolio.findOne({
         where: {stylist_id: stylist_id }
-      })
-      r.dataValues.portfolio_title = portfolio.dataValues.title
+      });
+      r.dataValues.portfolio_title = portfolio.dataValues.title;
       
       let portfolio_id = portfolio.dataValues.id;
       let portfolio_img = await PortfolioImage.findOne({
         where: {portfolio_id: portfolio_id }
-      })
-      r.dataValues.portfolio_img = portfolio_img.dataValues.image_path
+      });
+      r.dataValues.portfolio_img = portfolio_img.dataValues.image_path;
     }
     
 
