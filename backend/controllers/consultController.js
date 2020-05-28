@@ -306,8 +306,8 @@ export const read_consults = (req, res) => {
           })
 
           if (
-            applied_filter == 'entire' ||
-            (applied_filter != 'entire' && consult.applied == applied_filter)
+            apply_filter == 'entire' ||
+            (apply_filter != 'entire' && consult.applied == apply_filter)
           ) {
             await new_consults.push(consult)
           }
