@@ -1,0 +1,81 @@
+@import "../../styles/utils.scss";
+
+.PortfolioDetail {
+    @include maxcenter;
+    .col-4 {
+        padding-left: 0px;
+    }
+    .box {
+        width: 100%;
+        border: 1px solid rgb(167, 167, 167);
+        padding: 20px;
+        text-align: center;
+
+        .avg_title {
+            font-family: $main-font;
+            font-size: 20px;
+        }
+
+        .budget:nth-child(odd) {
+            margin-bottom: 10px;
+        }
+
+        .score {
+            display: inline-block;
+            width: 50%;
+        }
+
+        &:nth-child(even) {
+            border-top: none;
+            text-align: left;
+        }
+    }
+
+    .apply {
+        @include button(200, 18);
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .title {
+        margin-top: 30px;
+        font-family: $main-font;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .tags {
+        margin-bottom: 10px;
+        .tag {
+            display: inline-block;
+            margin-right: 10px;
+            background: $gray;
+            padding-left: 3px;
+            padding-right: 3px;
+            cursor: pointer;
+        }
+    }
+
+    .content {
+        margin-top: 30px;
+        margin-bottom: 40px;
+        font-size: 15px;
+        color: rgb(82, 82, 82);
+        // text-align: center;
+    }
+
+    .img_list {
+        // width: 80%;
+        // text-align: center;
+
+        img {
+            width: calc(50% - 15px);
+            margin-bottom: 30px;
+            cursor: pointer;
+
+            &:nth-child(odd) {
+                margin-right: 30px;
+            }
+        }
+    }
+}

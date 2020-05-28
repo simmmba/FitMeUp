@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Matching.scss";
+import axios from "axios";
 
 import MatchingList from "../Matching/MatchingList";
 import Header from "../Common/Header";
 
 const Matching = () => {
   const [tab, setTab] = useState("tab1");
+  const [gender, setGender] = useState("total");
+  const [time, setTime] = useState("tab1");
+  const [list, setList] = useState([]);
 
   let tab_list = [
     ["tab1", "전체"],
@@ -13,9 +17,30 @@ const Matching = () => {
     ["tab3", "내 옷"],
   ];
 
-  let match = [
+  let match = [];
 
-  ]
+  // 리액트 컴포넌트가 렌더링 될 때마다 특정 작업을 수행하도록 설정
+  // 마운트 될때만 실행
+  useEffect(() => {
+    req_list();
+  }, []);
+
+  // axios로 리스트를 부름
+  const req_list = () => {
+    axios({
+      method: "get",
+      url: `${process.env.REACT_APP_URL}/consult/reqlist`,
+    })
+      // 로그인 안되있는 거면
+      .then((res) => {
+        console.log(res);
+        setList(res.data.list);
+        alert("상담 요청 내역을 가져오는데 성공했습니다.");
+      })
+      .catch((error) => {
+        alert("상담 요청 내역을 가져오는데 실패했습니다.");
+      });
+  };
 
   // tab을 바꾸면 axois 새로 호출 및 표시
   const clickTab = (e) => {
@@ -42,15 +67,14 @@ const Matching = () => {
         </div>
         <div className="condition">
           {/* <div className="charge">상담 수 (127)</div> */}
-          <div className="gender_filter">성별 <span>여자</span></div>
+          <div className="gender_filter">
+            성별 <span>여자</span>
+          </div>
           <div className="time_filter">최신순</div>
         </div>
         {/* 상담 신청 목록 */}
         <div className="list">
-          <MatchingList match={match}></MatchingList>
-          <MatchingList match={match}></MatchingList>
-          <MatchingList match={match}></MatchingList>
-          <MatchingList match={match}></MatchingList>
+          {list.map((match, index) => (<MatchingList key={index} match={match}></MatchingList>))}
         </div>
       </div>
     </>

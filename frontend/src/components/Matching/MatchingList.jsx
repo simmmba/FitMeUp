@@ -4,9 +4,8 @@ import "./MatchingList.scss";
 import { MdRemoveCircleOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
-const MatchingList = ({match}) => {
-
-
+const MatchingList = ({ match }) => {
+  // const [apply, setApply] = useState(match.);
 
   return (
     <div className="MatchingList">
@@ -20,25 +19,25 @@ const MatchingList = ({match}) => {
         </div>
         <div className="items name">
           {/* <div>김복남살인사전의</div> */}
-          <div>다니다니는너무착</div>
+          <div>{match.id}</div>
         </div>
-        <div className="items gender">
-          <div>남</div>
+        <div className={match.gender === "male" ? "items male" : "items"}>
+          {match.gender === "male" ? <div>남</div> : <div>여</div>}
         </div>
         <div className="items">
           <div>27세</div>
         </div>
         <div className="items">
           <div>
-            171cm
+            {match.height === "" ? "-" : match.height}cm
             <br />
-            70kg
+            {match.weight === "" ? "-" : match.weight}kg
           </div>
         </div>
         <div className="items">
           <div>
-            상 : 32
-            <br />하 : 33
+            상 : {match.top === "" ? "-" : match.top}
+            <br />하 : {match.bottom === "" ? "-" : match.bottom}
           </div>
         </div>
 
@@ -57,17 +56,20 @@ const MatchingList = ({match}) => {
           />
         </div>
         <div className="items">
-          <div>50,000원</div>
-        </div>
-        <div className="items">
-          <div className="content">
-            결혼식에 갈 때 입을 옷 좀요 바람핀 전남자친구놈입니다ㅂㄷㅂㄷ
+          <div>
+            {match.budget === ""
+              ? "-"
+              : match.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            원
           </div>
         </div>
         <div className="items">
+          <div className="content">{match.contents}</div>
+        </div>
+        <div className="items">
           <div>
-            7:00 ~ <br />
-            24:00
+            {match.start_time}시 ~ <br />
+            {match.end_time}시
           </div>
         </div>
       </div>

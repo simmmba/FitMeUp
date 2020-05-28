@@ -1,0 +1,104 @@
+@import "../../styles/utils.scss";
+.PortfolioWrite {
+
+    .processing{
+        margin-bottom: 30px;
+    }
+    .processing::after {
+        background-size: cover;
+        background-image: url("http://analogfilm.co.kr/wp-content/uploads/2018/05/2018.04.23_Prada0246-1992x1328.jpg");
+    }
+
+    .PortfolioForm {
+        @include maxcenter;
+        padding: 10px;
+
+        .input_title,
+        .input_tag {
+            margin-bottom: 40px;
+        }
+
+        .input_title {
+            @include input(300);
+            width: 100%;
+        }
+
+        .tag {
+            .input_tag {
+                @include input(250);
+            }
+            .plus_btn {
+                display: inline-block;
+                margin-left: 5px;
+                @include button(50, 14);
+            }
+        }
+        .content {
+            margin-bottom: 35px;
+            .content_box {
+                width: 100%;
+                padding: 10px;
+                background: white;
+                border: 1px solid rgba(0, 0, 0, 0.4);
+
+                // textarea 사이즈 고정
+                resize: none;
+            }
+        }
+
+        .topic {
+            font-family: $main-font;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .main_img {
+            img {
+                width: 50%;
+                margin-bottom: 40px;
+            }
+        }
+
+        .port_imgs {
+            img {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .filebox {
+            text-align: left;
+        }
+        .filebox label {
+            margin-right: 15px;
+            display: inline-block;
+            padding: 0.5em 0.5em;
+            font-size: 15px;
+            line-height: normal;
+            vertical-align: middle;
+            border: none;
+            color: black;
+            background: rgba(228, 228, 228, 0.699);
+            border-radius: 0.25em;
+            // font-weight: bolder;
+            cursor: pointer;
+        }
+
+        .filebox label:hover {
+            color: $red;
+        }
+
+        .filebox input[type="file"] {
+            /* 파일 필드 숨기기 */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    }
+}
