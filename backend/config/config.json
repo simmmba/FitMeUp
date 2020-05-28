@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": "fitmeup",
     "database": "FMU_DB",
-    "host": "127.0.0.1",
+    "host": "k02a2011.p.ssafy.io",
     "dialect": "mysql",
     "timezone": "+09:00",
     "operatorsAliases": false,

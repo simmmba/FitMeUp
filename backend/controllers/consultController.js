@@ -1,7 +1,6 @@
-import { Consult } from '../models'
-import { User } from '../models'
-import { Apply } from '../models'
-import { Op } from 'sequelize'
+import { Consult, ConsultWant, ConsultImage, User, Apply } from "../models";
+import { Op } from "sequelize";
+import consultRouter from "../routes/consultRouter";
 
 // 상담요청 생성
 export const create_consult = (req, res) => {
@@ -21,50 +20,124 @@ export const create_consult = (req, res) => {
       budget,
       contents,
       start_time,
-      end_time
-    } = req.body
+      end_time,
+    } = req.body;
 
     // 특정 대상이 존재할 경우 올바른 대상인지 확인
     if (target) {
-      User.findOne({ where: { api_id: target.api_id } }).then(user => {
-        if (target['type'] !== 'stylist' || !user) {
+      User.findOne({ where: { api_id: target } }).then((user) => {
+        if (!user) {
           console.log(
             "consultController.js's create_consult method occurred error. Couldn't find target."
-          )
+          );
           throw new Error(
-            'You select a wrong target. It is a incorrect stylist.'
-          )
+            "You select a wrong target. It is a incorrect stylist."
+          );
         }
-      })
+      });
     }
 
+    // 상담 생성
     Consult.create({
-      target: target ? target.user_id : null,
-      req_user: req_user.user_id,
-      category,
-      gender,
-      top,
-      bottom,
-      height,
-      weight,
-      budget,
-      contents,
-      start_time,
-      end_time
-    }).then(() => {
-      res.json({ result: 'Success' })
-    })
+      stylist_id: target,
+      user_id: req_user,
+      category: category,
+      gender: gender,
+      top: top,
+      bottom: bottom,
+      height: height,
+      weight: weight,
+      budget: budget,
+      contents: contents,
+      start_time: start_time,
+      end_time: end_time,
+    }).then(async (consult) => {
+      // consult_want 테이블에 want 개수만큼 레코드 생성
+      for (const w of wants) {
+        await ConsultWant.create({
+          consult_id: consult.dataValues.id,
+          want: e,
+        });
+      }
+      // consult_image 테이블에 image 개수만큼 레코드 생성
+      for (const image of current_img) {
+        await ConsultImage.create({
+          consult_id: consult.dataValues.id,
+          image_path: image,
+        });
+      }
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js create_consult method\n ==> ' + err)
+    console.log("consultController.js create_consult method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
+
+// 상담 내용 불러오기
+export const read_consult = (req, res) => {
+  try {
+    // query 추출
+    const { consult_id, user_id } = req.query;
+
+    Consult.findOne({
+      where: { id: consult_id },
+      include: [{
+        model: ConsultImage,
+      },
+      {
+        model: ConsultWant,
+      }],
+    })
+      .then(async (consult) => {
+        return consult;
+      })
+      .then(async (consult) => {
+        // 이미 지원한 요청인지 확인 -- temp
+        await Apply.findOne({
+          where: { consult_id: consult.id, stylist_id: user_id },
+        }).then((apply) => {
+          if (apply) {
+            consult.dataValues.applied = "yes";
+          } else {
+            consult.dataValues.applied = "no";
+          }
+        });
+
+        return consult;
+      })
+      .then(async (consult) => {
+        // 요청자 및 요청 대상 유저정보 가져오기
+        await User.findOne({ where: { id: consult.user_id } }).then((user) => {
+          consult.dataValues.req_user = user.dataValues;
+        });
+        if (consult.stylist_id) {
+          await User.findOne({ where: { id: consult.stylist_id } }).then(
+            (user) => {
+              consult.dataValues.target_user = user.dataValues;
+            }
+          );
+        }
+
+        return consult;
+      })
+      .then((consult) => {
+        res.json({ result: "Success", consult: consult });
+      });
+  } catch (err) {
+    console.log("consultController.js read_consult method\n ==> " + err);
+    res
+      .status(500)
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
+};
+
 // 상담요청 수정
 export const update_consult = (req, res) => {
   try {
-    // 파라미터 추출
+    // param 추출
     const {
       consult_id,
       target,
@@ -80,204 +153,373 @@ export const update_consult = (req, res) => {
       budget,
       contents,
       start_time,
-      end_time
-    } = req.body
+      end_time,
+    } = req.body;
 
+    // 상담 수정
     Consult.update(
       {
-        target: target ? target.user_id : null,
-        req_user: req_user.user_id,
-        category,
-        gender,
-        top,
-        bottom,
-        height,
-        weight,
-        budget,
-        contents,
-        start_time,
-        end_time
+        stylist_id: target,
+        user_id: req_user,
+        category: category,
+        gender: gender,
+        top: top,
+        bottom: bottom,
+        height: height,
+        weight: weight,
+        budget: budget,
+        contents: contents,
+        start_time: start_time,
+        end_time: end_time,
       },
       {
-        where: { id: consult_id }
+        where: { id: consult_id },
       }
-    ).then(() => {
-      res.json({ result: 'Success' })
-    })
+    ).then(async () => {
+      // consult_want 테이블에서 consult_id에 해당하는 레코드 삭제 후 재생성
+      await ConsultWant.destroy({
+        where: { consult_id: consult_id },
+      }).then(async () => {
+        for (const w of want) {
+          await ConsultWant.create({
+            consult_id: consult_id,
+            want: w,
+          });
+        }
+      });
+      // consult_image 테이블에서 consult_id에 해당하는 레코드 삭제 후 재생성
+      await ConsultImage.destroy({
+        where: { consult_id: consult_id },
+      }).then(async () => {
+        for (const image of current_img) {
+          await ConsultImage.create({
+            consult_id: consult_id,
+            image_path: image,
+          });
+        }
+      });
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js update_consult method\n ==> ' + err)
+    console.log("consultController.js update_consult method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 상담요청 삭제
 export const delete_consult = (req, res) => {
   try {
-    // 파라미터 추출
-    const { consult_id, user_id } = req.body
+    // param 추출
+    const { consult_id, user_id } = req.body;
 
     Consult.destroy({
-      where: { id: consult_id, req_id: user_id }
-    }).then(() => {
-      res.json({ result: 'Success' })
-    })
+      where: { id: consult_id, user_id: user_id },
+    }).then(async () => {
+      await ConsultWant.destroy({ where: { consult_id: consult_id } });
+      await ConsultImage.destroy({ where: { consult_id: consult_id } });
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js delete_consult method\n ==> ' + err)
+    console.log("consultController.js delete_consult method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
+
 // 스타일리스트 지정 없이 요청한 전체 상담리스트
 export const read_consults = (req, res) => {
   try {
-    Consult.findAll({
-      where: { state: 'wait' }
-    }).then(consults => {
-      res.json({ result: 'Success', list: consults })
-    })
+    // param 추출
+    let { user_id, list, user_filter, date_filter, apply_filter } = req.body;
+    if (!user_filter) user_filter = "entire";
+    if (!date_filter) date_filter = "newest";
+    if (!apply_filter) apply_filter = "entire";
+
+    // 목록이 지정된 경우
+    if (list) {
+      // 유저 필터링
+      if (user_filter != "entire") {
+        list.forEach(async (e) => {
+          await User.findOne({ where: { id: e.user_id } }).then((user) => {
+            e.user_type = user.dataValues.type;
+          });
+        });
+      }
+      console.log(list);
+
+      // 생성 날짜 필터링
+      if (date_filter == "newest") {
+        list.sort(function (a, b) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+      } else {
+        list.sort(function (a, b) {
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        });
+      }
+
+      // 지원 여부 필터링
+      if (apply_filter != "entire") {
+        let new_list = [];
+
+        list.forEach((e) => {
+          if (e.applied == apply_filter) new_list.push(e);
+        });
+
+        list = new_list;
+      }
+
+      res.json({ result: "Success", list: list });
+    }
+    // 목록이 지정되지 않은 경우
+    else {
+      // 대기중이고 대상이 지정되지 않은 상담요청 불러오기
+      Consult.findAll({
+        where: { state: "requested", stylist_id: null },
+        order: [["updatedAt", "desc"]],
+        include: [{
+          model: ConsultImage,
+        },
+        {
+          model: ConsultWant,
+        }],
+      })
+        .then(async (consults) => {
+          // 유저 정보 불러오기
+          for (let consult of consults) {
+            await User.findOne({ where: { id: consult.user_id } }).then(
+              (user) => {
+                console.log(consult)
+                consult.dataValues.req_user = user.dataValues;
+              }
+            );
+          }
+          return consults;
+        })
+        .then(async (consults) => {
+          // 해당 상담요청에 내가 지원했는지 여부 확인 -- temp
+          for (let consult of consults) {
+            await Apply.findOne({
+              where: { consult_id: consult.id, stylist_id: user_id },
+            }).then((apply) => {
+              if (apply) {
+                consult.dataValues.applied = "yes";
+              } else {
+                consult.dataValues.applied = "no";
+              }
+            });
+          }
+          return consults;
+        })
+        .then((consults) => {
+          res.json({ result: "Success", list: consults });
+        });
+    }
   } catch (err) {
-    console.log('consultController.js read_consults method\n ==> ' + err)
+    console.log("consultController.js read_consults method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
+
 // 내가 상담요청한 목록
 export const read_myconsults = (req, res) => {
   try {
-    const { user_id } = req.query
+    // query 변수 지정
+    const { user_id } = req.query;
     Consult.findAll({
-      where: { user_id: user_id }
-    }).then(consults => {
-      res.json({ result: 'Success', list: consults })
+      where: { user_id: user_id },
+      order: [["updatedAt", "DESC"]],
+      include: {
+        model: ConsultImage,
+        where: { consult_id: consult_id },
+      },
+      include: {
+        model: ConsultWant,
+        where: { consult_id: consult_id },
+      },
     })
+      .then(async (consults) => {
+        await User.findOne({ where: { id: consults[0].user_id } }).then(
+          (user) => {
+            for (const consult of consults) {
+              consult.dataValues.req_user = user.dataValues;
+            }
+          }
+        );
+        for (const consult of consults) {
+          if (consult.stylist_id) {
+            await User.findOne({ where: { id: consult.stylist_id } }).then(
+              (user) => {
+                consult.dataValues.target_user = user.dataValues;
+              }
+            );
+          }
+        }
+        return consults;
+      })
+      .then((consults) => {
+        res.json({ result: "Success", list: consults });
+      });
   } catch (err) {
-    console.log('consultController.js read_myconsults method\n ==> ' + err)
+    console.log("consultController.js read_myconsults method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 상담 검색 -- temp
 export const search_consults = (req, res) => {
   try {
-    const { option, keyword } = req.query
-    const word = '%' + keyword + '%'
+    const { option, keyword } = req.query;
+    const word = "%" + keyword + "%";
   } catch (err) {
-    console.log('consultController.js search_consults method\n ==> ' + err)
+    console.log("consultController.js search_consults method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 스타일리스트에게 요청한 상담리스트
 export const read_recv_consults = (req, res) => {
   try {
-    const { stylist_id } = req.query
+    const { stylist_id } = req.query;
     Consult.findAll({
-      where: { stylist_id: user_id }
-    }).then(consults => {
-      res.json({ result: 'Success', list: consults })
+      where: { stylist_id: stylist_id },
+      order: [["updatedAt", "DESC"]],
+      include: {
+        model: ConsultImage,
+        where: { consult_id: consult_id },
+      },
+      include: {
+        model: ConsultWant,
+        where: { consult_id: consult_id },
+      },
     })
+      .then(async (consults) => {
+        for (const consult of consults) {
+          await User.findOne({ where: { id: consult.user_id } }).then(
+            (user) => {
+              consult.dataValues.req_user = user.dataValues;
+            }
+          );
+        }
+
+        return consults;
+      })
+      .then((consults) => {
+        res.json({ result: "Success", list: consults });
+      });
   } catch (err) {
-    console.log('consultController.js read_recv_consults method\n ==> ' + err)
+    console.log("consultController.js read_recv_consults method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 스타일리스트에게 요청한 상담 수락/거절
 export const update_recv_consults = (req, res) => {
   try {
-    const { stylist_id, consult_id, state } = req.body
+    const { stylist_id, consult_id, state } = req.body;
 
     Consult.update(
       {
-        state: state
+        state: state,
       },
       {
-        where: { id: consult_id }
+        where: { id: consult_id, stylist_id: stylist_id },
       }
-    ).then(() => {
-      res.json({ result: 'Success' })
-    })
+    ).then((consult) => {
+      if (consult[0] == 0) {
+        res.json({
+          result: "Fail",
+          detail: "해당 상담이 존재하지 않거나 권한이 없는 요청자입니다",
+        });
+      } else {
+        res.json({ result: "Success" });
+      }
+    });
   } catch (err) {
-    console.log('consultController.js update_recv_consults method\n ==> ' + err)
+    console.log(
+      "consultController.js update_recv_consults method\n ==> " + err
+    );
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 상담요청에 대한 지원생성
 export const create_apply = (req, res) => {
   try {
-    const { stylist_id, consult_id, contents } = req.body
+    const { stylist_id, consult_id, contents } = req.body;
     Apply.create({
       stylist_id: stylist_id,
       consult_id: consult_id,
-      contents: contents
+      contents: contents,
     }).then(() => {
-      res.json({ result: 'Success' })
-    })
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js create_apply method\n ==> ' + err)
+    console.log("consultController.js create_apply method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 지원리스트
 export const read_applies = (req, res) => {
   try {
-    const { user_id } = req.query
+    const { user_id } = req.query;
     Apply.findAll({
-      where: { stylist_id: user_id }
-    }).then(applies => {
-      res.json({ result: 'Success', list: applies })
-    })
+      where: { stylist_id: user_id },
+    }).then((applies) => {
+      res.json({ result: "Success", list: applies });
+    });
   } catch (err) {
-    console.log('consultController.js read_applies method\n ==> ' + err)
+    console.log("consultController.js read_applies method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 지원 수정
 export const update_apply = (req, res) => {
   try {
-    const { apply_id, contents } = req.body
+    const { apply_id, contents, state } = req.body;
     Apply.update(
       {
-        contents: contents
+        contents: contents,
+        state: state,
       },
       {
-        where: { id: apply_id }
+        where: { id: apply_id },
       }
     ).then(() => {
-      res.json({ result: 'Success' })
-    })
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js update_apply method\n ==> ' + err)
+    console.log("consultController.js update_apply method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
 // 지원 삭제
 export const delete_apply = (req, res) => {
   try {
-    const { apply_id } = req.body
+    const { apply_id } = req.body;
     Apply.destroy({
-      where: { id: apply_id }
+      where: { id: apply_id },
     }).then(() => {
-      res.json({ result: 'Success' })
-    })
+      res.json({ result: "Success" });
+    });
   } catch (err) {
-    console.log('consultController.js read_applies method\n ==> ' + err)
+    console.log("consultController.js read_applies method\n ==> " + err);
     res
       .status(500)
-      .json({ result: 'Fail', detail: '500 Internal Server Error' })
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
-}
+};
