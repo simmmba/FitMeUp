@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  const user = sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -64,15 +64,16 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'user'
   });
 
-  user.associate = (models) => {
-    user.hasMany(models.Review,{
-      foreignKey:'target'
+  User.associate = function (models){
+    User.hasMany(models.Apply,{
+      foreignKey:'stylist_id',
+      onDelete:'cascade',
     })
 
-    user.hasMany(models.Consult,{
-      foreignKey:'stylist_id',
+    User.hasMany(models.Review,{
+      foreignKey:'target'
     })
   }
 
-  return user;
+  return User;
 };

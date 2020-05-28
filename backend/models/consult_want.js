@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('ConsultWant', {
+    const ConsultWant = sequelize.define('ConsultWant', {
       id: {
         type: DataTypes.INTEGER(11),
         allowNull: false,
@@ -23,5 +23,14 @@ module.exports = function(sequelize, DataTypes) {
     }, {
       tableName: 'consult_want'
     });
+
+    ConsultWant.associate = function(models){
+      ConsultWant.belongsTo(models.Consult,{
+        foreignKey: 'consult_id',
+        onDelete: 'cascade'
+      })
+    }
+
+    return ConsultWant;
   };
   
