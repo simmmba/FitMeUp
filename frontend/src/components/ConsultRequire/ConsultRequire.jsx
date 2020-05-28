@@ -1,5 +1,5 @@
 // import "date-fns";
-import React, { useEffect } from "react";
+import React from "react";
 // import { NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Processing from "./Processing";
@@ -12,35 +12,13 @@ import Time from "./Time";
 import Contents from "./Contents";
 import Result from "./Result";
 import Explain from "./Explain";
+import Header from "../Common/Header";
 import "./ConsultRequire.scss";
 
 const ConsultRequire = ({ questions, num }) => {
   const question = () => {
     return <div className="question">{questions[num]}</div>;
   };
-
-  // const moveBtn = () => {
-  //   return (
-  //     <div className="btnBox">
-  //       {num > 0 ? (
-  //         <button className="preBtn" onClick={previous}>
-  //           이전
-  //         </button>
-  //       ) : (
-  //         <div className="empty"></div>
-  //       )}
-  //       {num < 6 ? (
-  //         <button className="nextBtn" onClick={next}>
-  //           다음
-  //         </button>
-  //       ) : (
-  //         <button className="nextBtn" onClick={next}>
-  //           신청 완료
-  //         </button>
-  //       )}
-  //     </div>
-  //   );
-  // };
 
   const answer = () => {
     switch (num) {
@@ -67,13 +45,14 @@ const ConsultRequire = ({ questions, num }) => {
 
   return (
     <div className="consultRequire">
+      <Header></Header>
       <Processing />
       <div className="content">
-        <div className="col-9 main">
+        <div className="col-7 main">
           {question()}
           {answer()}
         </div>
-        <div className="col-3">
+        <div className="col-5">
           <Explain />
         </div>
       </div>

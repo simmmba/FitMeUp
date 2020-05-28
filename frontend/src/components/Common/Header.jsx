@@ -20,7 +20,9 @@ class Header extends React.Component {
             <div className="col-3 logo">
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
-            <div className="col-6"></div>
+            <div className="col-6">
+              <NavLink to="/match">내 상담</NavLink>
+            </div>
             <div className="col-3 header_user">
               <NavLink to="/login">로그인</NavLink>
               <NavLink to="/signup">회원가입</NavLink>

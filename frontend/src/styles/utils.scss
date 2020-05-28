@@ -15,6 +15,7 @@
 
 $red: #d14d56;
 $red_hover: rgb(170, 49, 57);
+$darkgray: #8c8c8c;
 $gray: #eaeaea;
 $main_font: "S-CoreDream-5Medium";
 $sub_font: "S-CoreDream-4Regular";
@@ -34,14 +35,15 @@ $eng_font: "Open Sans", sans-serif;
   border: none;
   transition: 0.3s;
   border-radius: 3px;
+  text-decoration: none;
 
   a {
-    text-decoration: none;
     color: white;
   }
 
   &:hover {
     background: $red_hover;
+    text-decoration: none;
   }
 }
 
@@ -51,6 +53,7 @@ $eng_font: "Open Sans", sans-serif;
     text-decoration: none;
     color: black;
     cursor: pointer;
+
     &:hover {
       color: $red;
     }
@@ -104,6 +107,12 @@ $eng_font: "Open Sans", sans-serif;
 @mixin maxcenter {
   width: 100%;
   max-width: 1500px;
+  margin: 0 auto;
+}
+
+@mixin midcenter {
+  width: 100%;
+  max-width: 1300px;
   margin: 0 auto;
 }
 

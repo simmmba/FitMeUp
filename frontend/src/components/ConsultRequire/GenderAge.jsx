@@ -26,7 +26,7 @@ const GenderAge = ({ setConsult, consult, next }) => {
   const moveBtn = () => {
     return (
       <div className="btnBox">
-        <div className="empty"></div>
+        {/* <div className="empty"></div> */}
         <button className="nextBtn" onClick={selectCheck}>
           다음
         </button>

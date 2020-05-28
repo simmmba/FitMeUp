@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { inject, observer } from "mobx-react";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 // import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import "./Time.scss";
@@ -22,9 +22,6 @@ const Time = ({ setConsult, consult, next, previous }) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    // console.log(value);
-    // console.log("1 : " + value[0]);
-    // console.log("2 : " + value[1]);
   };
 
   const selectCheck = () => {
@@ -64,13 +61,13 @@ const Time = ({ setConsult, consult, next, previous }) => {
         <Slider value={value} onChange={handleChange} min={0} max={24} valueLabelDisplay="auto" aria-labelledby="range-slider" />
         <span>
           {value[0] === 0 && value[1] === 24 ? (
-            "24시간"
+            "시간 무관"
           ) : (
             <span>
-              {value[0] < 12 ? "오전" : "오후"} {value[0] > 12 ? value[0] - 12 : value[0]}시 ~ {value[1] < 12 || value[1] === 24 ? "오전" : "오후"} {value[1] > 12 ? value[1] - 12 : value[1]}시
+              {value[0] < 12 ? "오전" : "오후"} {value[0] > 12 ? value[0] - 12 : value[0]}시 ~ {value[1] < 12 || value[1] === 24 ? "오전" : "오후"} {value[1] > 12 ? value[1] - 12 : value[1]}
+              시&nbsp;&nbsp; 상담 가능
             </span>
           )}
-          &nbsp;&nbsp; 상담 가능
         </span>
       </div>
       {moveBtn()}
