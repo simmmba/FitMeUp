@@ -1,0 +1,11 @@
+@import "../../styles/utils.scss";
+
+.MainRecommend {
+  margin-bottom: 100px;
+
+  .title {
+    margin: 40px 0 20px 0;
+    font-family: $main_font;
+    font-size: 1.5rem;
+  }
+}
