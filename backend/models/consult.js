@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const Consult = sequelize.define('Consult', {
     id: {
       type: DataTypes.INTEGER(11),
@@ -72,20 +72,25 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'consult'
   });
 
-  Consult.associate = function (models){
-    Consult.hasMany(models.ConsultImage,{
-      foreignKey:'consult_id',
-      onDelete:'cascade',
+  Consult.associate = function (models) {
+    Consult.hasMany(models.ConsultImage, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade',
     })
 
-    Consult.hasMany(models.ConsultWant,{
-      foreignKey:'consult_id',
-      onDelete:'cascade'
+    Consult.hasMany(models.ConsultWant, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
     })
 
-    Consult.hasMany(models.Apply,{
-      foreignKey:'consult_id',
-      onDelete:'cascade'
+    Consult.hasMany(models.Apply, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
+    Consult.belongsTo(models.User, {
+      foreignKey: 'stylist_id',
+      onDelete: 'cascade',
     })
   }
 
