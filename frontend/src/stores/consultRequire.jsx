@@ -19,7 +19,9 @@ export default class CounterStore {
   @observable percent = 10;
 
   @observable consult = {
-    category: "코디 추천", // 코디 추천 / 내옷 코디
+    stylist_id: null,
+    user_id: window.sessionStorage.getItem("user"),
+    category: null, // 코디 추천 / 내옷 코디
     gender: null, // 1-1. 성별 (필수)
     age: "", // 1-2. 나이 (필수)
     top: "", // 2-1. 상의 사이즈 (선택, 성별에 따라 다르게 보이도록)
@@ -88,6 +90,7 @@ export default class CounterStore {
 
   @action
   reset = () => {
+    this.stylist_id = null;
     this.num = 0;
     this.percent = 10;
     this.consult.gender = null;
