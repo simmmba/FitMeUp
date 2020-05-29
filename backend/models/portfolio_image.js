@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('PortfolioImage', {
+  const PortfolioImage =  sequelize.define('PortfolioImage', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -23,4 +23,14 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'portfolio_image'
   });
+
+  PortfolioImage.associate = function (models) {
+    PortfolioImage.belongsTo(models.Portfolio, {
+      foreignKey: 'portfolio_id',
+      onDelete: 'cascade',
+    })
+  }
+
+
+  return PortfolioImage;
 };

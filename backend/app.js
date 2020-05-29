@@ -17,6 +17,7 @@ import reviewRouter from './routes/reviewRouter'
 import messageRouter from "./routes/messageRouter";
 import recommendRouter from "./routes/recommendRouter"
 import portfolioRouter from "./routes/portfolioRouter"
+import uploadRouter from "./routes/uploadRouter"
 
 dotenv.config();
 
@@ -43,6 +44,8 @@ app.use('/review', reviewRouter);
 app.use('/message', messageRouter);
 app.use('/recommend', recommendRouter);
 app.use('/portfolio', portfolioRouter);
+app.use('/upload', uploadRouter);
+app.use('/images', express.static(process.env.IMAGE_PATH))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

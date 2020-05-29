@@ -65,8 +65,6 @@ export const recommend_by_consult = async (req, res) => {
         attributes: [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'review_cnt']],
         where : {target: stylist_id}
       })
-      console.log(avg_score.dataValues);
-      console.log(avg_score.dataValues);
       
       r.dataValues.avg_score = avg_score.dataValues.avg_score;
       r.dataValues.review_cnt = avg_score.dataValues.review_cnt;
