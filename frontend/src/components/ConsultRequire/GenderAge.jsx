@@ -52,7 +52,7 @@ const GenderAge = ({ setConsult, consult, next }) => {
       <Form>
         <Form.Group>
           <Form.Label>나이</Form.Label>
-          <Form.Control id="age" type="number" value={consult.age} onChange={setGenderAge} min="1" placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 나이 넣어주기 */}
+          <Form.Control id="age" type="number" value={consult.age} onChange={setGenderAge} min="1" placeholder="숫자만 입력해 주세요" /> {/* 나중에 db에서 회원 나이 넣어주기 */}
         </Form.Group>
       </Form>
       {moveBtn()}

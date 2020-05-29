@@ -1,6 +1,7 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { Form } from "react-bootstrap";
+import ResultModal from "./ResultModal";
 // import "./Contents.scss";
 
 const Contents = ({ setConsult, consult, previous, next }) => {
@@ -16,9 +17,7 @@ const Contents = ({ setConsult, consult, previous, next }) => {
         <button className="preBtn" onClick={previous}>
           이전
         </button>
-        <button className="reqBtn" onClick={next}>
-          상담 요청하기
-        </button>
+        <ResultModal />
       </div>
     );
   };

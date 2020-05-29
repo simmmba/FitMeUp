@@ -16,12 +16,12 @@ export default class CounterStore {
     "추가 참고사항을 남겨주세요.",
   ];
   @observable num = 0;
-  @observable percent = 2;
+  @observable percent = 10;
 
   @observable consult = {
     category: "코디 추천", // 코디 추천 / 내옷 코디
     gender: null, // 1-1. 성별 (필수)
-    age: 20, // 1-2. 나이 (필수)
+    age: "", // 1-2. 나이 (필수)
     top: "", // 2-1. 상의 사이즈 (선택, 성별에 따라 다르게 보이도록)
     bottom: "", // 2-2. 하의 사이즈 (선택, 성별에 따라 다르게 보이도록)
     height: "", // 2-3. 키 (선택)
@@ -71,18 +71,14 @@ export default class CounterStore {
   // @action 지정 메소드 : @observable로 지정된 property 변경
   @action
   next = () => {
-    if (this.num <= 6) {
-      this.num++;
-      this.percent += 14;
-    }
+    this.num++;
+    this.percent += 15;
   };
 
   @action
   previous = () => {
-    if (this.num > 0) {
-      this.num--;
-      this.percent -= 14;
-    }
+    this.num--;
+    this.percent -= 15;
   };
 
   @action
@@ -93,9 +89,9 @@ export default class CounterStore {
   @action
   reset = () => {
     this.num = 0;
-    this.percent = 2;
+    this.percent = 10;
     this.consult.gender = null;
-    this.consult.age = 20;
+    this.consult.age = "";
     this.consult.top = "";
     this.consult.bottom = "";
     this.consult.height = "";
@@ -106,6 +102,31 @@ export default class CounterStore {
     this.consult.start_time = 0;
     this.consult.end_time = 24;
     this.consult.contents = "";
+    this.style = {
+      fstyle: [
+        { val: "캐주얼", img: "f_casual.jpg", select: false },
+        { val: "세미캐주얼", img: "f_semiCasual.jpg", select: false },
+        { val: "스트릿", img: "f_street.jpg", select: false },
+        { val: "보헤미안", img: "f_bohemian.jpg", select: false },
+        { val: "빈티지", img: "f_vintage.jpg", select: false },
+        { val: "애슬레저", img: "f_athleisure.jpg", select: false },
+        { val: "걸리시", img: "f_girlish.jpg", select: false },
+        { val: "페미닌", img: "f_feminine.jpg", select: false },
+        { val: "정장", img: "f_suit.jpg", select: false },
+      ],
+
+      mstyle: [
+        { val: "캐주얼", img: "m_casual.jpg", select: false },
+        { val: "스트릿", img: "m_street.jpg", select: false },
+        { val: "레이어드", img: "m_layered.jpg", select: false },
+        { val: "애슬레저", img: "m_athleisure.jpg", select: false },
+        { val: "밀리터리", img: "m_military.jpg", select: false },
+        { val: "빈티지", img: "m_vintage.jpg", select: false },
+        { val: "댄디", img: "m_dandy.jpg", select: false },
+        { val: "세미정장", img: "m_businessCasual.jpg", select: false },
+        { val: "정장", img: "m_suit.jpg", select: false },
+      ],
+    };
   };
 
   @action

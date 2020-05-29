@@ -24,15 +24,23 @@
     margin-top: -15px;
   }
 
+  .header_menu {
+    margin: 0 40px 0 40px;
+  }
+
+  .activeMenu {
+    color: $red;
+  }
+
   .header_user {
     text-align: right;
 
     a {
-      margin-left: 10px;
+      margin-left: 30px;
     }
   }
 }
 
-.header_margin{
-    margin-bottom: 60px;
+.header_margin {
+  margin-bottom: 60px;
 }
