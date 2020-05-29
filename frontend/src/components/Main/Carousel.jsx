@@ -16,7 +16,7 @@ const Carousel = (props) => {
 
     axios.get(url).then((res) => {
       setList(res.data.recommends);
-      console.log(res.data.recommends[0]);
+      // console.log(res.data.recommends[0]);
       // console.log(res.data.recommends[0].User.nickname);
     });
   }, [props.kind]);
