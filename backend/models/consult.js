@@ -32,6 +32,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(10),
       allowNull: true
     },
+    age: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
     top: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -84,6 +88,11 @@ module.exports = function (sequelize, DataTypes) {
     })
 
     Consult.hasMany(models.Apply, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
+    Consult.hasMany(models.Review, {
       foreignKey: 'consult_id',
       onDelete: 'cascade'
     })
