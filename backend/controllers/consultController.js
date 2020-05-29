@@ -14,10 +14,11 @@ export const create_consult = (req, res) => {
   try {
     // body로 부터 param 추출
     const {
-      target,
-      req_user,
+      stylist_id,
+      user_id,
       category,
       gender,
+      age,
       top,
       bottom,
       want,
@@ -31,8 +32,8 @@ export const create_consult = (req, res) => {
     } = req.body;
 
     // 특정 대상이 존재할 경우 올바른 대상인지 확인
-    if (target) {
-      User.findOne({ where: { api_id: target } }).then((user) => {
+    if (stylist_id) {
+      User.findOne({ where: { api_id: stylist_id } }).then((user) => {
         if (!user) {
           console.log(
             "consultController.js's create_consult method occurred error. Couldn't find target."
@@ -46,10 +47,11 @@ export const create_consult = (req, res) => {
 
     // 상담 생성
     Consult.create({
-      stylist_id: target,
-      user_id: req_user,
+      stylist_id: stylist_id,
+      user_id: user_id,
       category: category,
       gender: gender,
+      age : age,
       top: top,
       bottom: bottom,
       height: height,
@@ -60,7 +62,7 @@ export const create_consult = (req, res) => {
       end_time: end_time,
     }).then(async (consult) => {
       // consult_want 테이블에 want 개수만큼 레코드 생성
-      if (want) {
+      if (want || want.length != 0) {
         for (const w of want) {
           await ConsultWant.create({
             consult_id: consult.dataValues.id,
@@ -68,7 +70,7 @@ export const create_consult = (req, res) => {
           });
         }
       }
-      if (current_img) {
+      if (current_img || current_img.length != 0) {
         // consult_image 테이블에 image 개수만큼 레코드 생성
         for (const image of current_img) {
           await ConsultImage.create({
@@ -156,10 +158,11 @@ export const update_consult = (req, res) => {
     // param 추출
     const {
       consult_id,
-      target,
-      req_user,
+      stylist_id,
+      user_id,
       category,
       gender,
+      age,
       top,
       bottom,
       want,
@@ -175,10 +178,11 @@ export const update_consult = (req, res) => {
     // 상담 수정
     Consult.update(
       {
-        stylist_id: target,
-        user_id: req_user,
+        stylist_id: stylist_id,
+        user_id: user_id,
         category: category,
         gender: gender,
+        age: age,
         top: top,
         bottom: bottom,
         height: height,
