@@ -44,11 +44,11 @@ const Carousel = (props) => {
   const CarouselList = list.map((val, idx) => (
     <div className="listBox" key={idx}>
       <div className="imgBox">
-        <img alt="이미지" src={val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
+        <img alt="이미지" src={val.portfolio_img !== null || val.portfolio_img === "/default.jpg" ? test : val.portfolio_img} />
       </div>
       <div className="contentBox">
         <div className="profileImg">
-          <img alt="프로필이미지" src={val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
+          <img alt="프로필이미지" src={val.User.profile_img !== null || val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
         </div>
         <div className="content">
           <div className="left">
