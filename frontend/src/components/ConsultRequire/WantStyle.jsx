@@ -4,7 +4,7 @@ import "./WantStyle.scss";
 
 const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previous }) => {
   let list = consult.gender === "여자" ? style.fstyle : style.mstyle;
-  let [select] = useState([]);
+  let [select] = useState(consult.want);
 
   const click = (event) => {
     const idx = event.target.id;
@@ -12,7 +12,7 @@ const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previ
 
     // 선택 효과
     if (!list[idx].select) {
-      click.style.opacity = 0.4;
+      click.style.opacity = 0.3;
       select.push({ val: list[idx].val, img: list[idx].img });
     }
 
@@ -45,6 +45,7 @@ const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previ
   const moveBtn = () => {
     return (
       <div>
+        <div className="guide">한 개 이상 선택해 주세요, 여러 개 선택 가능합니다.</div>
         <div className="select">{styleList}</div>
         <div className="btnBox">
           <button className="preBtn" onClick={previous}>
