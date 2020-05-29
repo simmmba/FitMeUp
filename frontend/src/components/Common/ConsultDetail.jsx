@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ConsultDetail.scss";
+import axios from "axios";
 
 import Header from "../Common/Header";
 
-const ConsultDetail = () => {
+const ConsultDetail = (props) => {
+
+  const [apply, setApply] = useState(false);
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const consult_id = props.location.params;
+
   let list = [
     ["성별", ""],
     ["나이", "세"],
@@ -13,6 +19,29 @@ const ConsultDetail = () => {
     ["가격", "원"],
     ["상황", ""],
   ];
+
+  useEffect(() => {
+    console.log(consult_id);
+  }, []);
+
+  // axios로 리스트를 부름
+  const req_list = () => {
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_URL}/consult/reqlist`,
+      data: {
+        // user_id:user.id,
+        // consult_id: props.id,
+      },
+    })
+      // 로그인 안되있는 거면
+      .then((res) => {
+        alert("상담 요청 내역을 가져오는데 성공했습니다.");
+      })
+      .catch((error) => {
+        alert("상담 요청 내역을 가져오는데 실패했습니다.");
+      });
+  };
 
   return (
     <>
@@ -64,3 +93,6 @@ const ConsultDetail = () => {
 };
 
 export default ConsultDetail;
+
+// link state 활용법
+// https://medium.com/@bopaiahmd.mca/how-to-pass-props-using-link-and-navlink-in-react-router-v4-75dc1d9507b4

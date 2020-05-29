@@ -9,18 +9,7 @@ class PortfolioDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: false,
-      store: [],
-      category: [],
-      img_list: ["https://miro.medium.com/max/1932/0*bMB6qUGIRv1_QYt4"],
-      review_img_len: 0,
-      review: [],
-      check: false,
-      similar: [],
-      similar_category: [],
-      page: 1,
-      maxPage: 1,
-      num_review: 0,
+      portfolio: {},
     };
   }
 
@@ -28,12 +17,6 @@ class PortfolioDetail extends React.Component {
   user = JSON.parse(window.sessionStorage.getItem("user"));
 
   componentDidMount() {
-    // 로그인 확인
-    if (window.sessionStorage.getItem("user")) {
-      this.setState({
-        login: true,
-      });
-    }
 
     // url 확인, axois 호출
     const url = window.location.href.split("/");
@@ -46,8 +29,11 @@ class PortfolioDetail extends React.Component {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res);
-        alert("포트폴리오를 가져오는데 실패했습니다.");
+        console.log(res.data.portfolio);
+        this.setState({
+          portfolio:res.data.portfolio
+        })
+        alert("포트폴리오를 가져오는데 성공했습니다.");
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");

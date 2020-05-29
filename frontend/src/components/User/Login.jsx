@@ -51,7 +51,7 @@ class Signup extends React.Component {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-
+        console.log(res)
         if(res.data.result === "Success"){
           window.sessionStorage.setItem("user", JSON.stringify(res.data.user));
           history.push("/");
@@ -63,9 +63,7 @@ class Signup extends React.Component {
 
       })
       .catch((error) => {
-
           alert("로그인 실패했습니다.");
-        
       });
   };
 

@@ -14,19 +14,22 @@ const MatchingList = ({ match }) => {
           <img
             alt="style"
             className="profile"
-            src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg"
+            src={match.req_user.profile_img}
           />
         </div>
+        {/* 닉네임 */}
         <div className="items name">
-          {/* <div>김복남살인사전의</div> */}
-          <div>{match.id}</div>
+          <div>{match.req_user.nickname}</div>
         </div>
+        {/* 성별 */}
         <div className={match.gender === "male" ? "items male" : "items"}>
           {match.gender === "male" ? <div>남</div> : <div>여</div>}
         </div>
+        {/* 나이 */}
         <div className="items">
-          <div>27세</div>
+          <div>{match.age}세</div>
         </div>
+        {/* 키, 몸무게 */}
         <div className="items">
           <div>
             {match.height === "" ? "-" : match.height}cm
@@ -34,27 +37,29 @@ const MatchingList = ({ match }) => {
             {match.weight === "" ? "-" : match.weight}kg
           </div>
         </div>
+        {/* 상, 하의 사이즈 */}
         <div className="items">
           <div>
             상 : {match.top === "" ? "-" : match.top}
             <br />하 : {match.bottom === "" ? "-" : match.bottom}
           </div>
         </div>
+        {/* 원하는 스타일 */}
+        <div className="items">
+          <img alt="style" className="styleimg" src={match.ConsultWants[0]} />
+        </div>
+         {/* 평소 내 스타일 */}
+        {match.ConsultImages.length !== 0 && (
+          <div className="items">
+            <img
+              alt="style"
+              className="styleimg"
+              src="https://platum.kr/wp-content/uploads/2014/05/unnamed3.png"
+            />
+          </div>
+        )}
 
-        <div className="items">
-          <img
-            alt="style"
-            className="styleimg"
-            src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG"
-          />
-        </div>
-        <div className="items">
-          <img
-            alt="style"
-            className="styleimg"
-            src="https://platum.kr/wp-content/uploads/2014/05/unnamed3.png"
-          />
-        </div>
+        {/* 예산 */}
         <div className="items">
           <div>
             {match.budget === ""
@@ -63,9 +68,13 @@ const MatchingList = ({ match }) => {
             원
           </div>
         </div>
-        <div className="items">
-          <div className="content">{match.contents}</div>
-        </div>
+        {/* 요구 사항 */}
+        {match.contents !== "" && (
+          <div className="items">
+            <div className="content">{match.contents}</div>
+          </div>
+        )}
+        {/* 문의 시간 */}
         <div className="items">
           <div>
             {match.start_time}시 ~ <br />
@@ -73,7 +82,14 @@ const MatchingList = ({ match }) => {
           </div>
         </div>
       </div>
-      <NavLink to="/consult/detail">
+      <NavLink
+        to={{
+          pathname: "/consult/detail",
+          params: {
+            consult: match.id,
+          },
+        }}
+      >
         <div className="plus">더보기</div>
       </NavLink>
       <div className="apply">상담하기</div>
