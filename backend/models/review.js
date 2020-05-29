@@ -50,7 +50,7 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: "cascade",
     });
 
-    Review.belongsTo(models.User, {
+    Review.belongsTo(models.Consult, {
       foreignKey: "consult_id",
       onDelete: "cascade",
     });
