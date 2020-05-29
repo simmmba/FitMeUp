@@ -19,19 +19,24 @@ class Header extends React.Component {
       <>
         <div className="Header">
           <div className="row">
-            <div className="col-3 logo">
+            <div className="col-2 logo">
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
-            <div className="col-2">
-              <NavLink to="/portfolio/write">내 상담</NavLink>
+            <div className="col-8">
+              <NavLink to="/portfolio/write" className="header_menu" activeClassName="activeMenu">
+                내 상담
+              </NavLink>
+              <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
+                채팅
+              </NavLink>
+              <NavLink to="/stylist" className="header_menu" activeClassName="activeMenu">
+                스타일리스트
+              </NavLink>
+              <NavLink to="/consult/detail" className="header_menu" activeClassName="activeMenu">
+                상담 상세
+              </NavLink>
             </div>
-            <div className="col-2">
-              <NavLink to="/portfolio/4">채팅</NavLink>
-            </div>
-            <div className="col-2">
-              <NavLink to="/portfolio/write">내 상담</NavLink>
-            </div>
-            <div className="col-3 header_user">
+            <div className="col-2 header_user">
               {this.user ? (
                 <NavLink to="/mypage">마이페이지</NavLink>
               ) : (
