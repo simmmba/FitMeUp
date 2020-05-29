@@ -52,7 +52,7 @@ class PortfolioDetail extends React.Component {
             <div className="row">
               <div className="store_image col-8">
                 {/* 포트폴리오 대표 이미지 넣어주는 부분 */}
-                <ImageList img_list={this.state.img_list}></ImageList>
+                <ImageList img_list="http://analogfilm.co.kr/wp-content/uploads/2018/05/2018.04.23_Prada0284-996x664.jpg"></ImageList>
               </div>
               <div className="col-4">
                 {/* 신청버튼 */}

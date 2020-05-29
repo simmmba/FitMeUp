@@ -21,6 +21,7 @@
         font-family: $main-font;
         width: 100%;
         height: 400px;
+        
 
         .position {
             @include maxcenter;
@@ -56,10 +57,10 @@
             position: absolute;
             right: 20px;
             top: 250px;
-            @include button(200, 18);
+            @include button(250, 18);
 
             @media screen and (min-width: 1500px) {
-                right: calc(50% - 740px);
+                right: calc(50% - 400px);
             }
         }
     }
