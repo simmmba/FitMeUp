@@ -12,6 +12,8 @@ class Header extends React.Component {
     };
   }
 
+  user = JSON.parse(window.sessionStorage.getItem("user"));
+
   render() {
     return (
       <>
@@ -20,21 +22,24 @@ class Header extends React.Component {
             <div className="col-3 logo">
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
-            <div className="col-6">
-              <NavLink to="/match" className="header_menu" activeClassName="activeMenu">
-                내 상담
-              </NavLink>
-              <NavLink to="/stylist" className="header_menu" activeClassName="activeMenu">
-                스타일리스트
-              </NavLink>
+            <div className="col-2">
+              <NavLink to="/portfolio/write">내 상담</NavLink>
+            </div>
+            <div className="col-2">
+              <NavLink to="/portfolio/4">채팅</NavLink>
+            </div>
+            <div className="col-2">
+              <NavLink to="/portfolio/write">내 상담</NavLink>
             </div>
             <div className="col-3 header_user">
-              <NavLink to="/login" activeClassName="activeMenu">
-                로그인
-              </NavLink>
-              <NavLink to="/signup" activeClassName="activeMenu">
-                회원가입
-              </NavLink>
+              {this.user ? (
+                <NavLink to="/mypage">마이페이지</NavLink>
+              ) : (
+                <>
+                  <NavLink to="/login">로그인</NavLink>
+                  <NavLink to="/signup">회원가입</NavLink>
+                </>
+              )}
             </div>
           </div>
         </div>

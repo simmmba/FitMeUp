@@ -24,11 +24,6 @@
             right: 0;
             bottom: 0;
 
-            // // 가운데 맞춤
-            // -webkit-transform: translate(50%, 50%);
-            // -ms-transform: translate(50%, 50%);
-            // transform: translate(50%, 50%);
-
             .img {
                 // position: absolute;
                 top: 0;
@@ -37,15 +32,9 @@
                 bottom: 0;
                 width: 100%;
                 height: 100%;
-
-                // -webkit-transform: translate(-50%, -50%);
-                // -ms-transform: translate(-50%, -50%);
-                // transform: translate(-50%, -50%);
             }
 
             .img:hover {
-                // width: 100%;
-                // height: 120%;
 
                 // 스무스하게 커지는 효과
                 transition: 0.7s;

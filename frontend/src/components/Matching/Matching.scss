@@ -20,6 +20,7 @@
     .condition {
         display: flex;
         @include maxcenter;
+        @include drag;
         div {
             cursor: pointer;
             display: inline-block;
@@ -35,6 +36,15 @@
                 box-shadow: 0 0 0 2px $red inset;
             }
         }
+
+        .fill{
+            display: flex;
+            visibility: hidden;
+            flex:1;
+        }
+        .apply_filter{
+            margin-right: 0;
+        }
         font-family: $main-font;
         padding: 10px;
         padding-bottom: 0px;
@@ -44,5 +54,10 @@
         @include maxcenter;
         // padding: 10px;
         padding-top: 0px;
+        
+        .no_consult{
+            @include center;
+            font-size: 16px;
+        }
     }
 }

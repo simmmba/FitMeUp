@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router'
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Modal from "react-bootstrap/Modal";
@@ -10,12 +11,25 @@ const ConsultRequireModal = ({ setConsult, reset }) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  const history = useHistory();
+  const goMatch = () => {
+    history.push("/match")
+  }
+
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
+
   return (
     <>
       <div className="btnBox">
-        <button className="btn" onClick={handleShow}>
-          실시간 상담 요청
-        </button>
+        {user && user.type === "stylist" ? (
+          <button className="btn" onClick={goMatch}>
+            상담 리스트 확인
+          </button>
+        ) : (
+          <button className="btn" onClick={handleShow}>
+            실시간 상담 요청
+          </button>
+        )}
       </div>
 
       <Modal className="m" show={show} onHide={handleClose} centered>
@@ -23,7 +37,9 @@ const ConsultRequireModal = ({ setConsult, reset }) => {
         <Modal.Body className="body">
           <div className="mentionTop">스타일리스트에게 상담 받기 위해</div>
           <div className="mentionTop">원하는 서비스를 선택해주세요!</div>
-          <div className="mentionBottom">47,505명의 스타일리스트가 활동 중이에요.</div>
+          <div className="mentionBottom">
+            47,505명의 스타일리스트가 활동 중이에요.
+          </div>
           <Link
             className="selectBtn"
             to={`/consult`}
