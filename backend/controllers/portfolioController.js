@@ -1,4 +1,4 @@
-import { Portfolio, Portfolio_tags } from '../models'
+import { Portfolio, Portfolio_tags, Payment, Review } from '../models'
 
 export const get_detail = async function(req, res) {
     try {
@@ -6,42 +6,50 @@ export const get_detail = async function(req, res) {
         const p = await Portfolio.findOne({
             where: {stylist_id: stylist_id}
         })
+
         p.dataValues.tag = await Portfolio_tags.findAll({
             where: {
                 portfolio_id: p.id
             }
         })
+
+        const paymentList = await Payment.findAll({
+            where: {target: stylist_id}
+        })
+
+        let totalAmount = 0
+        let paymentCount = 0
+        paymentList.forEach(p => {
+            totalAmount += p.amount
+            paymentCount++
+        })
+        let paymentAvg = 0
+        if(paymentCount !== 0) {
+            paymentAvg = totalAmount / paymentCount
+        }
+
+        const reviewList = await Review.findAll({
+            where: {target: stylist_id}
+        })
+        let totalScore = 0;
+        let reviewCount = 0;
+        reviewList.forEach(r => {
+            totalScore += r.score
+            reviewCount++
+        })
+        let scoreAvg = 0
+        if(reviewCount !== 0) {
+            scoreAvg = totalScore / reviewCount
+        }
+
         if(p) {
             return res.status(200).json({
                 result: "Success",
-                portfolio: p
-            })
-        } else {
-            return res.status(200).json({
-                result: "Fail",
-                detail: "Not Exist"
-            })
-        }
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json({
-            result: "Fail",
-            detail: "500 Internal Server Error"
-        })
-    }
-}
-
-
-export const get_list = async function(req, res) {
-    try {
-        const { stylist_id } = req.query
-        const portfolio_list = await Portfolio.findAll({
-            where: {stylist_id: stylist_id}
-        })
-        if(portfolio_list) {
-            return res.status(200).json({
-                result: "Success",
-                portfolios: portfolio_list
+                portfolio: p,
+                paymentAvg: paymentAvg,
+                paymentCount: paymentCount,
+                scoreAvg: scoreAvg,
+                reviewCount: reviewCount
             })
         } else {
             return res.status(200).json({
