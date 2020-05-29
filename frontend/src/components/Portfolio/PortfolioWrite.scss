@@ -1,12 +1,11 @@
 @import "../../styles/utils.scss";
 .PortfolioWrite {
-
-    .processing{
+    .processing {
         margin-bottom: 30px;
     }
     .processing::after {
         background-size: cover;
-        background-image: url("http://analogfilm.co.kr/wp-content/uploads/2018/05/2018.04.23_Prada0246-1992x1328.jpg");
+        background-image: url("../../img/port-bg.jpg");
     }
 
     .PortfolioForm {
@@ -14,7 +13,7 @@
         padding: 10px;
 
         .input_title,
-        .input_tag {
+        .tag {
             margin-bottom: 40px;
         }
 
@@ -29,8 +28,25 @@
             }
             .plus_btn {
                 display: inline-block;
-                margin-left: 5px;
-                @include button(50, 14);
+                margin-left: 7px;
+                @include button(50, 13);
+            }
+
+            .tags {
+                margin-top: 10px;
+                .tag_item {
+                    display: inline-block;
+                    padding: 10px;
+                    background-color: $gray;
+                    margin-right: 10px;
+                    border-radius: 5px;
+
+                    .deletetag{
+                        font-family: $main-font;
+                        font-weight: bolder;
+                        cursor: pointer;
+                    }
+                }
             }
         }
         .content {

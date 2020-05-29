@@ -78,7 +78,7 @@ const Carousel = (props) => {
 
   return (
     <div>
-      <Slider {...settings}>{CarouselList}</Slider>
+      {list !== null && <Slider {...settings}>{CarouselList}</Slider>}
     </div>
   );
 };
