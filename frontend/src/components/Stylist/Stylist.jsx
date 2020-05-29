@@ -4,10 +4,10 @@ import "./Stylist.scss";
 
 const Stylist = () => {
   return (
-    <div className="Stylist">
+    <>
       <Header />
-      스타일리스트 목록
-    </div>
+      <div className="Stylist">스타일리스트 목록</div>
+    </>
   );
 };
 
