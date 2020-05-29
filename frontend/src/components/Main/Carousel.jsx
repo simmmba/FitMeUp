@@ -46,7 +46,6 @@ const Carousel = (props) => {
       <div className="imgBox">
         <img alt="이미지" src={val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
       </div>
-      {/* <div className="consultCnt">100회 상담</div> */}
       <div className="contentBox">
         <div className="profileImg">
           <img alt="프로필이미지" src={val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
@@ -68,7 +67,7 @@ const Carousel = (props) => {
             </div>
           </div>
           <div className="right">
-            <Link to="/">
+            <Link to={`/portfolio/${val.id}`}>
               <div className="moreBtn">더보기</div>
             </Link>
           </div>
