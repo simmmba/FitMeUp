@@ -1,9 +1,10 @@
-import { Portfolio, Portfolio_tags, Payment, Review } from '../models'
+import { Portfolio, Portfolio_tags, Payment, Review, PortfolioImage } from '../models'
 
 export const get_detail = async function(req, res) {
     try {
         const { stylist_id } = req.query
         const p = await Portfolio.findOne({
+            include :[PortfolioImage],
             where: {stylist_id: stylist_id}
         })
 

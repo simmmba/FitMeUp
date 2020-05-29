@@ -48,7 +48,6 @@ export const upload_review = async (req, res) => {
         const files = req.files;
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
-            console.log(file_path);
             
             const reviewImage = await ReviewImage.create(
                 {review_id : review_id, image_path : file_path}
@@ -72,7 +71,6 @@ export const upload_consult = async (req, res) => {
         }
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
-            console.log(file_path);
             
             const consultImage = await ConsultImage.create(
                 {consult_id : consult_id, image_path : file_path}
