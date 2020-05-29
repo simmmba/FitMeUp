@@ -72,10 +72,10 @@ $eng_font: "Open Sans", sans-serif;
   }
 
   &:hover {
-    color: $red_hover;
+    color: white;
     text-decoration: none;
-    border: 1.5px solid $red_hover;
-    background-color: $light_red;
+    // border: 1.5px solid $red_hover;
+    background-color: $red;
   }
 
   &:focus {
