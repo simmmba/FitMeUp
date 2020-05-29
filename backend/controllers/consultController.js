@@ -70,15 +70,7 @@ export const create_consult = (req, res) => {
           });
         }
       }
-      if (current_img || current_img.length != 0) {
-        // consult_image 테이블에 image 개수만큼 레코드 생성
-        for (const image of current_img) {
-          await ConsultImage.create({
-            consult_id: consult.dataValues.id,
-            image_path: image,
-          });
-        }
-      }
+
       res.json({ result: "Success" });
     });
   } catch (err) {
@@ -166,7 +158,6 @@ export const update_consult = (req, res) => {
       top,
       bottom,
       want,
-      current_img,
       height,
       weight,
       budget,
@@ -207,17 +198,7 @@ export const update_consult = (req, res) => {
           });
         }
       });
-      // consult_image 테이블에서 consult_id에 해당하는 레코드 삭제 후 재생성
-      await ConsultImage.destroy({
-        where: { consult_id: consult_id },
-      }).then(async () => {
-        for (const image of current_img) {
-          await ConsultImage.create({
-            consult_id: consult_id,
-            image_path: image,
-          });
-        }
-      });
+
       res.json({ result: "Success" });
     });
   } catch (err) {
