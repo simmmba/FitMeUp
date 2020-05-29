@@ -88,6 +88,11 @@ module.exports = function (sequelize, DataTypes) {
       onDelete: 'cascade'
     })
 
+    Consult.hasMany(models.Review, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
     Consult.belongsTo(models.User, {
       foreignKey: 'stylist_id',
       onDelete: 'cascade',
