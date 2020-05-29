@@ -22,7 +22,7 @@ class Header extends React.Component {
             <div className="col-2 logo">
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
-            <div className="col-8">
+            <div className="col-7">
               <NavLink to="/portfolio/write" className="header_menu" activeClassName="activeMenu">
                 내 상담
               </NavLink>
@@ -36,9 +36,13 @@ class Header extends React.Component {
                 상담 상세
               </NavLink>
             </div>
-            <div className="col-2 header_user">
+            <div className="col-3 header_user">
               {this.user ? (
+                <>
+                <a to="/">로그아웃</a>
                 <NavLink to="/mypage">마이페이지</NavLink>
+                </>
+                
               ) : (
                 <>
                   <NavLink to="/login">로그인</NavLink>

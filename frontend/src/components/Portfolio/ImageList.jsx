@@ -21,39 +21,6 @@ class ImageList extends React.Component {
     });
   }
 
-  // 클릭으로 확인
-  changeIndex = (res) => {
-    this.setState({
-      index: parseInt(res.target.id),
-    });
-  };
-
-  // 이전 사진
-  prevIndex = () => {
-    if (this.state.index === 0) {
-      this.setState({
-        index: this.state.img_list.length - 1,
-      });
-    } else {
-      this.setState({
-        index: this.state.index - 1,
-      });
-    }
-  };
-
-  // 다음 사진
-  nextIndex = () => {
-    if (this.state.index === this.state.img_list.length - 1) {
-      this.setState({
-        index: 0,
-      });
-    } else {
-      this.setState({
-        index: this.state.index + 1,
-      });
-    }
-  };
-
   // 최대 10개까지만 이미지 보이게 하기
   render() {
     return (
@@ -65,31 +32,13 @@ class ImageList extends React.Component {
                 <img
                   alt="main_img"
                   className="img"
-                  src={String(this.state.img_list[this.state.index])}
+                  src={this.state.img_list}
                   onClick={() => {
-                    window.open(this.state.img_list[this.state.index]);
+                    window.open(this.state.img_list);
                   }}
                 />
               </div>
             </div>
-            <div className="index prev_index" onClick={this.prevIndex}>
-              {/* <img alt="prevButton" src={prevButton}></img> */}
-            </div>
-            <div className="index next_index" onClick={this.nextIndex}>
-              {/* <img alt="nextButton" src={nextButton}></img> */}
-            </div>
-            {/* <div className="preview">
-              {this.state.img_list.map((img, index) => (
-                <img
-                  key={index}
-                  id={index}
-                  className="preview_img"
-                  alt="food"
-                  src={img}
-                  onClick={this.changeIndex}
-                />
-              ))}
-            </div> */}
           </>
         ) : (
           ""

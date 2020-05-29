@@ -33,7 +33,6 @@ class PortfolioDetail extends React.Component {
         this.setState({
           portfolio:res.data.portfolio
         })
-        alert("포트폴리오를 가져오는데 성공했습니다.");
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
@@ -45,14 +44,11 @@ class PortfolioDetail extends React.Component {
       <>
         <Header></Header>
         <div className="PortfolioDetail">
-          {/* {!this.state.store.id ? (
-            <></>
-          ) : ( */}
           <div className="container-fluid">
             <div className="row">
               <div className="store_image col-8">
                 {/* 포트폴리오 대표 이미지 넣어주는 부분 */}
-                <ImageList img_list="http://analogfilm.co.kr/wp-content/uploads/2018/05/2018.04.23_Prada0284-996x664.jpg"></ImageList>
+                <ImageList img_list="https://t1.daumcdn.net/liveboard/kncom/3b0933f44bd248059fd6117218f6d7b9.JPG"/>
               </div>
               <div className="col-4">
                 {/* 신청버튼 */}
