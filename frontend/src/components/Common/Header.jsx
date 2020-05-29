@@ -14,6 +14,13 @@ class Header extends React.Component {
 
   user = JSON.parse(window.sessionStorage.getItem("user"));
 
+  // 로그아웃 시 페이지 메인으로 이동
+  logout = () => {
+    alert("로그아웃 되었습니다");
+    window.sessionStorage.clear();
+    window.location.reload();
+  }
+
   render() {
     return (
       <>
@@ -39,7 +46,7 @@ class Header extends React.Component {
             <div className="col-3 header_user">
               {this.user ? (
                 <>
-                <a to="/">로그아웃</a>
+                <span onClick={this.logout}>로그아웃</span>
                 <NavLink to="/mypage">마이페이지</NavLink>
                 </>
                 
