@@ -13,7 +13,7 @@ import consultRouter from "../routes/consultRouter";
 export const create_consult = (req, res) => {
   try {
     // body로 부터 param 추출
-    const {
+    let {
       stylist_id,
       user_id,
       category,
@@ -22,7 +22,6 @@ export const create_consult = (req, res) => {
       top,
       bottom,
       want,
-      current_img,
       height,
       weight,
       budget,
@@ -31,6 +30,13 @@ export const create_consult = (req, res) => {
       end_time,
     } = req.body;
 
+    console.log(want);
+    console.log(typeof(want));
+    
+    height = height =='' ? null : height;
+    weight = weight =='' ? null : weight;
+    budget = budget =='' ? null : budget;
+    
     // 특정 대상이 존재할 경우 올바른 대상인지 확인
     if (stylist_id) {
       User.findOne({ where: { api_id: stylist_id } }).then((user) => {
@@ -66,12 +72,13 @@ export const create_consult = (req, res) => {
         for (const w of want) {
           await ConsultWant.create({
             consult_id: consult.dataValues.id,
-            want: w,
+            val : w.val,
+            img : w.img,
           });
         }
       }
 
-      res.json({ result: "Success" });
+      res.json({ result: "Success" , consult : consult});
     });
   } catch (err) {
     console.log("consultController.js create_consult method\n ==> " + err);
@@ -194,7 +201,8 @@ export const update_consult = (req, res) => {
         for (const w of want) {
           await ConsultWant.create({
             consult_id: consult_id,
-            want: w,
+            val: w.val,
+            img: w.img,
           });
         }
       });
