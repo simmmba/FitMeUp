@@ -1,4 +1,4 @@
-import { User, PortfolioImage,ReviewImage, ConsultImage } from '../models'
+import { User, Portfolio,PortfolioImage,ReviewImage, ConsultImage } from '../models'
 import multer from 'multer'
 import path from 'path'
 
@@ -7,7 +7,6 @@ export const upload_profile = async (req, res) => {
 
         const {user_id} = req.body;
         const file = req.file;
-        
         const user = await User.update(
             {profile_img : process.env.IMAGE_URL+file.filename},
             {where :{ id:user_id}}
@@ -26,12 +25,21 @@ export const upload_portfolio = async (req, res) => {
     try {
         const {portfolio_id} = req.body;
         const files = req.files;
+        let idx = 0;
+        
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
-
-            const portfolioImage = await PortfolioImage.create(
-                {portfolio_id : portfolio_id, image_path : file_path}
-            )
+            if(idx == 0){
+                const portfolio = await Portfolio.update(
+                    {main_img : file_path},
+                    {where : {id:portfolio_id}}
+                )
+            }else{
+                const portfolioImage = await PortfolioImage.create(
+                    {portfolio_id : portfolio_id, image_path : file_path}
+                )
+            }
+            idx++;
         }
         res.json({state:'Success'})
     }catch(err){
@@ -46,9 +54,9 @@ export const upload_review = async (req, res) => {
     try {
         const {review_id} = req.body;
         const files = req.files;
+        
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
-            
             const reviewImage = await ReviewImage.create(
                 {review_id : review_id, image_path : file_path}
             )
