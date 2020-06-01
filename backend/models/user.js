@@ -60,6 +60,22 @@ module.exports = function(sequelize, DataTypes) {
       unique: true
     },
 
+    top: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    bottom: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    height: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    weight: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    }
   }, {
     tableName: 'user'
   });
