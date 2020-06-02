@@ -30,9 +30,6 @@ export const create_consult = (req, res) => {
       end_time,
     } = req.body;
 
-    console.log(want);
-    console.log(typeof(want));
-    
     height = height =='' ? null : height;
     weight = weight =='' ? null : weight;
     budget = budget =='' ? null : budget;
@@ -296,7 +293,6 @@ export const read_consults = (req, res) => {
         for (let consult of consults) {
           await User.findOne({ where: { id: consult.user_id } }).then(
             (user) => {
-              console.log(consult);
               consult.dataValues.req_user = user.dataValues;
             }
           );

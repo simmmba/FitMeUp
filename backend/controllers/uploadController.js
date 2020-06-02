@@ -57,7 +57,7 @@ export const upload_portfolio = async (req, res) => {
 
 export const upload_review = async (req, res) => {
     try {
-        const {review_id} = req.body;
+        const {review_id} = req.query;
         const files = req.files;
 
         for (const file of files) {
@@ -77,7 +77,10 @@ export const upload_review = async (req, res) => {
 
 export const upload_consult = async (req, res) => {
     try {
-        const {consult_id} = req.body;
+        const {consult_id} = req.query;
+        console.log(req.file);
+        // console.log(req);
+        
         const files = req.files;
         if(consult_id == null){
             throw new Error('wrong consult_id');
@@ -105,7 +108,6 @@ export const upload_img = multer({
             cb(null, process.env.IMAGE_PATH);
         },
         filename: function (req, file, cb) {
-            console.log("?????????");
             cb(null, new Date().valueOf() + path.extname(file.originalname));
         }
     })
