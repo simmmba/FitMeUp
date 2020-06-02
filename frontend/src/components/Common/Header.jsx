@@ -54,6 +54,7 @@ class Header extends React.Component {
                 <>
                   <NavLink to="/login">로그인</NavLink>
                   <NavLink to="/signup">회원가입</NavLink>
+                  <NavLink to="/mypage">마이페이지</NavLink>
                 </>
               )}
             </div>
