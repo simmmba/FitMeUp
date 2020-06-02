@@ -1,9 +1,9 @@
-import { message, user } from '../models'
+import { Message, User } from '../models'
 
 export const get_received_list = async function(req, res) {
     try {
         const { id } = req.query;
-        const message_list = await message.findAll({
+        const message_list = await Message.findAll({
             where: {
                 target: id
             }
@@ -34,7 +34,7 @@ export const get_received_list = async function(req, res) {
 export const get_sent_list = async function(req, res) {
     try {
         const { id } = req.query;
-        const message_list = await message.findAll({
+        const message_list = await Message.findAll({
             where: {
                 source: id
             }
@@ -65,13 +65,13 @@ export const get_detail = async function(req, res) {
     try {
         const { mid } = req.query;
 
-        const detail = await message.update({readed: 1}, {
+        const detail = await Message.update({readed: 1}, {
             where: {
                 id : mid
             }
         })
 
-        const m = await message.findOne({
+        const m = await Message.findOne({
             where: {
                 id: mid
             }
@@ -96,7 +96,7 @@ export const get_detail = async function(req, res) {
 export const send_message = async function(req, res) {
      try {
          const { source, target, contents } = req.body
-         const new_message = await message.create({source, target, contents})
+         const new_message = await Message.create({source, target, contents})
 
          if(new_message) {
              return res.status(200).json({
@@ -120,7 +120,7 @@ export const send_message = async function(req, res) {
 }
 
 const get_user = async function(uid) {
-    const result = await user.findOne({
+    const result = await User.findOne({
         where: {
             id: uid
         }
