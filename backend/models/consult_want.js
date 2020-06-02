@@ -16,10 +16,14 @@ module.exports = function(sequelize, DataTypes) {
           key: 'ID'
         }
       },
-      want: {
+      val: {
         type: DataTypes.STRING(50),
         allowNull: true
-      }
+      },
+      img : {
+        type: DataTypes.STRING(50),
+        allowNull: true
+      },
     }, {
       tableName: 'consult_want'
     });

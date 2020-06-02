@@ -13,7 +13,7 @@ import consultRouter from "../routes/consultRouter";
 export const create_consult = (req, res) => {
   try {
     // body로 부터 param 추출
-    const {
+    let {
       stylist_id,
       user_id,
       category,
@@ -22,7 +22,6 @@ export const create_consult = (req, res) => {
       top,
       bottom,
       want,
-      current_img,
       height,
       weight,
       budget,
@@ -31,6 +30,10 @@ export const create_consult = (req, res) => {
       end_time,
     } = req.body;
 
+    height = height =='' ? null : height;
+    weight = weight =='' ? null : weight;
+    budget = budget =='' ? null : budget;
+    
     // 특정 대상이 존재할 경우 올바른 대상인지 확인
     if (stylist_id) {
       User.findOne({ where: { api_id: stylist_id } }).then((user) => {
@@ -66,12 +69,13 @@ export const create_consult = (req, res) => {
         for (const w of want) {
           await ConsultWant.create({
             consult_id: consult.dataValues.id,
-            want: w,
+            val : w.val,
+            img : w.img,
           });
         }
       }
 
-      res.json({ result: "Success" });
+      res.json({ result: "Success" , consult : consult});
     });
   } catch (err) {
     console.log("consultController.js create_consult method\n ==> " + err);
@@ -194,7 +198,8 @@ export const update_consult = (req, res) => {
         for (const w of want) {
           await ConsultWant.create({
             consult_id: consult_id,
-            want: w,
+            val: w.val,
+            img: w.img,
           });
         }
       });
@@ -241,7 +246,9 @@ export const read_consults = (req, res) => {
       apply_filter,
     } = req.body;
 
+
     let order = date_filter && date_filter == "oldest" ? "ASC" : "DESC";
+    if (!user_id) user_id = null;
     if (!category_filter) category_filter = "entire";
     if (!gender_filter) gender_filter = "entire";
     if (!apply_filter) apply_filter = "entire";
@@ -264,6 +271,7 @@ export const read_consults = (req, res) => {
     })
       //필터링
       .then(async (consults) => {
+        
         let new_consults = [];
         for (const consult of consults) {
           let flag = true;
@@ -288,8 +296,7 @@ export const read_consults = (req, res) => {
         for (let consult of consults) {
           await User.findOne({ where: { id: consult.user_id } }).then(
             (user) => {
-              console.log(consult);
-              consult.dataValues.req_user = user.dataValues;
+              if(user)  consult.dataValues.req_user = user.dataValues;
             }
           );
         }
@@ -297,17 +304,21 @@ export const read_consults = (req, res) => {
       })
       .then(async (consults) => {
         // 해당 상담요청에 내가 지원했는지 여부 확인
+        
         let new_consults = [];
         for (let consult of consults) {
+          
+          if(user_id){
           await Apply.findOne({
             where: { consult_id: consult.id, stylist_id: user_id },
-          }).then((apply) => {
-            if (apply) {
-              consult.dataValues.applied = "yes";
-            } else {
-              consult.dataValues.applied = "no";
-            }
-          });
+            }).then((apply) => {
+              if (apply) {
+                consult.dataValues.applied = "yes";
+              } 
+            });
+          }else{
+            consult.dataValues.applied = "no";
+          }
 
           if (
             apply_filter == "entire" ||
@@ -315,6 +326,7 @@ export const read_consults = (req, res) => {
           ) {
             await new_consults.push(consult);
           }
+          
         }
         return new_consults;
       })

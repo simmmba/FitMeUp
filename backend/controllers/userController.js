@@ -5,7 +5,7 @@ export const create_user = async function (req, res, ) {
 
     try {
         // body로 부터 param 추출
-        const {
+        let {
             type, gender, age, nickname, profile_img, platform, api_id, name, belong, occupation, phone,
         } = req.body;
 
@@ -17,11 +17,11 @@ export const create_user = async function (req, res, ) {
             throw new Error("user exist");
         }
         else {
+            phone = phone == '' ? null : phone; 
             const new_user = await User.create({
                 type, gender, age, nickname, profile_img, platform, api_id, name, belong, occupation,phone
             });
-
-            if (new_user) {
+            if (new_user) { 
                 res.json({ result: "Success", user: new_user });
             } else {
                 res.json({ result: "Fail", detail: "not create" });
