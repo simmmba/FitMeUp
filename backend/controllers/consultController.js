@@ -246,7 +246,9 @@ export const read_consults = (req, res) => {
       apply_filter,
     } = req.body;
 
+
     let order = date_filter && date_filter == "oldest" ? "ASC" : "DESC";
+    if (!user_id) user_id = null;
     if (!category_filter) category_filter = "entire";
     if (!gender_filter) gender_filter = "entire";
     if (!apply_filter) apply_filter = "entire";
@@ -269,6 +271,7 @@ export const read_consults = (req, res) => {
     })
       //필터링
       .then(async (consults) => {
+        
         let new_consults = [];
         for (const consult of consults) {
           let flag = true;
@@ -293,7 +296,7 @@ export const read_consults = (req, res) => {
         for (let consult of consults) {
           await User.findOne({ where: { id: consult.user_id } }).then(
             (user) => {
-              consult.dataValues.req_user = user.dataValues;
+              if(user)  consult.dataValues.req_user = user.dataValues;
             }
           );
         }
@@ -301,17 +304,21 @@ export const read_consults = (req, res) => {
       })
       .then(async (consults) => {
         // 해당 상담요청에 내가 지원했는지 여부 확인
+        
         let new_consults = [];
         for (let consult of consults) {
+          
+          if(user_id){
           await Apply.findOne({
             where: { consult_id: consult.id, stylist_id: user_id },
-          }).then((apply) => {
-            if (apply) {
-              consult.dataValues.applied = "yes";
-            } else {
-              consult.dataValues.applied = "no";
-            }
-          });
+            }).then((apply) => {
+              if (apply) {
+                consult.dataValues.applied = "yes";
+              } 
+            });
+          }else{
+            consult.dataValues.applied = "no";
+          }
 
           if (
             apply_filter == "entire" ||
@@ -319,6 +326,7 @@ export const read_consults = (req, res) => {
           ) {
             await new_consults.push(consult);
           }
+          
         }
         return new_consults;
       })

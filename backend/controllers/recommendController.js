@@ -39,15 +39,8 @@ export const recommend_by_score = async (req, res) => {
         r.dataValues.portfolio_img = portfolio.dataValues.main_img;
       }
     }
-    let test = [];
 
-    
-    for (let index = 0; index < 9; index++) {
-      test.push(recommends[0])
-    }
-    
-
-    res.json({ result: "Success", recommends: test })
+    res.json({ result: "Success", recommends: recommends })
   } catch (err) {
     console.log('recommendController.js recommend_by_score method\n ==> ' + err)
     res.status(500).json({ result: 'Fail', detail: '500 Internal Server Error' })
@@ -92,14 +85,8 @@ export const recommend_by_consult = async (req, res) => {
       }
     }
     
-    let test = [];
 
-    
-    for (let index = 0; index < 9; index++) {
-      test.push(recommends[0])
-    }
-
-    res.json({ result: "Success", recommends: test })
+    res.json({ result: "Success", recommends: recommends })
   } catch (err) {
     console.log('recommendController.js recommend_by_consult method\n ==> ' + err)
     res.status(500).json({ result: 'Fail', detail: '500 Internal Server Error' })
