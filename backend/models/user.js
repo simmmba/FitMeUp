@@ -93,6 +93,10 @@ module.exports = function(sequelize, DataTypes) {
     User.hasMany(models.Consult,{
       foreignKey:'stylist_id'
     })
+
+    User.hasMany(models.Portfolio,{
+      foreignKey:'stylist_id'
+    })
     
   }
 
