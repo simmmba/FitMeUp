@@ -1,0 +1,41 @@
+@import "../../styles/variable";
+
+.room-list {
+  width: 270px;
+  height: calc(100vh - 60px);
+  padding: 2rem 0 2rem 0;
+  background-color: rgba($color-primary, 0.9);
+  .room-name {
+    font-size: 16px;
+    color: $color-grey-dark;
+    width: 100%;
+    padding: 1rem 1rem 1rem 2rem;
+    text-align: left;
+    &:hover {
+      color: $color-grey-light-2;
+      cursor: pointer;
+      background-color: rgba($color-secondary-dark, 0.2);
+    }
+  }
+
+  .title {
+    padding-left: 2rem;
+    font-size: 20px;
+    color: $color-white;
+  }
+
+  .active {
+    background-color: rgba($color-secondary-dark, 0.4);
+  }
+
+  .spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10rem;
+
+    .text{
+        color: $color-white;
+        font-size: 20px;
+    }
+  }
+}

@@ -18,6 +18,7 @@ import ConsultDetail from "../src/components/Common/ConsultDetail";
 import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
 import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
 import Stylist from "./components/Stylist/Stylist";
+import Chatting from "./components/Chatting/Chatting";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
           <Route path="/stylist" component={Stylist} />
+          <Route path="/chatting" component={Chatting} />
         </Switch>
       </BrowserRouter>
     </div>

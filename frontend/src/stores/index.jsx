@@ -2,6 +2,7 @@ import CounterStore from "./counter";
 import ResetStore from "./reset";
 import MarketStore from "./market";
 import ConsultRequireStore from "./consultRequire";
+import ChattingStore from "./chatting"
 
 class RootStore {
   constructor() {
@@ -9,6 +10,7 @@ class RootStore {
     this.reset = new ResetStore(this);
     this.market = new MarketStore(this);
     this.consultRequire = new ConsultRequireStore(this);
+    this.chatting = new ChattingStore(this);
   }
 }
 

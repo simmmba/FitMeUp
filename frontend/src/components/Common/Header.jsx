@@ -33,7 +33,7 @@ class Header extends React.Component {
               <NavLink to="/portfolio/write" className="header_menu" activeClassName="activeMenu">
                 내 상담
               </NavLink>
-              <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
+              <NavLink to="/chatting" className="header_menu" activeClassName="activeMenu">
                 채팅
               </NavLink>
               <NavLink to="/stylist" className="header_menu" activeClassName="activeMenu">
