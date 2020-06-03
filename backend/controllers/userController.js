@@ -231,6 +231,18 @@ const add_info = async (stylist_search) => {
             limit: 1,
             raw: true
         })
+
+        if(review){
+            let review_user_id = review.id;
+            let nickname = await User.findOne({
+                where :{id : review_user_id},
+                attributes: ['nickname'],
+                raw: true
+            })
+            review.nickname = nickname.nickname;
+        }
+
+
         s.recent_review = review;
         // 포트폴리오 이미지 타이틀 달기 
         let portfolio = await Portfolio.findOne({
