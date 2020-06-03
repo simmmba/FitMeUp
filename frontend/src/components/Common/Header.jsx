@@ -1,8 +1,11 @@
 import React from "react";
+import { inject, observer} from 'mobx-react'
 import "./Header.scss";
 
 import { NavLink } from "react-router-dom";
 
+@inject("chatting")
+@observer
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -16,8 +19,10 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
+    const { clearRoom } = this.props.chatting
     alert("로그아웃 되었습니다");
     window.sessionStorage.clear();
+    clearRoom();
     window.location.reload();
   }
 

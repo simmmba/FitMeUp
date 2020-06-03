@@ -20,7 +20,6 @@ class RoomList extends Component {
   componentDidMount() {
     const { user } = this.state;
     if (user) {
-      console.log(user);
       this.addUserListener(user.id);
     }
   }

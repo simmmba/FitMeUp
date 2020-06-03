@@ -1,0 +1,57 @@
+@import "../../../styles/variable";
+@import "../../../styles/mixin";
+
+.createroom-input {
+  font-size: 1rem;
+  font-family: inherit;
+  color: $color-grey-dark-2;
+  margin: auto;
+  padding: 1.5rem 2rem;
+  border-radius: 2px;
+  background-color: rgba($color-grey-light-2, .5);
+  border: none;
+  border-bottom: 3px solid transparent;
+  width: 90%;
+  display: block;
+  transition: all .3s;
+  margin-top: 1rem;
+
+  @include respond(tab-port) {
+    width: 100%;
+  }
+
+  &:focus {
+    box-shadow: 0 1rem 2rem rgba($color-black, .1);
+    border-bottom: 3px solid $color-red-light;
+  }
+
+  &:focus:invalid {
+    border-bottom: 3px solid $color-secondary-dark;
+  }
+
+  &::-webkit-input-placeholder {
+    color: $color-grey-dark-2;
+  }
+
+  &:placeholder-shown + .createroom-label {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4rem);
+  }
+}
+
+.createroom-label {
+  font-size: 1.2rem;
+  color: $color-grey-dark-3;
+  font-weight: 700;
+  margin-left: 3rem;
+  margin-top: .7rem;
+  display: block;
+  transition: all .3s;
+}
+
+
+
+
+
+
