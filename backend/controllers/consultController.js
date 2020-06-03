@@ -532,9 +532,9 @@ export const update_apply = (req, res) => {
 // 지원 삭제
 export const delete_apply = (req, res) => {
   try {
-    const { apply_id } = req.body;
+    const { user_id, consult_id } = req.body;
     Apply.destroy({
-      where: { id: apply_id },
+      where: { stylist_id: user_id,consult_id:consult_id},
     }).then(() => {
       res.json({ result: "Success" });
     });
