@@ -36,6 +36,7 @@ const GenderAge = ({ setConsult, consult, next }) => {
 
   return (
     <div>
+      {console.log(consult.category)}
       <label>성별</label>
       <br />
       <ToggleButtonGroup className="genderBox" type="radio" name="options" defaultValue={consult.gender}>
