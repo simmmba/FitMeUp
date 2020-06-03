@@ -63,7 +63,7 @@ const Stylist = ({ keyword, option, order, result, setResult, setKeyword, setOpt
 
   const searchList = result.map((val, idx) => (
     <div key={idx}>
-      <Link to="/portfolio/7" className="listBox">
+      <Link to={`/portfolio/${val.id}`} className="listBox">
         <div className="imgBox">
           <img alt="이미지" src={val.portfolio_img === "/default.jpg" ? defaultImg : val.portfolio_img} />
         </div>

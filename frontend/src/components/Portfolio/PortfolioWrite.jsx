@@ -18,6 +18,7 @@ class PortfolioWrite extends React.Component {
       port_img: [],
       main_base64: "",
       port_base64: [],
+      
     };
   }
 

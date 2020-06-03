@@ -45,9 +45,6 @@ class Header extends React.Component {
               <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
                 채팅
               </NavLink>
-              <NavLink to="/consult/detail" className="header_menu" activeClassName="activeMenu">
-                상담 상세
-              </NavLink>
               <NavLink to="/search" className="header_menu" activeClassName="activeMenu" onClick={reset}>
                 스타일리스트 찾기
               </NavLink>
