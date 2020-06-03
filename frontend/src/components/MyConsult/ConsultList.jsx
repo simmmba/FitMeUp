@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import "./MatchingList.scss";
+import "./ConsultList.scss";
 import axios from "axios";
 
-import { MdRemoveCircleOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
-const MatchingList = ({ match }) => {
+const ConsultList = ({ consult }) => {
   const [apply, setApply] = useState(false);
   const user = JSON.parse(window.sessionStorage.getItem("user"));
 
   useEffect(() => {
     // 지원한 상태면
-    if (match.applied) {
+    if (consult.applied) {
       setApply(true);
     }
   }, []);
@@ -25,7 +24,7 @@ const MatchingList = ({ match }) => {
         url: `${process.env.REACT_APP_URL}/consult/apply`,
         data: {
           user_id: user.id,
-          consult_id: match.id,
+          consult_id: consult.id,
         },
       })
         .then((res) => {
@@ -43,7 +42,7 @@ const MatchingList = ({ match }) => {
         url: `${process.env.REACT_APP_URL}/consult/apply`,
         data: {
           stylist_id: user.id,
-          consult_id: match.id,
+          consult_id: consult.id,
           contents: "",
         },
       })
@@ -59,51 +58,51 @@ const MatchingList = ({ match }) => {
   };
 
   return (
-    <div className="MatchingList">
+    <div className="consultingList">
       <div className="style_conditions">
         <div className="items profile_items">
           <img
             alt="style"
             className="profile"
-            src={match.req_user.profile_img}
+            src={consult.req_user.profile_img}
           />
         </div>
 
         {/* 닉네임 */}
         <div className="items name">
-          <div>{match.req_user.nickname}</div>
+          <div>{consult.req_user.nickname}</div>
         </div>
-        <div className={match.category === "coordi" ? "items male" : "items"}>
-          <div>{match.category === "coordi" ? "코디" : "내 옷"}</div>
+        <div className={consult.category === "coordi" ? "items male" : "items"}>
+          <div>{consult.category === "coordi" ? "코디" : "내 옷"}</div>
         </div>
 
         {/* 성별 */}
         <div className="items">
-          {match.gender === "male" ? <div>남</div> : <div>여</div>}
+          {consult.gender === "male" ? <div>남</div> : <div>여</div>}
         </div>
 
         {/* 나이 */}
         <div className="items">
-          <div>{match.age}세</div>
+          <div>{consult.age}세</div>
         </div>
 
         {/* 키, 몸무게 */}
-        {match.height !== null && match.height !== null && (
+        {consult.height !== null && consult.height !== null && (
           <div className="items">
             <div>
-              {match.height === null ? "-" : match.height}cm
+              {consult.height === null ? "-" : consult.height}cm
               <br />
-              {match.height === null ? "-" : match.weight}kg
+              {consult.height === null ? "-" : consult.weight}kg
             </div>
           </div>
         )}
 
         {/* 상, 하의 사이즈 */}
-        {match.top !== "" && match.bottom !== "" && (
+        {consult.top !== "" && consult.bottom !== "" && (
           <div className="items">
             <div>
-              상 : {match.top === "" ? "-" : match.top}
-              <br />하 : {match.bottom === "" ? "-" : match.bottom}
+              상 : {consult.top === "" ? "-" : consult.top}
+              <br />하 : {consult.bottom === "" ? "-" : consult.bottom}
             </div>
           </div>
         )}
@@ -113,45 +112,45 @@ const MatchingList = ({ match }) => {
           <img
             alt="style"
             className="styleimg"
-            src={"/img/wantStyle/" + match.ConsultWants[0].img}
+            src={"/img/wantStyle/" + consult.ConsultWants[0].img}
           />
         </div>
 
         {/* 평소 내 스타일 */}
-        {match.ConsultImages.length !== 0 && (
+        {consult.ConsultImages.length !== 0 && (
           <div className="items">
             <img
               alt="style"
               className="styleimg"
-              src={match.ConsultImages[0]}
+              src={consult.ConsultImages[0]}
             />
           </div>
         )}
 
         {/* 예산 */}
-        {match.budget !== null && (
+        {consult.budget !== null && (
           <div className="items">
             <div>
-              {match.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              {consult.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
             </div>
           </div>
         )}
 
         {/* 요구 사항 */}
-        {match.contents !== "" && (
+        {consult.contents !== "" && (
           <div className="items">
-            <div className="content">{match.contents}</div>
+            <div className="content">{consult.contents}</div>
           </div>
         )}
         {/* 문의 시간 */}
         <div className="items">
           <div>
-            {match.start_time === 0 && match.end_time === 24 ? (
+            {consult.start_time === 0 && consult.end_time === 24 ? (
               <>시간 무관</>
             ) : (
               <>
-                {match.start_time}시 ~ <br />
-                {match.end_time}시
+                {consult.start_time}시 ~ <br />
+                {consult.end_time}시
               </>
             )}
           </div>
@@ -159,7 +158,7 @@ const MatchingList = ({ match }) => {
       </div>
       <NavLink
         to={{
-          pathname: "/consult/detail/" + match.id,
+          pathname: "/consult/detail/" + consult.id,
         }}
       >
         <div className="plus">더보기</div>
@@ -177,4 +176,4 @@ const MatchingList = ({ match }) => {
   );
 };
 
-export default MatchingList;
+export default ConsultList;
