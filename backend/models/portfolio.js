@@ -37,6 +37,15 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'portfolio_id',
           onDelete: 'cascade',
         })
+        Portfolio.hasMany(models.Portfolio_tags, {
+          foreignKey: 'portfolio_id',
+          onDelete: 'cascade',
+        })
+
+        Portfolio.belongsTo(models.User,{
+            foreignKey: 'stylist_id',
+            onDelete: 'cascade',
+        })
       }
     
     return Portfolio

@@ -8,7 +8,6 @@ export const get_detail = async function(req, res) {
             where: {stylist_id: stylist_id}
         })
 
-        
         p.dataValues.tag = await Portfolio_tags.findAll({
             where: {
                 portfolio_id: p.id
