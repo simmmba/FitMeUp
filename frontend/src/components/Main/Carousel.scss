@@ -1,43 +1,16 @@
 @import "../../styles/utils.scss";
 
-.listBox {
-  text-align: center;
-  padding: 0 10px 10px 10px;
+.Carousel {
+  @include loading(120);
 
-  .imgBox {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    // overflow: hidden;
-    // padding-top: 100%;
+  .listBox {
+    text-align: center;
+    padding: 0 10px 10px 10px;
 
-    img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: 5px 5px 0 0;
-    }
-  }
-
-  .contentBox {
-    display: flex;
-    // width: 100%;
-    // padding-top: 100px;
-    // flex-direction: column;
-    // justify-content: center;
-    align-items: center;
-    padding: 10px;
-    border: 2px solid $gray;
-    border-top: none;
-
-    .profileImg {
+    .imgBox {
       position: relative;
-      width: 17%;
-      height: 75px;
+      width: 100%;
+      height: 280px;
       // overflow: hidden;
       // padding-top: 100%;
 
@@ -49,128 +22,162 @@
         right: 0;
         bottom: 0;
         left: 0;
-        border-radius: 60px;
+        border-radius: 5px 5px 0 0;
       }
     }
 
-    .content {
+    .contentBox {
       display: flex;
-      width: 83%;
-      justify-content: space-between;
+      // width: 100%;
+      // padding-top: 100px;
+      // flex-direction: column;
+      // justify-content: center;
       align-items: center;
-      padding-left: 10px;
+      padding: 10px;
+      border: 2px solid $gray;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
 
-      .left {
-        width: 70%;
-        text-align: left;
+      .profileImg {
+        position: relative;
+        width: 75px;
+        height: 75px;
+        // overflow: hidden;
+        // padding-top: 100%;
 
-        .subject {
-          font-family: $main_font;
-          font-size: 1.2rem;
-          margin-bottom: 5px;
-          // 길어지면 ...으로 생략하기
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          border-radius: 60px;
         }
+      }
 
-        .detail {
-          margin-left: 7px;
-          display: flex;
-          // justify-content: center;
-          align-items: center;
+      .content {
+        display: flex;
+        width: 83%;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 10px;
 
-          .name {
-            margin-bottom: 4px;
-          }
-        }
+        .left {
+          width: 70%;
+          text-align: left;
 
-        .cnt {
-          display: flex;
-          align-items: center;
-          // height: 200px;
-          font-family: $main_font;
-          margin-left: 7px;
+          .subject {
+            font-family: $main_font;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
 
-          img {
-            width: 23px;
-            margin-right: 3px;
-          }
-
-          span {
-            color: $darkgray;
-            font-family: $sub_font;
+            @include overflow_hidden;
+            // 길어지면 ...으로 생략하기
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            // white-space: nowrap;
           }
 
-          .consultCnt {
-            margin-left: 20px;
+          .detail {
+            margin-left: 7px;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+
+            .name {
+              margin-bottom: 4px;
+            }
+          }
+
+          .cnt {
             display: flex;
             align-items: center;
-            font-family: $sub_font;
+            // height: 200px;
+            font-family: $main_font;
+            margin-left: 7px;
+
+            img {
+              width: 23px;
+              margin-right: 3px;
+            }
 
             span {
-              font-family: $main_font;
-              font-size: 16px;
-              color: rgba(0, 0, 0, 0.65);
+              color: $darkgray;
+              font-family: $sub_font;
+            }
+
+            .consultCnt {
+              margin-left: 20px;
+              display: flex;
+              align-items: center;
+              font-family: $sub_font;
+
+              span {
+                font-family: $main_font;
+                font-size: 16px;
+                color: rgba(0, 0, 0, 0.65);
+              }
             }
           }
         }
-      }
 
-      .right {
-        // width: 27%;
-        width: 30%;
-        text-align: right;
-        display: flex;
-        justify-content: flex-end;
+        .right {
+          // width: 27%;
+          width: 30%;
+          text-align: right;
+          display: flex;
+          justify-content: flex-end;
 
-        .moreBtn {
-          @include whiteButton(75, 15);
+          .moreBtn {
+            @include whiteButton(75, 15);
+          }
+
+          @include a;
         }
-
-        @include a;
       }
     }
   }
-}
 
-/* Arrows */
-.slick-prev,
-.slick-next {
-  font-size: 0;
-  line-height: 0;
-  z-index: 1;
-  position: absolute;
-  top: 50%;
-  margin-left: 40px;
-  margin-right: 40px;
-  // right: 0;
+  /* Arrows */
+  .slick-prev,
+  .slick-next {
+    font-size: 0;
+    line-height: 0;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    margin-left: 40px;
+    margin-right: 40px;
+    // right: 0;
 
-  display: block;
-  width: 35px;
-  height: 35px;
-  padding: 0;
-  -webkit-transform: translate(0, -50%);
-  -ms-transform: translate(0, -50%);
-  transform: translate(0, -50%);
+    display: block;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
 
-  cursor: pointer;
+    cursor: pointer;
 
-  color: transparent;
-  border: none;
-  outline: none;
-  background: transparent;
-}
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
 
-.slick-prev:before,
-.slick-next:before {
-  font-family: "slick";
-  font-size: 35px;
-  line-height: 1;
+  .slick-prev:before,
+  .slick-next:before {
+    font-family: "slick";
+    font-size: 35px;
+    line-height: 1;
 
-  opacity: 0.75;
-  color: #fff;
+    opacity: 0.75;
+    color: #fff;
 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
