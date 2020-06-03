@@ -218,6 +218,13 @@ export const dup_phone = async (req, res) => {
     }
 }
 
+export const most_consulting = async (req,res) =>{
+    const {user_id} = req.query;
+    let stylist_list = await User.findAll({
+        
+    })
+}
+
 const add_info = async (stylist_search) => {
     let add_list = new Array();
 
@@ -273,7 +280,6 @@ const add_info = async (stylist_search) => {
 
     return add_list;
 }
-
 //정렬
 const sort_list = (list, method) => {
     if (method === 'review_cnt') {
