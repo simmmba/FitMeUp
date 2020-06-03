@@ -81,6 +81,9 @@
     font-weight: bold;
     font-size: 1.1em;
   }
+  .messageBox {
+    height: 90%;
+  }
   .message {
     margin-top: 10px;
     background: whitesmoke;
@@ -103,5 +106,14 @@
   .title {
     font-weight: bold;
     font-size: 1.2em;
+  }
+
+  .input {
+    background: white;
+    border: 1px solid rgb(126, 126, 126);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 70%;
   }
 }
