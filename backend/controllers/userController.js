@@ -144,86 +144,56 @@ export const stylist_list = async (req, res) => {
 
 export const search = async (req, res) => {
     try {
-        const { option, keyword, filter } = req.query;
-
+        let { option, keyword, sort } = req.query;
         let stylist_search;
+        let search_list;
+        option = option ? option : '';
+        keyword = keyword ? keyword : '';
+        sort = sort ? sort : 'avg_score';
+
         let word = '%' + keyword + '%'
         if (option === "nickname") {
-            stylist_search = await User.findAll({ where: { nickname: { [Op.like]: word }, type: "stylist" } })
-            let search_list = new Array();
-            
-            // for (let i = 0; i < stylist_search.length;i++){
-            //     search_list[search_list.length] = stylist_search[i].dataValues;
-            // }
-            for (const s of stylist_search) {
-                search_list.push(s.dataValues)
-            }
-            console.log(search_list.length);
-            console.log(typeof(search_list));
-            
-            search_list.sort( function(a, b) {
-                // console.log(a.dataValues);
-                // let stylist_id = a.dataValues.id;
-                // avg_score = await Review.findOne({ 
-                //     attributes : [[sequelize.fn('avg', sequelize.col('score'))]],
-                //     where: { stylist_id: stylist_id } ,
-                //     group : ['stylist_id'],
-                //     order : [[sequelize.fn('avg', sequelize.col('score')),'DESC']]
-                // })
-
-                // a.dataValues.avg_score = avg_score;
-                // b.dataValues.avg_score = avg_score;
-                console.log(b.id - a.id);
-                return  b.id - a.id;
-            });
-            console.log(search_list);
-            
-
-
-            // let test = await User.findAll({
-            //     attributes : [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score']],
-            //     include: [{ model: Portfolio , include:[Portfolio_tags]}, { model: Review }, { model: Consult }],
-            //     where: { nickname: { [Op.like]: word }, type: "stylist" },
-            //     group : ['user.id']
-            // })
-
-            // console.log(test[0]);
+            stylist_search = await User.findAll({
+                where: {
+                    nickname: { [Op.like]: word },
+                    type: "stylist"
+                },
+                raw: true
+            })
+            console.log(stylist_search);
 
         } else if (option === "tag") {
-            console.log(word);
-
-            let test = await User.findAll({
-                include: [
-                    {
-                        model: Portfolio,
-                        include: [{ model: Portfolio_tags, where: { tag: { [Op.like]: word } } }],
-                        require: true
-                    },
-                    // { model: Review }, 
-                    // { model: Consult }
-                ],
-                where: { type: "stylist" },
-            })
-
-            // for (const t of test[0].dataValues.Portfolios[0].dataValues.Portfolio_tags) {
-            //     console.log(t.dataValues);
-            // }
+            let query = "select * from user \
+                                where (type = 'stylist') and user.id in (select stylist_id \
+                                from portfolio join portfolio_tags\
+                                on portfolio.id = portfolio_tags.portfolio_id\
+                                where tag like :word)"
 
 
+            stylist_search = await User.sequelize.query(
+                query, {
+                replacements: { word: word },
+                type: sequelize.QueryTypes.SELECT
+            });
+        } else {
+            let query = "select * from user \
+                                where type = 'stylist' and (nickname like :word or user.id in (select stylist_id \
+                                from portfolio join portfolio_tags\
+                                on portfolio.id = portfolio_tags.portfolio_id\
+                                where tag like :word))"
 
-            // stylist_search = await User.findAll({
-            //     where: {
-            //         [Op.or]: [
-            //             { nickname: { [Op.like]: word } },
-            //             { name: { [Op.like]: word } },
-            //             { belong: { [Op.like]: word } }
-            //         ]
-            //         , type: "stylist"
-            //     }
-            // })
+
+            stylist_search = await User.sequelize.query(
+                query, {
+                replacements: { word: word },
+                type: sequelize.QueryTypes.SELECT
+            });
         }
-        res.json({ result: "Success", stylists: stylist_search })
+        search_list = await add_info(stylist_search);
 
+        sort_list(search_list, sort);
+
+        res.json({ result: "Success", stylists: search_list })
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
@@ -248,3 +218,77 @@ export const dup_phone = async (req, res) => {
     }
 }
 
+const add_info = async (stylist_search) => {
+    let add_list = new Array();
+
+    // 평점, 상담 수, 리뷰 수, 최근 리뷰, 포트폴리오 이미지, 타이틀 붙여 줄 것
+    for (const s of stylist_search) {
+        let user_id = s.id;
+        // 최근 리뷰 달기
+        let review = await Review.findOne({
+            where: { target: user_id },
+            order: ['createdAt'],
+            limit: 1,
+            raw: true
+        })
+        s.recent_review = review;
+        // 포트폴리오 이미지 타이틀 달기 
+        let portfolio = await Portfolio.findOne({
+            where: {stylist_id: user_id},
+            raw:true
+        })
+        
+        s.portfolio_img = portfolio ? portfolio.main_img : null;
+        s.portfolio_title = portfolio ? portfolio.title : null;
+
+        //평점 달기, 리뷰 수 달기
+        let review_info = await Review.findOne({
+            attributes: [
+                [sequelize.fn('avg', sequelize.col('score')), 'avg_score'],
+                [sequelize.fn('count', sequelize.col('*')), 'review_cnt'],
+            ],
+            where: { target: user_id },
+            group: ['target'],
+            raw: true
+        })
+        let avg_score = review_info ? review_info.avg_score : 0;
+        let review_cnt = review_info ? review_info.review_cnt : 0;
+        s.avg_score = avg_score;
+        s.review_cnt = review_cnt;
+        // 상담 수 달기
+        let consult_info = await Consult.findOne({
+            attributes: [
+                [sequelize.fn('count', sequelize.col('*')), 'consult_cnt']
+            ],
+            where: { stylist_id: user_id },
+            group: ['stylist_id'],
+            raw: true
+        })
+
+        let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
+        s.consult_cnt = consult_cnt;
+
+        add_list.push(s)
+    }
+
+    return add_list;
+}
+
+//정렬
+const sort_list = (list, method) => {
+    if (method === 'review_cnt') {
+        list.sort((a, b) => {
+            return b.review_cnt - a.review_cnt;
+        })
+    }  else if (method === 'consult_cnt') {
+        list.sort((a, b) => {
+            return b.consult_cnt - a.consult_cnt;
+        })
+    } else {
+        list.sort((a, b) => {
+            return b.avg_score - a.avg_score;
+        })
+    }
+
+
+}
