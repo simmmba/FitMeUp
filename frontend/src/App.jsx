@@ -16,7 +16,8 @@ import Matching from "../src/components/Matching/Matching";
 import ConsultDetail from "../src/components/Common/ConsultDetail";
 import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
 import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
-import Search from "./components/Search/Search";
+import Stylist from "./components/Stylist/Stylist";
+import MyConsult from "./components/MyConsult/MyConsult"
 
 function App() {
   return (
@@ -26,13 +27,14 @@ function App() {
           <Route path="/" component={Main} exact />
           <Route path="/consult" component={ConsultRequire} exact />
           <Route path="/signup" component={Signup} exact />
-          <Route path="/signup/detail" component={SignupDetail} exact />
+          <Route path="/signup/detail:" component={SignupDetail} exact />
           <Route path="/login" component={Login} />
           <Route path="/match" component={Matching} />
-          <Route path="/consult/detail" component={ConsultDetail} />
+          <Route path="/consult/detail/:consultNo" component={ConsultDetail} />
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
-          <Route path="/search" component={Search} />
+          <Route path="/stylist" component={Stylist} />
+          <Route path="/myconsult" component={MyConsult}/>
         </Switch>
       </BrowserRouter>
     </div>

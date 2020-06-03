@@ -59,7 +59,7 @@ const Matching = () => {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res);
+        console.log(res.data.list);
         setList(res.data.list);
       })
       .catch((error) => {

@@ -1,7 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import "./Header.scss";
-import { NavLink } from "react-router-dom";
+
+import { NavLink, withRouter } from "react-router-dom";
 
 @inject((stores) => ({
   reset: stores.search.reset,
@@ -20,8 +21,10 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
+    const { history } = this.props;
     alert("로그아웃 되었습니다");
     window.sessionStorage.clear();
+    history.push("/");
     window.location.reload();
   };
 
@@ -36,7 +39,7 @@ class Header extends React.Component {
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
             <div className="col-7">
-              <NavLink to="/portfolio/write" className="header_menu" activeClassName="activeMenu">
+              <NavLink to="/myconsult" className="header_menu" activeClassName="activeMenu">
                 내 상담
               </NavLink>
               <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
@@ -70,4 +73,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

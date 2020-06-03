@@ -1,0 +1,31 @@
+@import "../../styles/utils.scss";
+
+.ConsultRequireModal {
+    .m {
+        .mHeader {
+            border-bottom: 1px solid white;
+        }
+
+        .body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .mentionTop {
+                font-size: 1.6rem;
+                font-weight: bold;
+            }
+
+            .mentionBottom {
+                color: $darkgray;
+                margin: 20px 0 40px 0;
+            }
+
+            .selectBtn {
+                @include button(200, 16);
+                margin: 10px;
+            }
+        }
+    }
+}
