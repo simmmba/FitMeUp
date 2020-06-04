@@ -1,4 +1,4 @@
-import { Portfolio, Portfolio_tags, Payment, Review, PortfolioImage,User, Consult } from '../models'
+import { Portfolio, Portfolio_tags, Payment, Review, PortfolioImage, User, Consult } from '../models'
 import sequelize from 'sequelize'
 import { Op } from 'sequelize'
 
@@ -27,12 +27,15 @@ export const get_detail = async function (req, res) {
                 where: { target: stylist_id },
                 raw: true
             })
-
+            console.log(review_info);
+            review_info.avg_score = review_info.avg_score ? review_info.avg_score : 0;
+            
+            
             let consult_info = await Consult.findOne({
                 attributes: [
                     [sequelize.fn('count', sequelize.col('*')), 'consult_cnt']
                 ],
-                where: {stylist_id : stylist_id},
+                where: { stylist_id: stylist_id },
                 raw: true
             })
 
@@ -41,18 +44,16 @@ export const get_detail = async function (req, res) {
                 portfolio: p,
                 avg_scroe: review_info.avg_score,
                 review_cnt: review_info.review_cnt,
-                consult_cnt : consult_info.consult_cnt
+                consult_cnt: consult_info.consult_cnt
             })
+        } else {
+            res.status(200).json({
+                result: "Success",
+                detail: "no portfolio"
+            })
+
         }
 
-        res.status(200).json({
-            // result: "Success",
-            // portfolio: p,
-            // paymentAvg: paymentAvg,
-            // paymentCount: paymentCount,
-            // scoreAvg: scoreAvg,
-            // reviewCount: reviewCount
-        })
     } catch (e) {
         console.log(e)
         return res.status(500).json({
