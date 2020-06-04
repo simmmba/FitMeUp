@@ -5,10 +5,10 @@ import {
   User,
   Apply,
   Review,
-} from "../models";
-import { Op } from "sequelize";
-import consultRouter from "../routes/consultRouter";
-import { raw } from "express";
+  Portfolio,
+} from "../models"
+import { Op } from "sequelize"
+import sequelize from 'sequelize'
 
 // 상담요청 생성
 export const create_consult = (req, res) => {
@@ -253,7 +253,7 @@ export const read_consults = (req, res) => {
     if (!category_filter) category_filter = "entire";
     if (!gender_filter) gender_filter = "entire";
     if (!apply_filter) apply_filter = "entire";
-    
+
     // 대기중이고 대상이 지정되지 않은 상담요청 불러오기
     Consult.findAll({
       where: { state: "REQUESTED", stylist_id: null },
@@ -278,8 +278,8 @@ export const read_consults = (req, res) => {
           if (category_filter != "entire" && consult.category != category_filter) {
             flag = false;
           }
-          if (gender_filter != "entire" && consult.gender != gender_filter){
-           flag = false;
+          if (gender_filter != "entire" && consult.gender != gender_filter) {
+            flag = false;
           }
           if (flag) {
             await new_consults.push(consult);
@@ -311,7 +311,7 @@ export const read_consults = (req, res) => {
             }).then((apply) => {
               if (apply) {
                 consult.dataValues.applied = "yes";
-              }else{
+              } else {
                 consult.dataValues.applied = "no";
               }
             });
@@ -351,17 +351,19 @@ export const read_myconsults = async (req, res) => {
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, stylist_id: { [Op.ne]: null } },
       })
-    } else if(appointed === 'false'){
+    } else if (appointed === 'false') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, stylist_id: null },
       })
-    }else{{
-      consults = await Consult.findAll({
-        where: { user_id: user_id, state:{ [Op.notLike]:'DENIED' }  },
-      })
-      
-    }}
+    } else {
+      {
+        consults = await Consult.findAll({
+          where: { user_id: user_id, state: { [Op.notLike]: 'DENIED' } },
+        })
+
+      }
+    }
 
     res.json({ result: "Success", list: consults })
 
@@ -565,13 +567,72 @@ export const apply_in_consult = async (req, res) => {
     const { consult_id } = req.query;
 
     let apply_list = await Apply.findAll({
-      include: [User],
-      where: { consult_id: consult_id, state: { [Op.like]: 'REQUESTED' } }
+      attributes: ['id','stylist_id','consult_id','contents','state','user.nickname'],
+      include: [
+        { 
+          attributes: [],
+          model: User,
+        }
+      ],
+      where: { consult_id: consult_id, state: { [Op.like]: 'REQUESTED' } },
+      raw : true
     })
+
+    for (const s of apply_list) {
+      
+      let user_id = s.stylist_id;
+
+      // 최근 리뷰 달기
+      let review = await Review.findOne({
+        where: { target: user_id },
+        order: ['createdAt'],
+        limit: 1,
+        raw: true
+      })
+      s.recent_review = review;
+      // 포트폴리오 이미지 타이틀 달기 
+      let portfolio = await Portfolio.findOne({
+        where: { stylist_id: user_id },
+        raw: true
+      })
+
+      s.portfolio_img = portfolio ? portfolio.main_img : null;
+      s.portfolio_title = portfolio ? portfolio.title : null;
+      s.coordi_price = portfolio ? portfolio.coordi_price : null;
+      s.my_price = portfolio ? portfolio.my_price : null;
+
+      //평점 달기, 리뷰 수 달기
+      let review_info = await Review.findOne({
+        attributes: [
+          [sequelize.fn('avg', sequelize.col('score')), 'avg_score'],
+          [sequelize.fn('count', sequelize.col('*')), 'review_cnt'],
+        ],
+        where: { target: user_id },
+        group: ['target'],
+        raw: true
+      })
+      let avg_score = review_info ? review_info.avg_score : 0;
+      let review_cnt = review_info ? review_info.review_cnt : 0;
+      s.avg_score = avg_score;
+      s.review_cnt = review_cnt;
+      // 상담 수 달기
+      let consult_info = await Consult.findOne({
+        attributes: [
+          [sequelize.fn('count', sequelize.col('*')), 'consult_cnt']
+        ],
+        where: { stylist_id: user_id },
+        group: ['stylist_id'],
+        raw: true
+      })
+
+      let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
+      s.consult_cnt = consult_cnt;
+    }
+
 
     res.json({ result: "Success", list: apply_list })
   } catch (err) {
-    console.log("consultController.js read_applies method\n ==> " + err);
+    console.log("consultController.js apply_in_consult method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
@@ -589,4 +650,60 @@ export const consult_complete = async (req, res) => {
     console.log("consultController.js consult_complete method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
   }
+}
+
+
+const add_info = async (stylist_search) => {
+
+  // 평점, 상담 수, 리뷰 수, 최근 리뷰, 포트폴리오 이미지, 타이틀 붙여 줄 것
+  for (const s of stylist_search) {
+    let user_id = s.id;
+    // 최근 리뷰 달기
+    let review = await Review.findOne({
+      where: { target: user_id },
+      order: ['createdAt'],
+      limit: 1,
+      raw: true
+    })
+    s.recent_review = review;
+    // 포트폴리오 이미지 타이틀 달기 
+    let portfolio = await Portfolio.findOne({
+      where: { stylist_id: user_id },
+      raw: true
+    })
+
+    s.portfolio_img = portfolio ? portfolio.main_img : null;
+    s.portfolio_title = portfolio ? portfolio.title : null;
+
+    //평점 달기, 리뷰 수 달기
+    let review_info = await Review.findOne({
+      attributes: [
+        [sequelize.fn('avg', sequelize.col('score')), 'avg_score'],
+        [sequelize.fn('count', sequelize.col('*')), 'review_cnt'],
+      ],
+      where: { target: user_id },
+      group: ['target'],
+      raw: true
+    })
+    let avg_score = review_info ? review_info.avg_score : 0;
+    let review_cnt = review_info ? review_info.review_cnt : 0;
+    s.avg_score = avg_score;
+    s.review_cnt = review_cnt;
+    // 상담 수 달기
+    let consult_info = await Consult.findOne({
+      attributes: [
+        [sequelize.fn('count', sequelize.col('*')), 'consult_cnt']
+      ],
+      where: { stylist_id: user_id },
+      group: ['stylist_id'],
+      raw: true
+    })
+
+    let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
+    s.consult_cnt = consult_cnt;
+
+    add_list.push(s)
+  }
+
+  return add_list;
 }
