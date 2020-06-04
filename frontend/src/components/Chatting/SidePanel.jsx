@@ -7,7 +7,7 @@ import CreateRoomModal from './CreateRoomModal/CreateRoomModal'
 
 class SidePanel extends Component {
   state = {
-    CreateRoomModalIsOpen: false
+    CreateRoomModalIsOpen: false,
   }
 
   openModal = () => {
@@ -21,6 +21,7 @@ class SidePanel extends Component {
   render () {
     const { CreateRoomModalIsOpen } = this.state
     const { currentUser } = this.props
+
     return (
       <div className='chatting-side-panel'>
         <button onClick={this.openModal} type='button'>

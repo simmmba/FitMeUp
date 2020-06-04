@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import Modal from 'react-modal'
-import firebase from '../../../firebaseConfig'
 import { inject, observer } from 'mobx-react'
+import firebase from '../../../firebaseConfig'
+import Modal from 'react-modal'
 import './CreateRoomModal.scss'
 
-import Input from './Input'
-import Button from './Button'
-
-// import { connect } from 'react-redux';
-// import { setCurrentRoom } from '../../../actions';
+import Input from '../Common/Input'
+import Button from '../Common/Button'
 
 @inject('chatting')
 @observer
@@ -17,7 +14,7 @@ class CreateRoomModal extends Component {
     roomName: '',
     user: this.props.currentUser,
     roomsRef: firebase.database().ref('rooms'),
-    usersRef: firebase.database().ref('users')
+    usersRef: firebase.database().ref('users'),
   }
 
   handleChange = event => {
@@ -27,9 +24,8 @@ class CreateRoomModal extends Component {
   createRoom = () => {
     const { roomsRef, usersRef, roomName, user } = this.state
     const { closeModal } = this.props
-    const { setCurrentRoom } = this.props.chatting
     const { key } = roomsRef.push()
-
+    
     const newRoom = {
       id: key,
       name: roomName
@@ -38,7 +34,8 @@ class CreateRoomModal extends Component {
     const createUser = {
       id: user.id,
       name: user.nickname,
-      avatar: user.profile_img
+      avatar: user.profile_img,
+      type: user.type
     }
 
     roomsRef
@@ -51,9 +48,6 @@ class CreateRoomModal extends Component {
           .child('users')
           .child(user.id)
           .set(createUser)
-          .then(() => {
-            console.log('add user in room')
-          })
           .catch(err => {
             console.error(err)
           })
@@ -63,14 +57,12 @@ class CreateRoomModal extends Component {
           .child('rooms')
           .child(key)
           .set(newRoom)
-          .then(() => {
-            console.log('room add in user')
-          })
           .catch(err => {
             console.error(err)
           })
+
+        this.props.chatting.setCurrentRoom(newRoom)
         closeModal()
-        setCurrentRoom(newRoom)
       })
       .catch(err => {
         console.error(err)

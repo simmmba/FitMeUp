@@ -14,18 +14,20 @@
     &:hover {
       color: $color-grey-light-2;
       cursor: pointer;
-      background-color: rgba($color-secondary-dark, 0.2);
+      background-color: rgba($color-secondary-dark, 0.6);
     }
   }
 
   .title {
-    padding-left: 2rem;
     font-size: 20px;
     color: $color-white;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   .active {
-    background-color: rgba($color-secondary-dark, 0.4);
+    background-color: rgba($color-secondary-dark, 0.8);
+    color: $color-grey-light-2;
   }
 
   .spinner-wrapper {
@@ -37,5 +39,10 @@
         color: $color-white;
         font-size: 20px;
     }
+  }
+
+  button{
+    background: none;
+    border:none;
   }
 }

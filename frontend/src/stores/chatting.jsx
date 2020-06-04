@@ -1,6 +1,6 @@
 import { observable, action, computed } from "mobx";
 
-export default class CounterStore {
+export default class ChattingStore {
   constructor(root) {
     this.root = root;
   }
@@ -8,17 +8,12 @@ export default class CounterStore {
   @observable currentRoom = null;
 
   @action
-  setCurrentRoom = room => {
+  setCurrentRoom(room){
     this.currentRoom = room;
   }
 
   @action
   clearRoom = () => {
     this.currentRoom = null;
-  }
-
-  @computed
-  get currentRoom(){
-      return this.currentRoom;
   }
 }
