@@ -12,7 +12,7 @@ export const upload_profile = async (req, res) => {
             {where :{ id:user_id}}
         )
 
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_profile method\n ==> ' + err)
         res
@@ -44,7 +44,7 @@ export const upload_portfolio = async (req, res) => {
                 }
                 idx++;
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_portfolio method\n ==> ' + err)
         res
@@ -64,7 +64,7 @@ export const upload_review = async (req, res) => {
                 {review_id : review_id, image_path : file_path}
             )
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_review method\n ==> ' + err)
         res
@@ -88,7 +88,7 @@ export const upload_consult = async (req, res) => {
                 {consult_id : consult_id, image_path : file_path}
             )
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_review method\n ==> ' + err)
         res

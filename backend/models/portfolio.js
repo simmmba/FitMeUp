@@ -27,7 +27,15 @@ module.exports = function(sequelize, DataTypes) {
         main_img : {
             type:DataTypes.STRING(100),
             allowNull : true
-        }
+        },
+        coordi_price : {
+            type:DataTypes.INTEGER(11),
+            allowNull : true
+        },
+        my_price : {
+            type:DataTypes.INTEGER(11),
+            allowNull : true
+        },
     }, {
         tableName: 'portfolio'
     });

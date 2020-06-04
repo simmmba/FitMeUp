@@ -228,7 +228,7 @@ export const most_consulting = async (req, res) => {
             order : [[sequelize.fn('count', sequelize.col('stylist_id')), 'DESC']],
             limit : 3,
         })
-        res.json({state:"Success", stylists:stylist_list})
+        res.json({result:"Success", stylists:stylist_list})
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
