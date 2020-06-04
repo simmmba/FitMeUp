@@ -28,7 +28,7 @@ class PortfolioDetail extends React.Component {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res.data.portfolio);
+        console.log(res.data);
         this.setState({
           portfolio: res.data.portfolio,
         });
@@ -95,7 +95,7 @@ class PortfolioDetail extends React.Component {
                 <div className="img_list">
                   {this.state.portfolio.PortfolioImages?.map((port_img) => (
                     <img
-                    alt="myimg"
+                      alt="myimg"
                       src={port_img.image_path}
                       onClick={() => {
                         window.open(port_img.image_path);

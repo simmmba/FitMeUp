@@ -211,7 +211,7 @@ const ConsultDetail = (props) => {
                     <td key={index}>{item[2] ? item[2] + "" + item[1] : "-"}</td>
                   ))}
                   {budget === null ? (
-                    "-"
+                    <td>-</td>
                   ) : (
                     <td>
                       {budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

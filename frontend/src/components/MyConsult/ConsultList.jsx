@@ -8,6 +8,40 @@ const ConsultList = ({ filter, consult }) => {
   const [apply, setApply] = useState(true);
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   // const history = useHistory();
+  const [request, setRequest] = useState("");
+
+  // 스타일리스트가 상담 수락, 거절
+  const handleRequest = (res) => {
+    // 확인 메세지
+    let message = "";
+    const request = res.target.id;
+    if (request === "ACCEPTED") message = "해당 상담을 수락하시겠습니까?";
+    else message = "해당 상담을 거절하시겠습니까?";
+
+    if (window.confirm(message)) {
+      axios({
+        method: "put",
+        url: `${process.env.REACT_APP_URL}/consult/recv_confirm`,
+        data: {
+          stylist_id: user.id,
+          consult_id: consult.id,
+          state: request,
+        },
+      })
+        .then((res) => {
+          // 상담 수락한 경우
+          console.log(res);
+          if (request === "ACCEPTED") {
+            setRequest("ACCEPTED");
+          } else {
+            setRequest("DENIED");
+          }
+        })
+        .catch((error) => {
+          alert("설정에 실패했습니다");
+        });
+    }
+  };
 
   const clickApply = () => {
     // 이미 상담 신청되어 있으면 취소
@@ -53,23 +87,23 @@ const ConsultList = ({ filter, consult }) => {
   // 상담 삭제하기
   const deleteConsult = () => {
     if (window.confirm("해당 상담을 삭제하시겠습니까?")) {
-    }
-    axios({
-      method: "delete",
-      url: `${process.env.REACT_APP_URL}/consult/req`,
-      data: {
-        user_id: user.id,
-        consult_id: consult.id,
-      },
-    })
-      .then((res) => {
-        // axios가 잘되면
-        alert("상담 삭제가 완료되었습니다");
-        window.location.reload();
+      axios({
+        method: "delete",
+        url: `${process.env.REACT_APP_URL}/consult/req`,
+        data: {
+          user_id: user.id,
+          consult_id: consult.id,
+        },
       })
-      .catch((error) => {
-        alert("상담 삭제를 실패했습니다");
-      });
+        .then((res) => {
+          // axios가 잘되면
+          alert("상담 삭제가 완료되었습니다");
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("상담 삭제를 실패했습니다");
+        });
+    }
   };
 
   return (
@@ -157,13 +191,6 @@ const ConsultList = ({ filter, consult }) => {
           </div>
         )}
 
-        {/* 요구 사항 */}
-        {/* {consult.contents !== "" && (
-          <div className="items">
-            <div className="content">{consult.contents}</div>
-          </div>
-        )} */}
-
         {/* 문의 시간 */}
         <div className="items">
           <div>
@@ -191,13 +218,43 @@ const ConsultList = ({ filter, consult }) => {
           </NavLink>
           {filter === "0" ? (
             <>
-            {/* // 받은 상담 */}
-            <div className="apply" onClick={clickApply}>
-              상담 수락
-            </div>
-            <div className="apply cancel" onClick={clickApply}>
-              상담 거절
-            </div>
+              {/* // 받은 상담 */}
+              {consult.state === "REQUESTED" && request === "" && (
+                <>
+                  <div className="apply" id="ACCEPTED" onClick={handleRequest}>
+                    상담 수락
+                  </div>
+                  <div
+                    className="apply cancel"
+                    id="DENIED"
+                    onClick={handleRequest}
+                  >
+                    상담 거절
+                  </div>
+                </>
+              )}
+              {/* 승인된 상담 */}
+              {(consult.state === "ACCEPTED" || request === "ACCEPTED") && (
+                // 채팅으로 이동 시키기
+                <div className="apply">
+                  승인한
+                  <br />
+                  상담
+                </div>
+              )}
+              {/* 완료된 상담 */}
+              {consult.state === "COMPLETE" && (
+                <div className="apply cancel complete">상담 완료</div>
+              )}
+              {/* 거절한 상담 */}
+              {(consult.state === "DENIED" || request === "DENIED") && (
+                // 채팅으로 이동 시키기
+                <div className="apply cancel complete">
+                  거절한
+                  <br />
+                  상담
+                </div>
+              )}
             </>
           ) : (
             // 보낸 상담
@@ -218,25 +275,19 @@ const ConsultList = ({ filter, consult }) => {
               )}
               {/* 거절 */}
               {consult.state === "DENIED" && (
-                <div className="apply denied">
-                  상담 거절
-                </div>
+                <div className="apply denied">상담 거절</div>
               )}
 
               {/* 받음 */}
               {consult.state === "ACCEPTED" && (
                 // 채팅으로 url 연결하기
-                <div className="apply">
-                  상담 승인
-                </div>
+                <div className="apply">승인된<br/>상담</div>
               )}
 
               {/* 완료 */}
               {consult.state === "COMPLETE" && (
                 // 채팅으로 url 연결하기
-                <div className="apply">
-                  상담 완료
-                </div>
+                <div className="apply cancel complete">상담 완료</div>
               )}
             </>
           )}

@@ -165,13 +165,6 @@ const ConsultListDetail = ({ consult }) => {
           </div>
         )}
 
-        {/* 요구 사항 */}
-        {/* {consult.contents !== "" && (
-          <div className="items">
-            <div className="content">{consult.contents}</div>
-          </div>
-        )} */}
-
         {/* 문의 시간 */}
         <div className="items">
           <div>
