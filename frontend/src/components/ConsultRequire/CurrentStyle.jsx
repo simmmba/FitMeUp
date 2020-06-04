@@ -101,7 +101,7 @@ const CurrentStyle = ({ setConsult, consult, previous, next }) => {
         <label className="filebox">
           사진 업로드
           <span>+</span>
-          <input key={filekey} type="file" name="images" multiple accept="image/gif, image/jpeg, image/png" onChange={changePortImg} />
+          <input key={filekey} type="file" name="images" accept="image/gif, image/jpeg, image/png" onChange={changePortImg} />
         </label>
         {/* <div className="complete_btn" onClick={this.formSubmit}>
               작성 완료

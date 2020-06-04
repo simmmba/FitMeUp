@@ -17,9 +17,8 @@ import ConsultDetail from "../src/components/Common/ConsultDetail";
 import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
 import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
 import MyPageMain from "./components/MyPage/MyPageMain";
-import MyConsult from "./components/MyConsult/MyConsult"
+import MyConsult from "./components/MyConsult/MyConsult";
 import Search from "./components/Search/Search";
-
 
 function App() {
   return (
@@ -36,7 +35,7 @@ function App() {
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
           <Route path="/mypage" component={MyPageMain} />
-          <Route path="/myconsult" component={MyConsult}/>
+          <Route path="/myconsult" component={MyConsult} />
           <Route path="/search" component={Search} />
         </Switch>
       </BrowserRouter>
