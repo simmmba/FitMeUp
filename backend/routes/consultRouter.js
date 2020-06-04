@@ -20,4 +20,7 @@ consultRouter.get("/apply", consult.read_applies);
 consultRouter.put("/apply", consult.update_apply);
 consultRouter.delete("/apply", consult.delete_apply);
 
+consultRouter.get("/apply_in_consult",consult.apply_in_consult);
+consultRouter.get("/complete",consult.consult_complete);
+
 export default consultRouter;

@@ -256,7 +256,7 @@ export const read_consults = (req, res) => {
 
     // 대기중이고 대상이 지정되지 않은 상담요청 불러오기
     Consult.findAll({
-      where: { state: "requested", stylist_id: null },
+      where: { state: "REQUESTED", stylist_id: null },
       order: [["updatedAt", order]],
       include: [
         {
@@ -264,9 +264,6 @@ export const read_consults = (req, res) => {
         },
         {
           model: ConsultWant,
-        },
-        {
-          model: Review,
         },
       ],
     })
@@ -460,6 +457,7 @@ export const create_apply = (req, res) => {
     Apply.create({
       stylist_id: stylist_id,
       consult_id: consult_id,
+      state: 'requested',
       contents: contents,
     }).then(() => {
       res.json({ result: "Success" });
@@ -481,7 +479,7 @@ export const read_applies = async (req, res) => {
         attributes: [],
         model: Apply,
         where: { stylist_id: user_id }
-      },ConsultImage,ConsultWant]
+      }, ConsultImage, ConsultWant]
     })
 
     for (const c of consult_apply) {
@@ -501,20 +499,36 @@ export const read_applies = async (req, res) => {
   }
 };
 // 지원 수정
-export const update_apply = (req, res) => {
+export const update_apply = async (req, res) => {
   try {
     const { apply_id, contents, state } = req.body;
-    Apply.update(
-      {
-        contents: contents,
-        state: state,
-      },
-      {
+
+    let apply_update = await Apply.update(
+      { contents: contents, state: state },
+      { where: { id: apply_id } },
+    )
+    // 일반 사용자 수락시 해당 상담 및 지원 처리
+    if (state === 'ACCEPTED') {
+      let apply = await Apply.findOne({
         where: { id: apply_id },
-      }
-    ).then(() => {
-      res.json({ result: "Success" });
-    });
+        raw: true,
+      })
+      let consult_id = apply.consult_id;
+      let stylist_id = apply.stylist_id;
+
+
+      let consult_update = await Consult.update(
+        { state: 'ACCEPTED', stylist_id: stylist_id },
+        { where: { id: consult_id } }
+      )
+
+      let apply_deny = await Apply.update(
+        { state: 'DENIED' },
+        { where: { consult_id: consult_id, id: { [Op.ne]: apply_id } } }
+      )
+    }
+
+    res.json({ result: "Success" });
   } catch (err) {
     console.log("consultController.js update_apply method\n ==> " + err);
     res
@@ -538,3 +552,35 @@ export const delete_apply = (req, res) => {
       .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
+
+// 상담 별 지원 목록
+export const apply_in_consult = async (req, res) => {
+  try {
+    const { consult_id } = req.query;
+
+    let apply_list = await Apply.findAll({
+      include: [User],
+      where: { consult_id: consult_id, state: { [Op.like]: 'REQUESTED' } }
+    })
+
+    res.json({ state: "Success", list: apply_list })
+  } catch (err) {
+    console.log("consultController.js read_applies method\n ==> " + err);
+    res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
+};
+// 상담 완료
+export const consult_complete = async (req, res) => {
+  try {
+
+    const { consult_id } = req.query;
+    let consult_complete = await Consult.update(
+      { state: "COMPLETE" },
+      { where: { id: consult_id } }
+    )
+    res.json({ state: "Success" })
+  } catch (error) {
+    console.log("consultController.js consult_complete method\n ==> " + err);
+    res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
+}
