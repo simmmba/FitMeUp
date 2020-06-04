@@ -253,7 +253,7 @@ export const read_consults = (req, res) => {
     if (!category_filter) category_filter = "entire";
     if (!gender_filter) gender_filter = "entire";
     if (!apply_filter) apply_filter = "entire";
-
+    
     // 대기중이고 대상이 지정되지 않은 상담요청 불러오기
     Consult.findAll({
       where: { state: "REQUESTED", stylist_id: null },
@@ -273,15 +273,14 @@ export const read_consults = (req, res) => {
         let new_consults = [];
         for (const consult of consults) {
           let flag = true;
-          // 카테고리 필터링
-          if (
-            category_filter != "entire" &&
-            consult.category != category_filter
-          )
-            flag = false;
-          if (gender_filter != "entire" && consult.gender != gender_filter)
-            flag = false;
 
+          // 카테고리 필터링
+          if (category_filter != "entire" && consult.category != category_filter) {
+            flag = false;
+          }
+          if (gender_filter != "entire" && consult.gender != gender_filter){
+           flag = false;
+          }
           if (flag) {
             await new_consults.push(consult);
           }
@@ -312,6 +311,8 @@ export const read_consults = (req, res) => {
             }).then((apply) => {
               if (apply) {
                 consult.dataValues.applied = "yes";
+              }else{
+                consult.dataValues.applied = "no";
               }
             });
           } else {
@@ -320,7 +321,7 @@ export const read_consults = (req, res) => {
 
           if (
             apply_filter == "entire" ||
-            (apply_filter != "entire" && consult.applied == apply_filter)
+            (apply_filter != "entire" && consult.dataValues.applied == apply_filter)
           ) {
             await new_consults.push(consult);
           }
@@ -350,12 +351,17 @@ export const read_myconsults = async (req, res) => {
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, stylist_id: { [Op.ne]: null } },
       })
-    } else {
+    } else if(appointed === 'false'){
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, stylist_id: null },
       })
-    }
+    }else{{
+      consults = await Consult.findAll({
+        where: { user_id: user_id, state:{ [Op.notLike]:'DENIED' }  },
+      })
+      
+    }}
 
     res.json({ state: "Success", list: consults })
 
