@@ -41,7 +41,7 @@
                     margin-right: 10px;
                     border-radius: 5px;
 
-                    .deletetag{
+                    .deletetag {
                         font-family: $main-font;
                         font-weight: bolder;
                         cursor: pointer;
@@ -68,20 +68,38 @@
             margin-bottom: 10px;
         }
 
+        // 16:9 : padding-top: 56.25%
         .main_img {
             img {
-                width: 50%;
-                margin-bottom: 40px;
+                width: 640px;
+                height: 360px;
+                object-fit: cover;
+                margin-bottom: 20px;
             }
         }
 
         .port_imgs {
-            img {
-                width: 150px;
-                height: 150px;
-                object-fit: cover;
-                margin-right: 10px;
-                margin-bottom: 10px;
+            margin-top: 20px;
+            .port_img {
+                display: inline-block;
+                margin-right: 30px;
+                margin-top: 10px;
+
+                img {
+                    // width: 150px;
+                    height: 150px;
+                    object-fit: cover;
+                    margin-bottom: 10px;
+                }
+                .X {
+                    z-index: 3;
+                    width: 15px;
+                    height: 15px;
+                    margin-top: -120px;
+                    margin-left: -25px;
+                    filter: invert(100%);
+                    cursor: pointer;
+                }
             }
         }
 
@@ -99,7 +117,6 @@
             color: black;
             background: rgba(228, 228, 228, 0.699);
             border-radius: 0.25em;
-            // font-weight: bolder;
             cursor: pointer;
         }
 
@@ -115,6 +132,28 @@
             overflow: hidden;
             clip: rect(0, 0, 0, 0);
             border: 0;
+        }
+
+        .form_btn {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 40px;
+
+            div {
+                display: inline-block;
+                @include button(300, 18);
+            }
+
+            .cancel_btn {
+                margin-right: 10px;
+                background: $gray;
+                color: black;
+                font-weight: 600;
+
+                &:hover {
+                    background: #d1d1d1;
+                }
+            }
         }
     }
 }

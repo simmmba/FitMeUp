@@ -59,6 +59,5 @@ const ConsultRequire = ({ questions, num }) => {
 
 export default inject(({ consultRequire }) => ({
   questions: consultRequire.questions,
-  percent: consultRequire.percent,
   num: consultRequire.num,
 }))(observer(ConsultRequire));

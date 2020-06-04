@@ -11,17 +11,19 @@ const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previ
     const click = document.getElementById(idx);
 
     // 선택 효과
-    if (!list[idx].select) {
-      click.style.opacity = 0.3;
+    if (click.className === "notSelected") {
       select.push({ val: list[idx].val, img: list[idx].img });
     }
 
     // 선택 취소 효과
-    else {
+    else if (click.className === "selected") {
       const val = list[idx].val;
-      const i = select.indexOf((list[idx]["val"] = val));
-      select.splice(i, 1);
-      click.style.opacity = 1;
+      const pos = select
+        .map(function (e) {
+          return e.val;
+        })
+        .indexOf(val);
+      select.splice(pos, 1);
     }
 
     setWantStyleSelect(idx);
@@ -29,7 +31,7 @@ const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previ
 
   const styleList = list.map((l, idx) => (
     <div className="imgBox" key={idx} onClick={click}>
-      <img className={l.select ? "selected" : "notSelcted"} id={idx} src={"/img/wantStyle/" + l.img} alt={l.val} />
+      <img className={l.select ? "selected" : "notSelected"} id={idx} src={"/img/wantStyle/" + l.img} alt={l.val} />
     </div>
   ));
 
@@ -37,7 +39,6 @@ const WantStyle = ({ setConsult, consult, style, setWantStyleSelect, next, previ
     if (select.length === 0) alert("원하는 스타일을 한 개 이상 선택해주세요");
     else {
       setConsult("want", select);
-      // console.log(consult.want);
       next();
     }
   };

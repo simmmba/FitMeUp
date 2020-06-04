@@ -1,8 +1,13 @@
 import React from "react";
+import { observer, inject } from "mobx-react";
 import "./Header.scss";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
+@inject((stores) => ({
+  reset: stores.search.reset,
+}))
+@observer
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -16,12 +21,16 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
+    const { history } = this.props;
     alert("로그아웃 되었습니다");
     window.sessionStorage.clear();
+    history.push("/");
     window.location.reload();
-  }
+  };
 
   render() {
+    const { reset } = this.props;
+
     return (
       <>
         <div className="Header">
@@ -30,31 +39,26 @@ class Header extends React.Component {
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
             <div className="col-7">
-              <NavLink to="/portfolio/write" className="header_menu" activeClassName="activeMenu">
+              <NavLink to="/myconsult" className="header_menu" activeClassName="activeMenu">
                 내 상담
               </NavLink>
               <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
                 채팅
               </NavLink>
-              <NavLink to="/stylist" className="header_menu" activeClassName="activeMenu">
-                스타일리스트
-              </NavLink>
-              <NavLink to="/consult/detail" className="header_menu" activeClassName="activeMenu">
-                상담 상세
+              <NavLink to="/search" className="header_menu" activeClassName="activeMenu" onClick={reset}>
+                스타일리스트 찾기
               </NavLink>
             </div>
             <div className="col-3 header_user">
               {this.user ? (
                 <>
-                <span onClick={this.logout}>로그아웃</span>
-                <NavLink to="/mypage">마이페이지</NavLink>
+                  <NavLink to="/mypage">마이페이지</NavLink>
+                  <span onClick={this.logout}>로그아웃</span>
                 </>
-                
               ) : (
                 <>
-                  <NavLink to="/login">로그인</NavLink>
                   <NavLink to="/signup">회원가입</NavLink>
-                  <NavLink to="/mypage">마이페이지</NavLink>
+                  <NavLink to="/login">로그인</NavLink>
                 </>
               )}
             </div>
@@ -66,4 +70,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

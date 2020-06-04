@@ -72,10 +72,10 @@ $eng_font: "Open Sans", sans-serif;
   }
 
   &:hover {
-    color: $red_hover;
+    color: white;
     text-decoration: none;
-    border: 1.5px solid $red_hover;
-    background-color: $light_red;
+    // border: 1.5px solid $red_hover;
+    background-color: $red;
   }
 
   &:focus {
@@ -152,6 +152,13 @@ $eng_font: "Open Sans", sans-serif;
   margin: 0 auto;
 }
 
+@mixin overflow_hidden {
+  // 길어지면 ...으로 생략하기
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // 센터로 만들기
 // 위 아래
 @mixin itemcenter {
@@ -191,4 +198,32 @@ $eng_font: "Open Sans", sans-serif;
   width: $size * 1px;
   height: $size * 1px;
   border-radius: $size * 0.5px;
+}
+
+// antd로딩 spinner
+@mixin loading($height) {
+  .loading {
+    height: $height * 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ant-spin,
+  .ant-spin-lg,
+  .ant-spin-spinning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .ant-spin-dot-item {
+      background: $red;
+    }
+
+    .ant-spin-text {
+      margin-top: 10px;
+      color: $red;
+      font-size: 16px;
+    }
+  }
 }

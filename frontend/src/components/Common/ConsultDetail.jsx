@@ -1,45 +1,128 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import "./ConsultDetail.scss";
 import axios from "axios";
 
 import Header from "../Common/Header";
+import { SmallDashOutlined } from "@ant-design/icons";
 
 const ConsultDetail = (props) => {
-
   const [apply, setApply] = useState(false);
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
-  const consult_id = props.location.params;
-
-  let list = [
+  const [list] = useState([
     ["성별", ""],
     ["나이", "세"],
     ["키", "cm"],
+    ["몸무게", "kg"],
     ["상의", ""],
     ["하의", ""],
     ["가격", "원"],
     ["상황", ""],
-  ];
+  ]);
+  const [wantImg, setWantImg] = useState([]);
+  const [myImg, setMyImg] = useState([]);
+  const [requser, setRequser] = useState({});
+  const [category, setCategory] = useState("");
+
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const url = window.location.href.split("/");
+  const history = useHistory();
 
   useEffect(() => {
-    console.log(consult_id);
+    console.log(user);
+    req_list();
   }, []);
 
   // axios로 리스트를 부름
   const req_list = () => {
     axios({
-      method: "post",
-      url: `${process.env.REACT_APP_URL}/consult/reqlist`,
-      data: {
-        // user_id:user.id,
-        // consult_id: props.id,
-      },
+      method: "get",
+      url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${
+        url[url.length - 1]
+      }&user_id=${user.id}`,
     })
-      // 로그인 안되있는 거면
       .then((res) => {
-        alert("상담 요청 내역을 가져오는데 성공했습니다.");
+
+        console.log(res.data.consult)
+
+        list[0].push(res.data.consult.gender);
+        list[1].push(res.data.consult.age);
+        list[2].push(res.data.consult.height);
+        list[3].push(res.data.consult.weight);
+        list[4].push(res.data.consult.top);
+        list[5].push(res.data.consult.bottom);
+        list[6].push(res.data.consult.budget);
+        list[7].push(res.data.consult.contents);
+
+        setWantImg(res.data.consult.ConsultWants);
+        setMyImg(res.data.consult.ConsultImages);
+        setRequser(res.data.consult.req_user);
+        setCategory(res.data.consult.category);
+        if (res.data.consult?.applied !== "no") setApply(true);
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
+      });
+  };
+
+  const clickApply = () => {
+    // 이미 상담 신청되어 있으면 취소
+    if (apply) {
+      axios({
+        method: "delete",
+        url: `${process.env.REACT_APP_URL}/consult/apply`,
+        data: {
+          user_id: user.id,
+          consult_id: url[url.length - 1],
+        },
+      })
+        .then((res) => {
+          alert("상담 신청 취소가 완료되었습니다");
+          setApply(!apply);
+        })
+        .catch((error) => {
+          alert("상담 신청 취소를 실패했습니다");
+        });
+    }
+    // 상담 신청하기
+    else {
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/consult/apply`,
+        data: {
+          stylist_id: user.id,
+          consult_id: url[url.length - 1],
+          contents: "",
+        },
+      })
+        .then((res) => {
+          // axios가 잘되면
+          alert("상담 신청이 완료되었습니다");
+          setApply(!apply);
+        })
+        .catch((error) => {
+          alert("상담 신청을 실패했습니다");
+        });
+    }
+  };
+
+  const deleteConsult = () => {
+    if (window.confirm("해당 상담을 삭제하시겠습니까?")) {
+    }
+    axios({
+      method: "delete",
+      url: `${process.env.REACT_APP_URL}/consult/req`,
+      data: {
+        user_id: user.id,
+        consult_id: url[url.length - 1],
+      },
+    })
+      .then((res) => {
+        // axios가 잘되면
+        alert("상담 삭제가 완료되었습니다");
+        history.goBack();
+      })
+      .catch((error) => {
+        alert("상담 삭제를 실패했습니다");
       });
   };
 
@@ -50,12 +133,30 @@ const ConsultDetail = (props) => {
         <div className="processing">
           <div className="position">
             <br />
-            <div className="type">내 옷 코디하기</div>
-            <div className="user">
-              <img alt="style" className="profile" src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" />
-              <span className="nickname">다니다니는너무착</span>
+            <div className="type">
+              {category === "coordi" ? "코디 추천 받기" : "내 옷 추천받기"}
             </div>
-            <div className="apply">상담 신청하기</div>
+            <div className="user">
+              <img alt="style" className="profile" src={requser.profile_img} />
+              <span className="nickname">{requser.nickname}</span>
+            </div>
+            {user.type === "stylist" ? (
+              <>
+                {apply ? (
+                  <div className="apply" onClick={clickApply}>
+                    상담 신청 취소하기
+                  </div>
+                ) : (
+                  <div className="apply" onClick={clickApply}>
+                    상담 신청하기
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="apply" onClick={deleteConsult}>
+                상담 삭제하기
+              </div>
+            )}
           </div>
         </div>
         <div className="total_consult">
@@ -64,8 +165,15 @@ const ConsultDetail = (props) => {
           <div className="text_info">
             {list.map((condition) => (
               <div key={condition[0]} className="row">
-                <div className="col-1">{condition[0]}</div>
-                <div className="col-11">{condition[1]}</div>
+                {condition[2] && condition[2] !== null && (
+                  <>
+                    <div className="col-1">{condition[0]}</div>
+                    <div className="col-11">
+                      {condition[2]}
+                      {condition[1]}
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -73,18 +181,30 @@ const ConsultDetail = (props) => {
           <div className="img_info">
             <div className="sub_title">원하는 스타일</div>
             <div>
-              <img alt="style" className="styleimg" src="https://platum.kr/wp-content/uploads/2014/05/unnamed3.png" />
-              <img alt="style" className="styleimg" src="https://platum.kr/wp-content/uploads/2014/05/unnamed3.png" />
-              <img alt="style" className="styleimg" src="https://platum.kr/wp-content/uploads/2014/05/unnamed3.png" />
+              {wantImg.map((img, index) => (
+                <img
+                  key={index}
+                  alt="style"
+                  className="styleimg"
+                  src={"/img/wantStyle/" + img.img}
+                />
+              ))}
             </div>
-            <div className="sub_title">평소 입는 스타일</div>
-            <div>
-              <img alt="style" className="styleimg" src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG" />
-              <img alt="style" className="styleimg" src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG" />
-              <img alt="style" className="styleimg" src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG" />
-              <img alt="style" className="styleimg" src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG" />
-              <img alt="style" className="styleimg" src="https://t1.daumcdn.net/liveboard/fashionn/4d8277a2f3c945c5b678d076f559ccad.JPG" />
-            </div>
+            {myImg.length !== 0 && (
+              <>
+                <div className="sub_title">평소 입는 스타일</div>
+                <div>
+                  {myImg.map((img, index) => (
+                    <img
+                      key={index}
+                      alt="style"
+                      className="styleimg"
+                      src={img.image_path}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

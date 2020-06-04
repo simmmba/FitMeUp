@@ -1,4 +1,5 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from "mobx";
+// import { observable, action, computed } from "mobx";
 
 export default class CounterStore {
   constructor(root) {
@@ -20,8 +21,7 @@ export default class CounterStore {
 
   @observable consult = {
     stylist_id: null,
-    user_id: window.sessionStorage.getItem("user"),
-    category: null, // 코디 추천 / 내옷 코디
+    category: "coordi", // 코디 추천 / 내옷 코디
     gender: null, // 1-1. 성별 (필수)
     age: "", // 1-2. 나이 (필수)
     top: "", // 2-1. 상의 사이즈 (선택, 성별에 따라 다르게 보이도록)
@@ -30,6 +30,7 @@ export default class CounterStore {
     weight: "", // 2-4. 몸무게 (선택)
     want: [], // 3. 원하는 스타일 (필수, 성별에 따라 다르게 보이도록)
     current_img: [], // 4. 평소 스타일 (필수, 성별에 따라 다르게 보이도록)
+    current_base64: [], // 4. 평소 스타일 (필수, 성별에 따라 다르게 보이도록)
     budget: "", // 5. 예산 (선택)
     start_time: 0, // 6-1. 상담 가능 시작 시간 (선택)
     end_time: 24, // 6-2. 상담 가능 종료 시간 (선택)
@@ -101,6 +102,7 @@ export default class CounterStore {
     this.consult.weight = "";
     this.consult.want = [];
     this.consult.current_img = [];
+    this.consult.current_base64 = [];
     this.consult.budget = "";
     this.consult.start_time = 0;
     this.consult.end_time = 24;
@@ -141,8 +143,8 @@ export default class CounterStore {
   // @computed :
   // getter 함수에만 사용 가능
   // 반환하는 값이 변경되 었을 때 rerendering을 하는데, 값이 변경 되었다 하더라도 변경되기 전과 같은 값이라면 불필요하게 rerendering을 하지 않는다.
-  @computed
-  get total() {
-    return this.number * this.number;
-  }
+  // @computed
+  // get total() {
+  //   return this.number * this.number;
+  // }
 }
