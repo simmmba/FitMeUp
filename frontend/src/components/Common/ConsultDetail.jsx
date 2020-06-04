@@ -4,7 +4,6 @@ import "./ConsultDetail.scss";
 import axios from "axios";
 
 import Header from "../Common/Header";
-import { SmallDashOutlined } from "@ant-design/icons";
 
 const ConsultDetail = (props) => {
   const [apply, setApply] = useState(false);
@@ -15,20 +14,25 @@ const ConsultDetail = (props) => {
     ["몸무게", "kg"],
     ["상의", ""],
     ["하의", ""],
-    ["가격", "원"],
-    ["상황", ""],
   ]);
   const [wantImg, setWantImg] = useState([]);
   const [myImg, setMyImg] = useState([]);
   const [requser, setRequser] = useState({});
   const [category, setCategory] = useState("");
+  const [state, setState] = useState("");
+  const [stylist, setStylelist] = useState("");
+  const [budget, setBudget] = useState("");
+  const [contents, setContents] = useState("");
+  const [time, setTime] = useState({
+    start_time: 0,
+    end_time: 0,
+  });
 
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const url = window.location.href.split("/");
   const history = useHistory();
 
   useEffect(() => {
-    console.log(user);
     req_list();
   }, []);
 
@@ -41,8 +45,7 @@ const ConsultDetail = (props) => {
       }&user_id=${user.id}`,
     })
       .then((res) => {
-
-        console.log(res.data.consult)
+        console.log(res.data.consult);
 
         list[0].push(res.data.consult.gender);
         list[1].push(res.data.consult.age);
@@ -50,14 +53,24 @@ const ConsultDetail = (props) => {
         list[3].push(res.data.consult.weight);
         list[4].push(res.data.consult.top);
         list[5].push(res.data.consult.bottom);
-        list[6].push(res.data.consult.budget);
-        list[7].push(res.data.consult.contents);
+
+        setTime({
+          ...time,
+          start_time: res.data.consult.start_time,
+          end_time: res.data.consult.end_time,
+        });
+        setBudget(res.data.consult.budget);
+        setContents(res.data.consult.contents);
 
         setWantImg(res.data.consult.ConsultWants);
         setMyImg(res.data.consult.ConsultImages);
         setRequser(res.data.consult.req_user);
         setCategory(res.data.consult.category);
         if (res.data.consult?.applied !== "no") setApply(true);
+        setState(res.data.consult.state);
+        if (res.data.consult.stylist_id)
+          setStylelist(res.data.consult.stylist_id);
+        else setStylelist(user.id);
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
@@ -157,25 +170,65 @@ const ConsultDetail = (props) => {
                 상담 삭제하기
               </div>
             )}
+            {state === "COMPLETE" && (
+              <div className="apply complete">상담 완료</div>
+            )}
+            {state === "ACCEPTED" && (
+              <div className="apply complete">상담 진행 중</div>
+            )}
+            {state === "DENIED" ||
+              (stylist !== user.id && (
+                <div className="apply complete">상담 거절</div>
+              ))}
           </div>
         </div>
         <div className="total_consult">
           <div className="title">상담 상세 내용</div>
+          {/* 시간 */}
+          <span className="ctime">* 연락 가능 시간 : </span>
+          <span className="ctime">
+            {time.start_time === 0 && time.end_time === 24 ? (
+              "언제나"
+            ) : (
+              <>
+                {time.start_time}시 ~ {time.end_time}시
+              </>
+            )}
+          </span>
           {/* 문자로 된 정보 */}
           <div className="text_info">
-            {list.map((condition) => (
-              <div key={condition[0]} className="row">
-                {condition[2] && condition[2] !== null && (
-                  <>
-                    <div className="col-1">{condition[0]}</div>
-                    <div className="col-11">
-                      {condition[2]}
-                      {condition[1]}
-                    </div>
-                  </>
-                )}
+            {/* 신체 정보 */}
+            <table className="consult_info">
+              <thead>
+                <tr>
+                  {list.map((item) => (
+                    <th key={item[0]}>{item[0]}</th>
+                  ))}
+                  <th>예산</th>
+                </tr>
+                <tr>
+                  {list.map((item, index) => (
+                    <td key={index}>{item[2] ? item[2] + "" + item[1] : "-"}</td>
+                  ))}
+                  {budget === null ? (
+                    "-"
+                  ) : (
+                    <td>
+                      {budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      원
+                    </td>
+                  )}
+                </tr>
+              </thead>
+            </table>
+
+            {/* 추가 정보 */}
+            {contents && (
+              <div className="row">
+                <div className="contents">{contents}</div>
               </div>
-            ))}
+            )}
+
           </div>
           {/* 이미지로 된 정보 */}
           <div className="img_info">

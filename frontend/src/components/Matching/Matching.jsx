@@ -4,6 +4,7 @@ import axios from "axios";
 
 import MatchingList from "../Matching/MatchingList";
 import Header from "../Common/Header";
+import { Spin } from "antd";
 
 const Matching = () => {
   const [category, setCategory] = useState(0);
@@ -11,6 +12,7 @@ const Matching = () => {
   const [date, setDate] = useState(0);
   const [apply, setApply] = useState(0);
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const user = JSON.parse(window.sessionStorage.getItem("user"));
 
@@ -22,8 +24,8 @@ const Matching = () => {
 
   let gender_list = [
     ["entire", "전체"],
-    ["female", "여자"],
-    ["male", "남자"],
+    ["여자", "여자"],
+    ["남자", "남자"],
   ];
 
   let date_list = [
@@ -42,6 +44,7 @@ const Matching = () => {
   useEffect(() => {
     req_list();
     setList([]);
+    setLoading(true);
   }, [category, gender, date, apply]);
 
   // axios로 리스트를 부름
@@ -61,8 +64,10 @@ const Matching = () => {
       .then((res) => {
         console.log(res.data.list);
         setList(res.data.list);
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
       });
   };
@@ -126,11 +131,12 @@ const Matching = () => {
           </div>
         </div>
         {/* 상담 신청 목록 */}
+        {loading && <Spin className="loading" size="large" />}
         <div className="list">
           {list.map((match, index) => (
             <MatchingList key={index} match={match}></MatchingList>
           ))}
-          {list.length === 0 && <div className="no_consult">해당하는 상담 내역이 없습니다.</div>}
+          {list.length === 0 && !loading && <div className="no_consult">해당하는 상담 내역이 없습니다.</div>}
         </div>
       </div>
     </>

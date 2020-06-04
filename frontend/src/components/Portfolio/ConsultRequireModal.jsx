@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Modal from "react-bootstrap/Modal";
@@ -12,17 +11,19 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id }) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const history = useHistory();
-
   return (
     <div className="ConsultRequireModal">
-      <div className="apply" onClick={handleShow}>상담 신청하기</div>
+      <div className="apply" onClick={handleShow}>
+        상담 신청하기
+      </div>
       <Modal className="m" show={show} onHide={handleClose} centered>
         <Modal.Header className="mHeader" closeButton></Modal.Header>
         <Modal.Body className="body">
           <div className="mentionTop">스타일리스트에게 상담 받기 위해</div>
           <div className="mentionTop">원하는 서비스를 선택해주세요!</div>
-          <div className="mentionBottom">47,505명의 스타일리스트가 활동 중이에요.</div>
+          <div className="mentionBottom">
+            47,505명의 스타일리스트가 활동 중이에요.
+          </div>
           <Link
             className="selectBtn"
             to={user ? `/consult` : `/login`}

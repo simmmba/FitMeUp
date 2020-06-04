@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./MatchingList.scss";
 import axios from "axios";
 
-import { MdRemoveCircleOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -12,10 +11,10 @@ const MatchingList = ({ match }) => {
 
   useEffect(() => {
     // 지원한 상태면
-    if (match.applied) {
+    if (match.applied === "yes") {
       setApply(true);
     }
-  }, []);
+  }, [match.applied]);
 
   const clickApply = () => {
     // 이미 상담 신청되어 있으면 취소
@@ -79,7 +78,7 @@ const MatchingList = ({ match }) => {
 
         {/* 성별 */}
         <div className="items">
-          {match.gender === "male" ? <div>남</div> : <div>여</div>}
+          <div>{match.gender}</div>
         </div>
 
         {/* 나이 */}
@@ -138,11 +137,12 @@ const MatchingList = ({ match }) => {
         )}
 
         {/* 요구 사항 */}
-        {match.contents !== "" && (
+        {/* {match.contents !== "" && (
           <div className="items">
             <div className="content">{match.contents}</div>
           </div>
-        )}
+        )} */}
+
         {/* 문의 시간 */}
         <div className="items">
           <div>
