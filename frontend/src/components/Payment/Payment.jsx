@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import "./Payment.scss";
 
 import { Form } from "react-bootstrap";
 import { METHODS_FOR_INICIS } from "./constants";
-import { getMethods, getQuotas } from "./utils";
 
 const Payment = () => {
+  const history = useHistory();
   const methods = METHODS_FOR_INICIS;
   const [show, setShow] = useState(false);
   const [ongoing, setOngoing] = useState(false);
@@ -52,7 +52,7 @@ const Payment = () => {
   }
 
   function callback(res) {
-    console.log(res);
+    // console.log(res);
     setOngoing(true);
 
     // 충전 금액 db에 적용
@@ -68,7 +68,7 @@ const Payment = () => {
         },
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setCredit(res.data.credit);
         })
         .catch((error) => {
@@ -102,6 +102,11 @@ const Payment = () => {
     setOngoing(false);
     setPayMethod("card");
     setPrice(0);
+  };
+
+  const handlePointHistory = () => {
+    setShow(false);
+    history.push("/mypage");
   };
 
   const Payment = (
@@ -138,7 +143,7 @@ const Payment = () => {
         <b>{result.paid_amount} Point</b>
       </div>
       <div className="result">충전 완료</div>
-      <a href={result.receipt_url} target="_blank">
+      <a href={result.receipt_url} target="_blank" rel="noopener noreferrer">
         결제 영수증
       </a>
       <div className="point">{credit} Point</div>
@@ -147,9 +152,9 @@ const Payment = () => {
         <button className="btn" onClick={handleRetry}>
           더 충전하기
         </button>
-        <Link className="btn" to="/mypage">
+        <button className="btn" onClick={handlePointHistory}>
           포인트 내역 보기
-        </Link>
+        </button>
       </div>
     </div>
   ) : (
