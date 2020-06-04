@@ -357,7 +357,7 @@ export const read_myconsults = async (req, res) => {
       })
     }
 
-    res.json({ state: "Success", list: consults })
+    res.json({ result: "Success", list: consults })
 
 
   } catch (err) {
@@ -563,7 +563,7 @@ export const apply_in_consult = async (req, res) => {
       where: { consult_id: consult_id, state: { [Op.like]: 'REQUESTED' } }
     })
 
-    res.json({ state: "Success", list: apply_list })
+    res.json({ result: "Success", list: apply_list })
   } catch (err) {
     console.log("consultController.js read_applies method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
@@ -578,7 +578,7 @@ export const consult_complete = async (req, res) => {
       { state: "COMPLETE" },
       { where: { id: consult_id } }
     )
-    res.json({ state: "Success" })
+    res.json({ result: "Success" })
   } catch (error) {
     console.log("consultController.js consult_complete method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
