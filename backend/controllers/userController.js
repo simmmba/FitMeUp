@@ -60,7 +60,7 @@ export const update_user = async (req, res) => {
             where: { api_id }
         })
 
-        res.json({ result: " Success", user: req.body.user })
+        res.json({ result: "Success", user: req.body.user })
 
     } catch (err) {
         console.log(err);
