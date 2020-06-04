@@ -15,7 +15,7 @@
     .style_conditions {
         // 차지할 수 있는 모든 영역 차지
         // flex: 1;
-        width: calc(100% - 150px);
+        width: calc(100% -  190px);
         display: flex;
         align-items: center;
         overflow-x: auto;
@@ -104,11 +104,12 @@
     .cancel {
         background: $darkgray;
         &:hover {
-            // color: black;
-            // font-family: $main-font;
             background: $red;
         }
-        // color: white;
+    }
+
+    .denied{
+        background: $darkgray;
     }
 
     // 엘리먼트 사이사이에 테두리를 넣어 줌

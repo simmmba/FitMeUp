@@ -5,6 +5,7 @@ import ConsultRequireModal from "./ConsultRequireModal";
 import MainRecommend from "./MainRecommend";
 
 const Main = () => {
+
   return (
     <>
       <Header></Header>
@@ -16,6 +17,7 @@ const Main = () => {
           <MainRecommend />
         </div>
       </div>
+
     </>
   );
 };

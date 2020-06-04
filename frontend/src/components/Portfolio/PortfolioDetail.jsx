@@ -63,7 +63,6 @@ class PortfolioDetail extends React.Component {
                 </div>
                 {!this.user ||
                   (this.user?.type === "general" && (
-                    // <div className="apply">상담 신청하기</div>
                     <ConsultRequireModal
                       stylist_id={this.url[this.url.length - 1]}
                     />
@@ -96,6 +95,7 @@ class PortfolioDetail extends React.Component {
                 <div className="img_list">
                   {this.state.portfolio.PortfolioImages?.map((port_img) => (
                     <img
+                    alt="myimg"
                       src={port_img.image_path}
                       onClick={() => {
                         window.open(port_img.image_path);
