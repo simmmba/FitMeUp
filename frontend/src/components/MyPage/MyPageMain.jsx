@@ -20,10 +20,10 @@ const MyPageMain = () => {
             <Header/>
             <div className="MyPageMain">
                 <div className="processing"/>
-                <div className="container topMargin">
-                    <div className="selectBtn">프로필</div>
-                    <div className="selectBtn">상담 현황</div>
-                </div>
+                {/*<div className="container topMargin">*/}
+                {/*    <div className="selectBtn">프로필</div>*/}
+                {/*    <div className="selectBtn">상담 현황</div>*/}
+                {/*</div>*/}
                 {loginUser.type==="general"?
                     (
                         <div className="outline">

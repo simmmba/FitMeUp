@@ -80,7 +80,7 @@ const GeneralSecondTab = () => {
     }
 
     return (
-        <div className="outline col-5">
+        <div className="outline col-5 liner">
             <div className="col-7 inner_tab">
                 <div className="center middleTopMargin"><h3>기본 정보</h3></div>
                 <div className="center info">

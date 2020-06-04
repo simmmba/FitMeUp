@@ -27,15 +27,15 @@
   }
   .inner_tab {
     //border: grey solid 1px;
-    //height: 510px;
-    margin: 10px;
+    height: 510px;
+    //margin: 10px;
   }
   .liner {
-    //border: grey solid 1px;
+    border: grey solid 1px;
   }
   .one_tab {
-    //border: grey solid 1px;
-    //height: 550px;
+    border: grey solid 1px;
+    height: 550px;
     margin: 10px;
   }
   .center {
@@ -84,14 +84,31 @@
   .messageBox {
     height: 90%;
   }
+  //.unread_message {
+  //  margin-top: 10px;
+  //  background: whitesmoke;
+  //  width: 90%;
+  //  margin-left: 10px;
+  //  margin-right: 10px;
+  //  padding: 5px;
+  //  height: 75px;
+  //  //border: $red solid 1px;
+  //  border-radius: 5px;
+  //}
+  .unread_message {
+    background: $red;
+    height: 100%;
+    color: $red;
+  }
   .message {
     margin-top: 10px;
     background: whitesmoke;
     width: 90%;
+    height: 75px;
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px;
-    border: $red solid 1px;
+    //border: $red solid 1px;
     border-radius: 5px;
   }
   .message:hover {
@@ -140,5 +157,11 @@
   }
   .textBlack {
     color: black;
+  }
+  .leftAlign {
+    display: flex;
+  }
+  .smallText {
+    font-size: 0.8em;
   }
 }

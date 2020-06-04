@@ -58,11 +58,14 @@ const GeneralThirdTab = () => {
                             return (
                                 <div className="center" key={m.id}>
                                     <div className="message center">
-                                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile"/>
-                                        <div className="">
-                                            {m.readed?(<div>읽음</div>):(<div>안 읽음</div>)}
-                                            {messageType?(<div>{m.source.nickname}님의 메시지</div>):(<div>{m.target.nickname}님에게 메시지</div>)}
-                                            <div>{m.createdAt}</div>
+                                        {m.readed?(<div/>):(<div className="unread_message">&nbsp;</div>)}
+                                        <div className="col-4 center">
+                                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile"/>
+                                        </div>
+                                        <div className="col-8">
+                                            <div className="leftAlign">{m.source.nickname}</div>
+                                            <div className="leftAlign">{m.contents.length>15?(m.contents.substring(0, 15) + ".."):(m.contents)}</div>
+                                            <div className="leftAlign smallText">{m.createdAt.substring(0, 10) + " " + m.createdAt.substring(11, 16)}</div>
                                         </div>
                                     </div>
                                 </div>
