@@ -4,11 +4,16 @@ import './MyPageMain.scss'
 import GeneralThirdTab from './GeneralThirdTab'
 import GeneralFirstTab from "./GeneralFirstTab";
 import GeneralSecondTab from "./GeneralSecondTab";
+import StylistFirstTab from "./StylistFirstTab";
 
 const MyPageMain = () => {
 
     const loginUser = JSON.parse(window.sessionStorage.getItem('user'))
-    console.log(loginUser)
+    const [ generalUserFlag, setGeneralUserFlag ] = useState(false);
+
+    const handleClick = () => {
+        setGeneralUserFlag(!generalUserFlag)
+    }
 
     return (
         <div>
@@ -27,9 +32,13 @@ const MyPageMain = () => {
                             <GeneralThirdTab/>
                         </div>
                     ):
-                    (<div className="MyPage">
-                        <div>Stylist My Page</div>
-                    </div>)}
+                    (
+                        <div className="outline">
+                            <StylistFirstTab/>
+                            {/*<StylistSecondTab/>*/}
+                            {/*<StylistThirdTab/>*/}
+                        </div>
+                    )}
             </div>
         </div>
     )
