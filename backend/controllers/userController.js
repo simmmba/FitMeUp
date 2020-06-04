@@ -220,16 +220,6 @@ export const dup_phone = async (req, res) => {
 export const most_consulting = async (req, res) => {
     try {
         const { user_id } = req.query;
-        // let stylist_list = await User.findAll({
-        //     include: [
-        //         {
-        //             attributes: [[sequelize.fn('count', sequelize.col('stylist_id')),'consult_cnt']],
-        //             model:Consult,
-        //             where:{user_id:user_id},
-        //             group:['user_id','stylist_id']
-        //         }
-        //     ],
-        // })
         let stylist_list = await Consult.findAll({
             attributes: ['stylist_id',[sequelize.fn('count', sequelize.col('stylist_id')), 'consult_cnt']],
             where: { user_id: user_id , stylist_id:{[Op.ne]:null}, state:{[Op.like]:'COMPLETE'}},
@@ -242,7 +232,6 @@ export const most_consulting = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
-
     }
 
 
