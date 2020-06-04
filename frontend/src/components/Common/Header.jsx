@@ -52,7 +52,9 @@ class Header extends React.Component {
             <div className="col-3 header_user">
               {this.user ? (
                 <>
-                  <NavLink to="/mypage">마이페이지</NavLink>
+                  <NavLink to="/mypage" activeClassName="activeMenu">
+                    마이페이지
+                  </NavLink>
                   <span onClick={this.logout}>로그아웃</span>
                 </>
               ) : (

@@ -2,7 +2,6 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Form } from "react-bootstrap";
 import ResultModal from "./ResultModal";
-// import "./Contents.scss";
 
 const Contents = ({ setConsult, consult, previous }) => {
   const setContents = (event) => {

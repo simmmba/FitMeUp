@@ -4,27 +4,31 @@
   @include maxcenter;
 
   .title {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     font-family: $main_font;
-    padding: 50px 0 50px 0;
+    padding: 50px 0 40px 10px;
   }
 
   .searchOption {
-    padding-left: 10px;
+    padding: 0 0 20px 10px;
     display: flex;
 
     select {
-      width: 150px;
+      width: 160px;
       margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
     }
 
     input {
       width: 500px;
       margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
     }
 
     button {
-      @include button(70, 12);
+      @include button(70, 16);
     }
   }
 
