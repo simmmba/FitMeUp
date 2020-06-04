@@ -15,7 +15,6 @@ export const create_user = async function (req, res, ) {
         const user_exist = await User.findOne({ where: { api_id: api_id } })
 
         if (user_exist) {
-            // res.json( {result: "Fail", detail: "user exist"});
             throw new Error("user exist");
         }
         else {
@@ -60,7 +59,7 @@ export const update_user = async (req, res) => {
             where: { api_id }
         })
 
-        res.json({ result: " Success", user: req.body.user })
+        res.json({ result: "Success", user: req.body.user })
 
     } catch (err) {
         console.log(err);
@@ -218,6 +217,37 @@ export const dup_phone = async (req, res) => {
     }
 }
 
+export const most_consulting = async (req, res) => {
+    try {
+        const { user_id } = req.query;
+        // let stylist_list = await User.findAll({
+        //     include: [
+        //         {
+        //             attributes: [[sequelize.fn('count', sequelize.col('stylist_id')),'consult_cnt']],
+        //             model:Consult,
+        //             where:{user_id:user_id},
+        //             group:['user_id','stylist_id']
+        //         }
+        //     ],
+        // })
+        let stylist_list = await Consult.findAll({
+            attributes: ['stylist_id',[sequelize.fn('count', sequelize.col('stylist_id')), 'consult_cnt']],
+            where: { user_id: user_id , stylist_id:{[Op.ne]:null}, state:{[Op.like]:'COMPLETE'}},
+            group: ['user_id', 'stylist_id'],
+            include : [User],
+            order : [[sequelize.fn('count', sequelize.col('stylist_id')), 'DESC']],
+            limit : 3,
+        })
+        res.json({state:"Success", stylists:stylist_list})
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+
+    }
+
+
+}
+
 const add_info = async (stylist_search) => {
     let add_list = new Array();
 
@@ -231,25 +261,13 @@ const add_info = async (stylist_search) => {
             limit: 1,
             raw: true
         })
-
-        if(review){
-            let review_user_id = review.id;
-            let nickname = await User.findOne({
-                where :{id : review_user_id},
-                attributes: ['nickname'],
-                raw: true
-            })
-            review.nickname = nickname.nickname;
-        }
-
-
         s.recent_review = review;
         // 포트폴리오 이미지 타이틀 달기 
         let portfolio = await Portfolio.findOne({
-            where: {stylist_id: user_id},
-            raw:true
+            where: { stylist_id: user_id },
+            raw: true
         })
-        
+
         s.portfolio_img = portfolio ? portfolio.main_img : null;
         s.portfolio_title = portfolio ? portfolio.title : null;
 
@@ -285,14 +303,13 @@ const add_info = async (stylist_search) => {
 
     return add_list;
 }
-
 //정렬
 const sort_list = (list, method) => {
     if (method === 'review_cnt') {
         list.sort((a, b) => {
             return b.review_cnt - a.review_cnt;
         })
-    }  else if (method === 'consult_cnt') {
+    } else if (method === 'consult_cnt') {
         list.sort((a, b) => {
             return b.consult_cnt - a.consult_cnt;
         })
