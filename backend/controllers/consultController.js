@@ -598,8 +598,8 @@ export const apply_in_consult = async (req, res) => {
 
       s.portfolio_img = portfolio ? portfolio.main_img : null;
       s.portfolio_title = portfolio ? portfolio.title : null;
-      s.coordi_price = portfolio ? portfolio.coordi_price : null;
-      s.my_price = portfolio ? portfolio.my_price : null;
+      s.coordi_price = portfolio ? portfolio.coordi_price ? portfolio.coordi_price :0 : 0;
+      s.my_price = portfolio ? portfolio.my_price ? portfolio.my_price :0 :0;
 
       //평점 달기, 리뷰 수 달기
       let review_info = await Review.findOne({
