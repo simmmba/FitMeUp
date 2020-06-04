@@ -6,12 +6,13 @@ export const charge = async function (req, res, ) {
     try {
         // body로 부터 param 추출
         const { user_id, amount } = req.body;
-        let credit = await User.findOne({ attributes: ['credit'], where: { id: user_id } })
-        let credit_charged = parseInt(credit.dataValues.credit) + parseInt(amount);
+        let credit = await User.findOne({ attributes: ['credit'], where: { id: user_id },raw:true})
+        let credit_charged = parseInt(credit.credit) + parseInt(amount);
         let user = User.update({ credit: credit_charged }, { where: { id: user_id } })
         let payment = await Payment.create({ source: user_id, type: "charge", amount })
+        
 
-        res.json({ result: "Success" })
+        res.json({ result: "Success" , credit:credit_charged })
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
