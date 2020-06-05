@@ -46,19 +46,26 @@ class RoomList extends Component {
    * DB에서 userId의 방 객체가 추가 될때마다 실행 됩니다.
    * @param userId
    */
-  addUserListener = userId => {
+  addUserListener = async userId => {
     const { usersRef } = this.state
     const loadedRooms = []
-    usersRef
+    await usersRef
       .child(userId)
       .child('rooms')
-      .on('child_added', snap => {
-        loadedRooms.push(snap.val())
-        this.setState({ rooms: loadedRooms, loading: false }, () => {
-          if (this.state.firstLoad) {
-            this.setFirstRoom()
-          }
-        })
+      .once('value')
+      .then(snapshot => {
+        usersRef
+          .child(userId)
+          .child('rooms')
+          .on('child_added', snap => {
+            loadedRooms.push(snap.val())
+            this.setState({ rooms: loadedRooms, loading: false }, () => {
+              if (this.state.firstLoad) {
+                this.setFirstRoom()
+              }
+            })
+          })
+        if (!snapshot.exists()) this.setState({ rooms: [], loading: false })
       })
   }
 
