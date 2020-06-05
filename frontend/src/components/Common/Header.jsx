@@ -22,7 +22,7 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
-    const { clearRoom } = this.props.chatting
+    const { clearRoom } = this.props
     const { history } = this.props;
     alert("로그아웃 되었습니다");
     clearRoom();
@@ -48,7 +48,17 @@ class Header extends React.Component {
               <NavLink to="/chatting" className="header_menu" activeClassName="activeMenu">
                 채팅
               </NavLink>
-              <NavLink to="/search" className="header_menu" activeClassName="activeMenu" onClick={reset}>
+              <NavLink
+                to="/search"
+                className="header_menu"
+                activeClassName="activeMenu"
+                onClick={() => {
+                  if (this.props.location.pathname === "/search") {
+                    window.location.reload(false);
+                  }
+                  reset();
+                }}
+              >
                 스타일리스트 찾기
               </NavLink>
             </div>

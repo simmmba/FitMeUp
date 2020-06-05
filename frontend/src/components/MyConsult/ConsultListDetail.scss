@@ -1,8 +1,12 @@
 @import "../../styles/utils.scss";
 
-.ConsultList {
+.ConsultListDetail {
     @include drag;
     @include a;
+
+    margin-top: 20px;
+    border: 1px solid $gray;
+    border-radius: 5px;
 
     // 세로 가운데 정렬
     display: flex;
@@ -15,7 +19,7 @@
     .style_conditions {
         // 차지할 수 있는 모든 영역 차지
         // flex: 1;
-        width: calc(100% -  190px);
+        width: calc(100% -  180px);
         display: flex;
         align-items: center;
         overflow-x: auto;
@@ -101,32 +105,4 @@
         }
     }
 
-    .cancel {
-        background: $darkgray;
-        &:hover {
-            background:  #5f5f5f;
-        }
-    }
-
-    .notclick{
-        background: $red_hover;
-        cursor: default;
-    }
-
-    .denied{
-        background: $darkgray;
-    }
-
-    .complete{
-        background: $darkgray;
-        &:hover {
-            background: $darkgray;
-            cursor: default;
-        }
-    }
-
-    // 엘리먼트 사이사이에 테두리를 넣어 줌
-    & + & {
-        border-top: 1px solid #dee2e6;
-    }
 }
