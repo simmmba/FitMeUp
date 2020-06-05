@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
 import firebase from '../../../firebaseConfig'
+import axios from 'axios'
 import { inject, observer } from 'mobx-react'
 
 import UserInfoItem from '../Common/UserInfoItem'
@@ -15,7 +16,7 @@ class UserInviteModal extends Component {
   }
 
   componentDidMount () {
-    this.addListeners()
+    this.getAllUsers()
   }
 
   /**
@@ -25,26 +26,22 @@ class UserInviteModal extends Component {
     this.removeListeners()
   }
 
-  addListeners = () => {
-    this.addUserListener()
-  }
-
-  /**
-   * 이벤트 리스너를 등록합니다.
-   * DB에서 유저가 추가 될 때마다 실행 됩니다.
-   */
-  addUserListener = () => {
-    const { usersRef } = this.state
-    const loadedUsers = []
-    usersRef.on('child_added', snap => {
-      loadedUsers.push(snap.val())
-      this.setState({ users: loadedUsers, loading: false })
-    })
-  }
-
   removeListeners = () => {
-    this.state.usersRef.off()
     this.state.roomsRef.off()
+  }
+
+  getAllUsers () {
+    try {
+      axios.get(`${process.env.REACT_APP_URL}/user/list`).then(res => {
+        if (res.data.result == 'Success') {
+          this.setState({ users: res.data.users })
+        }else{
+          console.log(res.data.detail)
+        }
+      })
+    } catch (e) {
+      console.log(e.message)
+    }
   }
 
   /**
@@ -66,12 +63,12 @@ class UserInviteModal extends Component {
 
       const invitedUser = {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        nickname: user.nickname,
+        profile_img: user.profile_img,
         type: user.type
       }
 
-      roomsRef
+      roomsRef  
         .child(key)
         .child('users')
         .child(user.id)
@@ -119,13 +116,17 @@ class UserInviteModal extends Component {
         right: 'auto',
         bottom: 'auto',
         width: '35rem',
+        height: '80vh',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         border: 'none',
-        background: '#eee',
-        padding: '3rem',
+        background: '#fff',
+        padding: '2rem',
         boxShadow:
           '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0,0,0,.3)'
       }
     }
 
@@ -140,6 +141,7 @@ class UserInviteModal extends Component {
         ariaHideApp={false}
       >
         <h1>초대하기</h1>
+        <hr/>
         {this.displayUsers(users)}
       </Modal>
     )

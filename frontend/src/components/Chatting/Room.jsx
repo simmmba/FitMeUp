@@ -18,17 +18,25 @@ class Room extends Component {
 
   state = {
     messages: [],
-    messagesRef: firebase.database().ref('messages'),
-    room: this.props.chatting.currentRoom,
-    user: this.props.currentUser
+    messagesRef: firebase.database().ref('messages')
   }
 
   componentDidMount () {
-    const { room, user } = this.state
-    console.log(room)
-    // if (room && user) {
-    //   this.addListeners(room.id)
-    // }
+    const { currentRoom, currentUser } = this.props
+    if (currentRoom && currentUser) {
+      this.addListeners(currentRoom.id)
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (
+      this.props.currentRoom &&
+      prevProps.currentRoom !== this.props.currentRoom &&
+      this.props.currentUser
+    ) {
+      this.addListeners(this.props.currentRoom.id)
+    }
+    this.scrollDown()
   }
 
   componentWillUnmount () {
@@ -44,16 +52,25 @@ class Room extends Component {
    * DB에서 roodId의 메세지 객체가 추가 될때마다 실행 됩니다.
    * @param roomId
    */
-  addMessageListener = roomId => {
+  addMessageListener = async roomId => {
     const loadedMessages = []
     const ref = this.state.messagesRef
-    
-    ref.child(roomId).on('child_added', snap => {
-      loadedMessages.push(snap.val())
-      this.setState({
-        messages: loadedMessages
+    await ref
+      .child(roomId)
+      .once('value')
+      .then(snapshot => {
+        ref.child(roomId).on('child_added', snap => {
+          loadedMessages.push(snap.val())
+          this.setState({
+            messages: loadedMessages
+          })
+        })
+        if (!snapshot.exists()) {
+          this.setState({
+            messages: []
+          })
+        }
       })
-    })
   }
 
   removeListeners = () => {
@@ -71,13 +88,12 @@ class Room extends Component {
   }
 
   render () {
-    console.log("Render Room.jsx")
     const { currentRoom, currentUser } = this.props
     const { messages } = this.state
     return (
       <section className='room-messages'>
         <RoomHeader currentRoom={currentRoom} />
-        {/* <Paper className='custom-paper'>
+        <Paper className='custom-paper'>
           <div className='message-content' ref={this.messageContentRef}>
             {this.displayMessages(messages)}
           </div>
@@ -86,7 +102,7 @@ class Room extends Component {
           scrollDown={this.scrollDown}
           currentUser={currentUser}
           currentRoom={currentRoom}
-        /> */}
+        />
       </section>
     )
   }

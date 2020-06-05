@@ -33,8 +33,8 @@ class CreateRoomModal extends Component {
 
     const createUser = {
       id: user.id,
-      name: user.nickname,
-      avatar: user.profile_img,
+      nickname: user.nickname,
+      profile_img: user.profile_img,
       type: user.type
     }
 

@@ -77,7 +77,6 @@ class MessageHeader extends Component {
   };
 
   render() {
-    console.log("Render RoomHeader.jsx")
     const { currentRoom } = this.props;
     const { UserListModalIsOpen, currentRoomUsers, CurrentRoomUsersIsOpen } = this.state;
     return (

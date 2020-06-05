@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import firebase from '../../firebaseConfig'
 import { v4 as uuidv4 } from 'uuid'
-import Icon from '@material-ui/core/Icon'
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import Tooltip from '@material-ui/core/Tooltip'
 import './MessageForm.scss'
 
@@ -17,8 +17,6 @@ class MessageForm extends Component {
     uploadTask: null,
     percentUploaded: 0,
     message: '',
-    user: this.props.currentUser,
-    room: this.props.chatting.currentRoom,
     messagesRef: firebase.database().ref('messages'),
     fileUploadModalIsOpen: false
   }
@@ -41,12 +39,15 @@ class MessageForm extends Component {
    * @param fileUrl
    */
   createMessage = (fileUrl = null) => {
+    const { currentUser } = this.props
+
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: {
-        id: this.state.user.id,
-        name: this.state.user.nickname,
-        avatar: this.state.user.profile_img
+        id: currentUser.id,
+        nickname: currentUser.nickname,
+        profile_img: currentUser.profile_img,
+        type: currentUser.type
       }
     }
     if (fileUrl !== null) {
@@ -72,7 +73,7 @@ class MessageForm extends Component {
   sendMessage = event => {
     if (event.key === 'Enter') {
       const { scrollDown } = this.props
-      const { currentRoom } = this.props.chatting
+      const { currentRoom } = this.props
       const { message, messagesRef } = this.state
 
       if (message) {
@@ -95,7 +96,8 @@ class MessageForm extends Component {
    * 구글 storage에 image를 업로드합니다.
    */
   uploadFile = (file, metadata) => {
-    const pathToUpload = this.state.room.id
+    const { currentRoom } = this.props
+    const pathToUpload = currentRoom.id
     const ref = this.state.messagesRef
     const filePath = `images/${uuidv4()}.jpg`
 
@@ -148,23 +150,24 @@ class MessageForm extends Component {
   }
 
   render () {
-    const { fileUploadModalIsOpen, percentUploaded, room } = this.state
+    const { fileUploadModalIsOpen, percentUploaded } = this.state
+    const { currentRoom } = this.props
     return (
       <div className='message-form'>
         <div className='message-form-content'>
           <button
-            disabled={!room}
+            disabled={!currentRoom}
             type='button'
             className='upload-button'
             onClick={this.openModal}
           >
             <Tooltip title='사진 업로드'>
-              <Icon className='upload-icon'>add_to_photos</Icon>
+              <PhotoLibraryIcon className='upload-icon'/>
             </Tooltip>
           </button>
           <input
-            disabled={!room}
-            placeholder={room ? '메세지를 적어주세요' : '방을 생성해주세요'}
+            disabled={!currentRoom}
+            placeholder={currentRoom ? '메세지를 적어주세요' : '방을 생성해주세요'}
             onKeyPress={this.sendMessage}
             onChange={this.handleChange}
             className='message-input'

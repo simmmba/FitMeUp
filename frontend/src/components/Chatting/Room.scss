@@ -11,9 +11,10 @@
     position: absolute;
     top: 120px;
     bottom: 120px;
+    padding: 2rem;
   }
   .message-content {
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
     position: absolute;
     overflow: scroll;
     top: 20px;
