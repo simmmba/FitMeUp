@@ -29,7 +29,7 @@ function App() {
           <Route path="/" component={Main} exact />
           <Route path="/consult" component={ConsultRequire} exact />
           <Route path="/signup" component={Signup} exact />
-          <Route path="/signup/detail:" component={SignupDetail} exact />
+          <Route path="/signup/detail" component={SignupDetail} exact />
           <Route path="/login" component={Login} />
           <Route path="/match" component={Matching} />
           <Route path="/consult/detail/:consultNo" component={ConsultDetail} />

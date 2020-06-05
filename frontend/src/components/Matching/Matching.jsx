@@ -53,7 +53,7 @@ const Matching = () => {
       method: "post",
       url: `${process.env.REACT_APP_URL}/consult/reqlist`,
       data: {
-        user_id:user.id,
+        user_id: user.id,
         category_filter: category_list[category][0],
         date_filter: date_list[date][0],
         gender_filter: gender_list[gender][0],
@@ -106,14 +106,9 @@ const Matching = () => {
               <div key={tabitem[0]} className="col-4">
                 <div id={index} onClick={clickCategory}>
                   {tabitem[1]}
-                  {category_list[category][0] === tabitem[0] && list.length !== 0 &&
-                    " (" + list.length + ")"}
+                  {category_list[category][0] === tabitem[0] && list.length !== 0 && " (" + list.length + ")"}
                 </div>
-                <div
-                  className={
-                    category_list[category][0] === tabitem[0] ? "focus" : ""
-                  }
-                />
+                <div className={category_list[category][0] === tabitem[0] ? "focus" : ""} />
               </div>
             ))}
           </div>
@@ -136,7 +131,7 @@ const Matching = () => {
           {list.map((match, index) => (
             <MatchingList key={index} match={match}></MatchingList>
           ))}
-          {list.length === 0 && !loading && <div className="no_consult">해당하는 상담 내역이 없습니다.</div>}
+          {list.length === 0 && !loading && <span className="no_consult">해당하는 상담 내역이 없습니다.</span>}
         </div>
       </div>
     </>

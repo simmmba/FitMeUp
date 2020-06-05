@@ -11,7 +11,7 @@ export default class SearchStore {
   @observable option = "";
   @observable order = "review";
   @observable keyword = "";
-  @observable result = [];
+  @observable result = null;
 
   // @action 지정 메소드 : @observable로 지정된 property 변경
   @action
