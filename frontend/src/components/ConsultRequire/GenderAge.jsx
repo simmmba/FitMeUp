@@ -16,7 +16,7 @@ const GenderAge = ({ setConsult, consult, next, stylist }) => {
       alert("나이를 입력해주세요");
       document.getElementById("age").value = "";
       document.getElementById("age").focus();
-    } else if (Number(consult.age) < 1) {
+    } else if (Number(consult.age) < 1 || Number(consult.age) > 146 || Number(consult.age) % 1 !== 0) {
       alert("정확한 나이를 입력해주세요");
       document.getElementById("age").value = "";
       document.getElementById("age").focus();
