@@ -465,7 +465,7 @@ export const create_apply = (req, res) => {
     Apply.create({
       stylist_id: stylist_id,
       consult_id: consult_id,
-      state: 'requested',
+      state: 'REQUESTED',
       contents: contents,
     }).then(() => {
       res.json({ result: "Success" });
