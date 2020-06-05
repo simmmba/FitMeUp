@@ -484,13 +484,18 @@ export const read_applies = async (req, res) => {
 
     let consult_apply = await Consult.findAll({
       include: [{
-        attributes: [],
+        attributes: ['state'],
         model: Apply,
-        where: { stylist_id: user_id }
+        where: { stylist_id: user_id },
       }, ConsultImage, ConsultWant]
     })
 
     for (const c of consult_apply) {
+      //state 관리
+      let apply_state = c.dataValues.Applies[0].dataValues.state;
+      if(apply_state === 'DENIED'){
+        c.dataValues.state = 'DENIED';
+      }
       let user_id = c.dataValues.user_id;
       let user = await User.findOne({
         where: { id: user_id },
@@ -574,7 +579,7 @@ export const apply_in_consult = async (req, res) => {
           model: User,
         }
       ],
-      where: { consult_id: consult_id, state: { [Op.like]: 'REQUESTED' } },
+      where: { consult_id: consult_id },
       raw : true
     })
 
@@ -628,7 +633,6 @@ export const apply_in_consult = async (req, res) => {
       let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
       s.consult_cnt = consult_cnt;
     }
-
 
     res.json({ result: "Success", list: apply_list })
   } catch (err) {
