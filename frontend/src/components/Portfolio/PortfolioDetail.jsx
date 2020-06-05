@@ -34,9 +34,13 @@ class PortfolioDetail extends React.Component {
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
       });
+
+      console.log(this.user)
   }
 
   render() {
+
+    console.log(this.user)
     return (
       <>
         <Header></Header>
@@ -64,7 +68,7 @@ class PortfolioDetail extends React.Component {
                   <div className="score">상담 횟수 : 129번</div>
                 </div>
 
-                {this.user && this.user.type === "general" && this.state.portfolio.User && (
+                {(this.user === null || this.user?.type === "general") && this.state.portfolio.User && (
                   <ConsultRequireModal
                     stylist_id={this.url[this.url.length - 1]}
                     stylist_nickname={this.state.portfolio.User.nickname}
@@ -73,7 +77,7 @@ class PortfolioDetail extends React.Component {
                   />
                 )}
 
-                {this.user?.type !== "general" && this.state.portfolio?.stylist_id === this.user.id && <div className="apply">포트폴리오 수정하기</div>}
+                {this.user && this.user?.type !== "general" && this.state.portfolio?.stylist_id === this.user.id && <div className="apply">포트폴리오 수정하기</div>}
               </div>
             </div>
             <div className="row">

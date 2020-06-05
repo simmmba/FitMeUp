@@ -12,7 +12,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
   const [finishedShow, setFinishedShow] = useState(false);
   const [creditShow, setCreditShow] = useState(false);
   const [resultShow, setResultShow] = useState(false);
-  const [remainPoint, setRemainPoint] = useState(user.credit);
+  const [remainPoint, setRemainPoint] = useState(user?.credit);
   const [usePoint, setUsePoint] = useState(0);
   console.log(user);
 
@@ -240,7 +240,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
           <div className="mentionTop">포인트가 부족합니다.</div>
           <br />
           <div className="mentionTop">
-            보유 포인트 : <big>{user.credit}</big> Point
+            보유 포인트 : <big>{user?.credit}</big> Point
           </div>
           <br />
           <br />
