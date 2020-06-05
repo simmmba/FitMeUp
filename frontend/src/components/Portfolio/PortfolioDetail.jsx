@@ -73,7 +73,7 @@ class PortfolioDetail extends React.Component {
                   />
                 )}
 
-                {this.user?.type !== "general" && this.state.portfolio?.stylist_id === this.user.id && <div className="apply">포트폴리오 수정하기</div>}
+                {this.user && this.user.type !== "general" && this.state.portfolio?.stylist_id === this.user.id && <div className="apply">포트폴리오 수정하기</div>}
               </div>
             </div>
             <div className="row">
