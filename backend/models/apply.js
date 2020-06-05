@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Apply', {
+  const Apply = sequelize.define('Apply', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -24,11 +24,29 @@ module.exports = function(sequelize, DataTypes) {
         key: 'ID'
       }
     },
+    contents: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     state: {
       type: DataTypes.STRING(100),
       allowNull: true
     }
   }, {
-    tableName: 'request_for_consult'
+    tableName: 'apply'
   });
+
+  Apply.associate = function (models){
+    Apply.belongsTo(models.Consult, {
+      onDelete:'cascade',
+      foreignKey:'consult_id'
+    })
+
+    Apply.belongsTo(models.User, {
+      onDelete:'cascade',
+      foreignKey:'stylist_id'
+    })
+  }
+
+  return Apply;
 };

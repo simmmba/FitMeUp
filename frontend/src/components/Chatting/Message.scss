@@ -1,0 +1,35 @@
+@import "../../styles/variable";
+
+.room-message {
+  display: flex;
+  margin-top: .1rem;
+  .image-wrapper {
+    margin-top:5px;
+    width: 50%;
+  }
+  .message-img {
+    width: 100%;
+  }
+  .message-content {
+    position: relative;
+    padding-left:.5rem;
+    top:0px;
+  }
+  
+  .avatar {
+    width: 38px;
+    height: 38px;
+    margin-right: .5rem;
+    margin-top:3px;
+  }
+  
+  .message-text {
+    margin-top: 3px;
+    font-size: 14px;
+  }
+  
+  .display-name {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}

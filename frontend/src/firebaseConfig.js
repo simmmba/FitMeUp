@@ -1,3 +1,8 @@
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/storage'
+
 const config = {
     apiKey: "AIzaSyCCcOUHo4jJt-PABMq3BkPKoAblSTWEF8s",
     authDomain: "fitmeup-1cd96.firebaseapp.com",
@@ -9,4 +14,6 @@ const config = {
     measurementId: "G-9ZHFN63HR9"
 };
 
-export default config;
+firebase.initializeApp(config);
+
+export default firebase;

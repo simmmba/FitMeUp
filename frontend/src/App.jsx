@@ -16,6 +16,8 @@ import Matching from "../src/components/Matching/Matching";
 import ConsultDetail from "../src/components/Common/ConsultDetail";
 import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
 import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
+import Stylist from "./components/Stylist/Stylist";
+import Chatting from "./components/Chatting/Chatting";
 import MyPageMain from "./components/MyPage/MyPageMain";
 import MyConsult from "./components/MyConsult/MyConsult";
 import Search from "./components/Search/Search";
@@ -34,6 +36,8 @@ function App() {
           <Route path="/consult/detail/:consultNo" component={ConsultDetail} />
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
+          <Route path="/stylist" component={Stylist} />
+          <Route path="/chatting" component={Chatting} />
           <Route path="/mypage" component={MyPageMain} />
           <Route path="/myconsult" component={MyConsult} />
           <Route path="/search" component={Search} />

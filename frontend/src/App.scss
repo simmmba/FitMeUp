@@ -29,6 +29,7 @@
 body {
   margin: 0;
   padding: 0;
+  height : calc(100% - 60px) !important;
 
   ::-webkit-scrollbar {
     height: 5px;

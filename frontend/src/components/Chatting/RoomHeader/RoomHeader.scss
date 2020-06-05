@@ -1,0 +1,46 @@
+@import "../../../styles/variable";
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  height: 60px;
+  
+  .room-name {
+    color: $color-black;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .room-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-count {
+    text-align: left;
+    font-size: 14px;
+    color: $color-red-light;
+    margin-top: .5rem;
+    font-weight: bold;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.6;
+    }
+  }
+  
+  .icon {
+    color: $color-red-light;
+    font-size: 32px !important;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+
+  button {
+    border:none;
+    background:none;
+  }
+}

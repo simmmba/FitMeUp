@@ -1,11 +1,12 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
+import { inject, observer} from 'mobx-react'
 import "./Header.scss";
 
 import { NavLink, withRouter } from "react-router-dom";
 
 @inject((stores) => ({
   reset: stores.search.reset,
+  clearRoom: stores.chatting.clearRoom
 }))
 @observer
 class Header extends React.Component {
@@ -21,8 +22,10 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
+    const { clearRoom } = this.props.chatting
     const { history } = this.props;
     alert("로그아웃 되었습니다");
+    clearRoom();
     window.sessionStorage.clear();
     history.push("/");
     window.location.reload();
@@ -42,7 +45,7 @@ class Header extends React.Component {
               <NavLink to="/myconsult" className="header_menu" activeClassName="activeMenu">
                 내 상담
               </NavLink>
-              <NavLink to="/portfolio/4" className="header_menu" activeClassName="activeMenu">
+              <NavLink to="/chatting" className="header_menu" activeClassName="activeMenu">
                 채팅
               </NavLink>
               <NavLink to="/search" className="header_menu" activeClassName="activeMenu" onClick={reset}>
