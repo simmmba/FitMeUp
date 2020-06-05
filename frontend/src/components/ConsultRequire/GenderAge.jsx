@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { Form, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import "./GenderAge.scss";
 
-const GenderAge = ({ setConsult, consult, next }) => {
+const GenderAge = ({ setConsult, consult, next, stylist }) => {
   const setGenderAge = (event) => {
     let value = event.target.value;
     if (value === "여자" || value === "남자") setConsult("gender", event.target.value);
@@ -35,7 +35,6 @@ const GenderAge = ({ setConsult, consult, next }) => {
 
   return (
     <div>
-      {console.log(consult.category)}
       <label>성별</label>
       <br />
       <ToggleButtonGroup className="genderBox" type="radio" name="options" defaultValue={consult.gender}>
@@ -63,4 +62,5 @@ export default inject(({ consultRequire }) => ({
   setConsult: consultRequire.setConsult,
   consult: consultRequire.consult,
   next: consultRequire.next,
+  stylist: consultRequire.stylist,
 }))(observer(GenderAge));

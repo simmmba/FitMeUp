@@ -14,7 +14,7 @@ class MyConsult extends React.Component {
     this.state = {
       filter: "0", // 받은 요청, 보낸 요청
       consult: [],
-      loading: false
+      loading: false,
     };
   }
 
@@ -35,7 +35,7 @@ class MyConsult extends React.Component {
       history.push("/");
     } else {
       this.setState({
-        loading: true
+        loading: true,
       });
       this.getList("0");
     }
@@ -45,7 +45,7 @@ class MyConsult extends React.Component {
   clickFilter = async (res) => {
     this.setState({
       filter: res.target.id,
-      loading: true
+      loading: true,
     });
 
     this.getList(res.target.id);
@@ -72,7 +72,7 @@ class MyConsult extends React.Component {
     }
 
     // axios 요청
-    axios ({
+    axios({
       method: "get",
       url: axiosUrl,
     })
@@ -82,17 +82,15 @@ class MyConsult extends React.Component {
         console.log(res.data.list);
         this.setState({
           consult: res.data.list,
-          loading:false
+          loading: false,
         });
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
         this.setState({
-          loading:false
-        })
+          loading: false,
+        });
       });
-
-
   };
 
   render() {
@@ -103,32 +101,22 @@ class MyConsult extends React.Component {
           {/* 요청 필터 */}
           <div className="filter">
             {this.user?.type !== "general" ? (
-            <>
-              {this.filter_stylist.map((item, index) => (
-                <div
-                  key={index}
-                  id={index}
-                  onClick={this.clickFilter}
-                  className={item[0] === this.state.filter ? "focus" : ""}
-                >
-                  {item[1]}
-                </div>
-              ))}
-            </>
-          ):(
-            <>
-            {this.filter_general.map((item, index) => (
-              <div
-                key={index}
-                id={index}
-                onClick={this.clickFilter}
-                className={item[0] === this.state.filter ? "focus" : ""}
-              >
-                {item[1]}
-              </div>
-            ))}
-          </>
-          )}
+              <>
+                {this.filter_stylist.map((item, index) => (
+                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                    {item[1]}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {this.filter_general.map((item, index) => (
+                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                    {item[1]}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
           {/* 받아온 상담 목록 */}
           {this.state.loading && <Spin className="loading" size="large" />}
@@ -136,9 +124,7 @@ class MyConsult extends React.Component {
             {this.state.consult.map((consult, index) => (
               <ConsultList key={index} filter={this.state.filter} consult={consult}></ConsultList>
             ))}
-            {this.state.consult.length === 0 && (
-              <div className="no_consult">해당하는 상담 내역이 없습니다.</div>
-            )}
+            {this.state.consult.length === 0 && <span className="no_consult">해당하는 상담 내역이 없습니다.</span>}
           </div>
         </div>
       </>

@@ -5,23 +5,36 @@ import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import "./ResultModal.scss";
 
-const ResultModal = ({ consult, reset, setKeyword }) => {
+const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStylist, price, setPrice }) => {
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const history = useHistory();
   const [show, setShow] = useState(false);
+  const [resultShow, setResultShow] = useState(false);
+  const [remainPoint, setRemainPoint] = useState(user.credit);
 
   const handleShow = () => {
     setShow(true);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    if (show) {
+      setShow(false);
+    } else if (resultShow) {
+      setResultShow(false);
+      setStylist(null);
+      setPrice(0);
+      reset();
+      history.push("/");
+    }
+  };
 
   const handleClick = () => {
     axios({
       method: "post",
       url: `${process.env.REACT_APP_URL}/consult/req`,
       data: {
-        stylist_id: consult.stylist_id,
-        user_id: JSON.parse(window.sessionStorage.getItem("user")).id,
+        stylist_id: stylist,
+        user_id: user.id,
         category: consult.category, // 코디 추천 / 내옷 코디
         gender: consult.gender, // 1-1. 성별 (필수)
         age: consult.age, // 1-2. 나이 (필수)
@@ -51,8 +64,30 @@ const ResultModal = ({ consult, reset, setKeyword }) => {
           url: `${process.env.REACT_APP_URL}/upload/consult?consult_id=${id}`,
           data: img,
         })
-          .then((res) => {
+          .then(() => {
             console.log("사진 등록 성공");
+
+            if (stylist !== null) {
+              // 포인트 출금
+              axios({
+                method: "post",
+                url: `${process.env.REACT_APP_URL}/payment/checkout`,
+                data: { source_id: user.id, target_id: stylist, amount: price },
+              })
+                .then((res) => {
+                  console.log(res);
+                  console.log("포인트 출금 성공");
+                  setRemainPoint(res.data.credit);
+                  setShow(false);
+                  setResultShow(true);
+                })
+                .catch((error) => {
+                  alert("포인트 출금에 실패했습니다.");
+                });
+            } else {
+              alert("현재 활동 중인 스타일리스트에게 상담 요청되었습니다. \n스타일리스트의 연락을 기다려주세요.");
+              reset();
+            }
           })
           .catch((error) => {
             alert("사진 등록에 실패했습니다.");
@@ -61,28 +96,20 @@ const ResultModal = ({ consult, reset, setKeyword }) => {
       .catch((error) => {
         alert("상담 요청에 실패했습니다.");
       });
-
-    if (consult.stylist_id !== null) {
-      alert("선택한 스타일리스트에게 상담 요청되었습니다. \n스타일리스트의 연락을 기다려주세요.");
-      reset();
-      history.push("/");
-    } else {
-      alert("현재 활동 중인 스타일리스트에게 상담 요청되었습니다. \n스타일리스트의 연락을 기다려주세요.");
-    }
   };
 
   const handleSearch = () => {
     setKeyword(consult.want[0].val);
+    setConsult("finished", true);
   };
 
   return (
     <>
-      {/* <div className="finalBtn"> */}
-      <button className="reqBtn" onClick={consult.stylist_id === null ? handleShow : handleClick}>
+      <button className="reqBtn" onClick={stylist === null ? handleShow : handleClick}>
         상담 요청하기
       </button>
-      {/* </div> */}
 
+      {/* 요청 모달 */}
       <Modal className="m" show={show} onHide={handleClose} centered>
         <Modal.Header className="mHeader" closeButton></Modal.Header>
         <Modal.Body className="body">
@@ -99,12 +126,49 @@ const ResultModal = ({ consult, reset, setKeyword }) => {
           </div>
         </Modal.Body>
       </Modal>
+
+      {/* 요청 성공 모달 */}
+      <Modal className="m" show={resultShow} onHide={handleClose} centered>
+        <Modal.Header className="mHeader" closeButton></Modal.Header>
+        <Modal.Body className="body">
+          <div className="mentionTop">스타일리스트에게</div>
+          <div className="mentionTop">상담요청 되었습니다.</div>
+          <br />
+          <br />
+          <div className="mentionTop">
+            사용 포인트 : <big>{price}</big> Point
+          </div>
+          <div className="mentionTop">
+            잔여 포인트 : <big>{remainPoint}</big> Point
+          </div>
+          <br />
+          <br />
+          <Link
+            to={"/"}
+            className="selectBtn"
+            onClick={() => {
+              setStylist(null);
+              setPrice(0);
+              reset();
+            }}
+          >
+            메인으로 돌아가기
+          </Link>
+          <br />
+          <br />
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
 
 export default inject(({ consultRequire, search }) => ({
-  consult: consultRequire.consult,
   reset: consultRequire.reset,
+  consult: consultRequire.consult,
+  stylist: consultRequire.stylist,
+  price: consultRequire.price,
+  setConsult: consultRequire.setConsult,
+  setStylist: consultRequire.setStylist,
+  setPrice: consultRequire.setPrice,
   setKeyword: search.setKeyword,
 }))(observer(ResultModal));

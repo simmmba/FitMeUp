@@ -61,11 +61,7 @@ const MatchingList = ({ match }) => {
     <div className="MatchingList">
       <div className="style_conditions">
         <div className="items profile_items">
-          <img
-            alt="style"
-            className="profile"
-            src={match.req_user.profile_img}
-          />
+          <img alt="style" className="profile" src={match.req_user.profile_img} />
         </div>
 
         {/* 닉네임 */}
@@ -109,30 +105,20 @@ const MatchingList = ({ match }) => {
 
         {/* 원하는 스타일 */}
         <div className="items">
-          <img
-            alt="style"
-            className="styleimg"
-            src={"/img/wantStyle/" + match.ConsultWants[0].img}
-          />
+          <img alt="style" className="styleimg" src={"/img/wantStyle/" + match.ConsultWants[0].img} />
         </div>
 
         {/* 평소 내 스타일 */}
         {match.ConsultImages.length !== 0 && (
           <div className="items">
-            <img
-              alt="style"
-              className="styleimg"
-              src={match.ConsultImages[0]}
-            />
+            <img alt="style" className="styleimg" src={match.ConsultImages[0]} />
           </div>
         )}
 
         {/* 예산 */}
         {match.budget !== null && (
           <div className="items">
-            <div>
-              {match.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
-            </div>
+            <div>{match.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
           </div>
         )}
 
