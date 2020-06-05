@@ -41,8 +41,8 @@ const Budget = ({ setConsult, consult, next, previous }) => {
     <div className="">
       <Form>
         <Form.Group>
-          <Form.Label>예산 (만원)</Form.Label>
-          <Form.Control id="budget" type="number" value={consult.budget} onChange={setBudget} placeholder="숫자만 입력" />
+          <Form.Label>예산 (원)</Form.Label>
+          <Form.Control id="budget" type="number" min="0" step="1000" value={consult.budget} onChange={setBudget} placeholder="숫자만 입력해 주세요" />
         </Form.Group>
       </Form>
       {moveBtn()}

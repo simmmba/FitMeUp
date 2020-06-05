@@ -26,7 +26,6 @@ const GenderAge = ({ setConsult, consult, next }) => {
   const moveBtn = () => {
     return (
       <div className="btnBox">
-        <div className="empty"></div>
         <button className="nextBtn" onClick={selectCheck}>
           다음
         </button>
@@ -36,10 +35,10 @@ const GenderAge = ({ setConsult, consult, next }) => {
 
   return (
     <div>
+      {console.log(consult.category)}
       <label>성별</label>
       <br />
       <ToggleButtonGroup className="genderBox" type="radio" name="options" defaultValue={consult.gender}>
-        {/* <ToggleButton value={1}>여자 (pre-checked)</ToggleButton> */}
         <ToggleButton className="gender" id="gender" value="여자" onChange={setGenderAge}>
           여자
         </ToggleButton>
@@ -52,7 +51,7 @@ const GenderAge = ({ setConsult, consult, next }) => {
       <Form>
         <Form.Group>
           <Form.Label>나이</Form.Label>
-          <Form.Control id="age" type="number" value={consult.age} onChange={setGenderAge} min="1" placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 나이 넣어주기 */}
+          <Form.Control id="age" type="number" value={consult.age} onChange={setGenderAge} min="1" placeholder="숫자만 입력해 주세요" /> {/* 나중에 db에서 회원 나이 넣어주기 */}
         </Form.Group>
       </Form>
       {moveBtn()}

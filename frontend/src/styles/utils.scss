@@ -15,6 +15,8 @@
 
 $red: #d14d56;
 $red_hover: rgb(170, 49, 57);
+$light_red: #d14d5617;
+$darkgray: #8c8c8c;
 $gray: #eaeaea;
 $main_font: "S-CoreDream-5Medium";
 $sub_font: "S-CoreDream-4Regular";
@@ -34,14 +36,50 @@ $eng_font: "Open Sans", sans-serif;
   border: none;
   transition: 0.3s;
   border-radius: 3px;
+  text-decoration: none;
 
   a {
-    text-decoration: none;
     color: white;
   }
 
   &:hover {
     background: $red_hover;
+    text-decoration: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+@mixin whiteButton($width, $size) {
+  width: $width * 1px;
+  padding: 8px;
+  text-align: center;
+  font-family: $main_font;
+  font-size: $size * 1px;
+  background-color: white;
+  color: $red;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1.5px solid $red;
+
+  a {
+    color: $red;
+  }
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+    // border: 1.5px solid $red_hover;
+    background-color: $red;
+  }
+
+  &:focus {
+    box-shadow: none;
   }
 }
 
@@ -51,6 +89,7 @@ $eng_font: "Open Sans", sans-serif;
     text-decoration: none;
     color: black;
     cursor: pointer;
+
     &:hover {
       color: $red;
     }
@@ -107,6 +146,19 @@ $eng_font: "Open Sans", sans-serif;
   margin: 0 auto;
 }
 
+@mixin midcenter {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+@mixin overflow_hidden {
+  // 길어지면 ...으로 생략하기
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // 센터로 만들기
 // 위 아래
 @mixin itemcenter {
@@ -146,4 +198,32 @@ $eng_font: "Open Sans", sans-serif;
   width: $size * 1px;
   height: $size * 1px;
   border-radius: $size * 0.5px;
+}
+
+// antd로딩 spinner
+@mixin loading($height) {
+  .loading {
+    height: $height * 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ant-spin,
+  .ant-spin-lg,
+  .ant-spin-spinning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .ant-spin-dot-item {
+      background: $red;
+    }
+
+    .ant-spin-text {
+      margin-top: 10px;
+      color: $red;
+      font-size: 16px;
+    }
+  }
 }

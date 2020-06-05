@@ -1,3 +1,10 @@
+@import "../../styles/utils.scss";
+
+label {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
 .genderBox {
   width: 100%;
 
@@ -10,9 +17,9 @@
 
     &:hover {
       color: #fff;
-      background-color: #d14d56;
+      background-color: $red;
       font-weight: bold;
-      border: 1.5px solid #d14d56;
+      border: 1.5px solid $red;
     }
   }
 }
@@ -21,14 +28,14 @@
 .btn-primary:not(:disabled):not(.disabled):active,
 .show > .btn-primary.dropdown-toggle {
   background-color: #fff;
-  border: 1.5px solid #d14d56;
-  color: #d14d56;
+  border: 1.5px solid $red;
+  color: $red;
   font-weight: bold;
   outline: none !important;
   box-shadow: none;
 
   &:hover {
-    color: #d14d56;
+    color: $red;
     font-weight: bold;
     background-color: #fff;
   }
@@ -39,7 +46,7 @@
 
   &:focus {
     // outline: none !important;
-    border: 2px solid #d14d56;
+    border: 2px solid $red;
     box-shadow: none;
   }
 }

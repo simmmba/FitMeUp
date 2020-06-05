@@ -1,3 +1,5 @@
+@import "../../styles/utils.scss";
+
 .consultRequire {
   display: flex;
   flex-direction: column;
@@ -9,8 +11,10 @@
     display: flex;
     justify-content: center;
     // align-items: center;
-    width: 80%;
-    min-height: 70vh;
+    // width: 80%;
+    @include midcenter;
+    min-height: 40vh;
+    margin-bottom: 5vh;
 
     .main {
       // border: 1px solid black;
@@ -32,15 +36,15 @@
 
         margin: 50px 0 30px 0;
 
-        .empty {
-          width: 100px;
-          height: 50px;
-          border: none;
-        }
+        // .empty {
+        //   width: 100px;
+        //   height: 50px;
+        //   border: none;
+        // }
 
         .preBtn {
           background-color: white;
-          color: #d14d56;
+          color: $red;
           font-weight: bold;
           width: 100px;
           height: 50px;
@@ -49,13 +53,13 @@
           transition: 0.2s;
 
           &:hover {
-            color: #b83b44;
+            color: $red_hover;
           }
         }
 
         .passBtn {
           background-color: white;
-          color: #d14d56;
+          color: $red;
           font-weight: bold;
           width: 100px;
           height: 50px;
@@ -65,12 +69,12 @@
           margin-right: 24px;
 
           &:hover {
-            color: #b83b44;
+            color: $red_hover;
           }
         }
 
         .nextBtn {
-          background-color: #d14d56;
+          background-color: $red;
           color: white;
           font-weight: bold;
           width: 100px;
@@ -81,12 +85,12 @@
           transition: 0.2s;
 
           &:hover {
-            background-color: #b83b44;
+            background-color: $red_hover;
           }
         }
 
         .reqBtn {
-          background-color: #d14d56;
+          background-color: $red;
           color: white;
           font-weight: bold;
           width: 170px;
@@ -97,16 +101,17 @@
           transition: 0.2s;
 
           &:hover {
-            background-color: #b83b44;
+            background-color: $red_hover;
           }
         }
       }
     }
-    .col-3 {
+
+    .col-5 {
       // border: 1px solid black;
       display: flex;
       justify-content: center;
-      align-items: center;
+      // align-items: center;
       text-align: center;
     }
   }

@@ -1,11 +1,9 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
 import { Form } from "react-bootstrap";
-// import "./Contents.scss";
+import ResultModal from "./ResultModal";
 
-const Contents = ({ setConsult, consult, previous, next }) => {
-  console.log(consult.contents);
-
+const Contents = ({ setConsult, consult, previous }) => {
   const setContents = (event) => {
     setConsult("contents", event.target.value);
   };
@@ -16,9 +14,7 @@ const Contents = ({ setConsult, consult, previous, next }) => {
         <button className="preBtn" onClick={previous}>
           이전
         </button>
-        <button className="reqBtn" onClick={next}>
-          상담 요청하기
-        </button>
+        <ResultModal />
       </div>
     );
   };
@@ -45,5 +41,4 @@ export default inject(({ consultRequire }) => ({
   setConsult: consultRequire.setConsult,
   consult: consultRequire.consult,
   previous: consultRequire.previous,
-  next: consultRequire.next,
 }))(observer(Contents));

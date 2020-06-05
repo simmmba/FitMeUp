@@ -1,12 +1,6 @@
-.processing {
-  // background-color: #dadada;
-  // background-image: url("../../img/consult-bg.jpg");
-  // background-repeat: no-repeat;
-  // background-attachment: scroll;
-  // background-position: 0% 0%;
-  // background-size: contain;
-  // background-size: 100% auto;
+@import "../../styles/utils.scss";
 
+.processing {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +11,7 @@
   // border: 1px solid black;
 
   .box {
-    width: 80%;
+    @include midcenter;
     // border: 1px solid black;
     .select {
       font-size: 2rem;
@@ -35,7 +29,7 @@
   //   box-shadow: none;
 
   .progress-bar {
-    background-color: #d14d56;
+    background-color: $red;
     // font-size: 1.2rem;
   }
 }
@@ -44,7 +38,7 @@
   content: "";
   display: block;
   position: absolute;
-  top: 0;
+  top: 0px;
   left: 0;
   background-image: url("../../img/consult-bg.jpg");
   background-repeat: no-repeat;

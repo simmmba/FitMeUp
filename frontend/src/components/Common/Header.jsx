@@ -1,8 +1,14 @@
 import React from "react";
+import { inject, observer} from 'mobx-react'
 import "./Header.scss";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
+@inject((stores) => ({
+  reset: stores.search.reset,
+  clearRoom: stores.chatting.clearRoom
+}))
+@observer
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -12,18 +18,54 @@ class Header extends React.Component {
     };
   }
 
+  user = JSON.parse(window.sessionStorage.getItem("user"));
+
+  // 로그아웃 시 페이지 메인으로 이동
+  logout = () => {
+    const { clearRoom } = this.props.chatting
+    const { history } = this.props;
+    alert("로그아웃 되었습니다");
+    clearRoom();
+    window.sessionStorage.clear();
+    history.push("/");
+    window.location.reload();
+  };
+
   render() {
+    const { reset } = this.props;
+
     return (
       <>
         <div className="Header">
           <div className="row">
-            <div className="col-3 logo">
+            <div className="col-2 logo">
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
-            <div className="col-6"></div>
+            <div className="col-7">
+              <NavLink to="/myconsult" className="header_menu" activeClassName="activeMenu">
+                내 상담
+              </NavLink>
+              <NavLink to="/chatting" className="header_menu" activeClassName="activeMenu">
+                채팅
+              </NavLink>
+              <NavLink to="/search" className="header_menu" activeClassName="activeMenu" onClick={reset}>
+                스타일리스트 찾기
+              </NavLink>
+            </div>
             <div className="col-3 header_user">
-              <NavLink to="/login">로그인</NavLink>
-              <NavLink to="/signup">회원가입</NavLink>
+              {this.user ? (
+                <>
+                  <NavLink to="/mypage" activeClassName="activeMenu">
+                    마이페이지
+                  </NavLink>
+                  <span onClick={this.logout}>로그아웃</span>
+                </>
+              ) : (
+                <>
+                  <NavLink to="/signup">회원가입</NavLink>
+                  <NavLink to="/login">로그인</NavLink>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -33,4 +75,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

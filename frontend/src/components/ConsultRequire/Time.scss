@@ -1,3 +1,5 @@
+@import "../../styles/utils.scss";
+
 .time {
   width: 100%;
   display: flex;
@@ -8,7 +10,7 @@
   .MuiSlider-root {
     margin-bottom: 30px;
     margin-top: 20px;
-    color: #d14d56;
+    color: $red;
     width: 90%;
     height: 8;
     cursor: pointer;

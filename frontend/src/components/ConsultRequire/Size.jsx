@@ -74,11 +74,11 @@ const Size = ({ setConsult, size, consult, next, previous }) => {
         </Form.Group>
         <Form.Group>
           <Form.Label>키 (cm)</Form.Label>
-          <Form.Control id="height" type="number" value={consult.height} onChange={setSize} placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 키 넣어주기 */}
+          <Form.Control id="height" type="number" value={consult.height} min="30" max="230" onChange={setSize} placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 키 넣어주기 */}
         </Form.Group>
         <Form.Group>
           <Form.Label>몸무게 (kg)</Form.Label>
-          <Form.Control id="weight" type="number" value={consult.weight} onChange={setSize} placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 몸무게 넣어주기 */}
+          <Form.Control id="weight" type="number" value={consult.weight} min="2" max="200" onChange={setSize} placeholder="숫자만 입력" /> {/* 나중에 db에서 회원 몸무게 넣어주기 */}
         </Form.Group>
       </Form>
       {moveBtn()}
