@@ -49,6 +49,16 @@ export const read_user = async (req, res) => {
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
     }
 }
+export const read_users = async (req, res) => {
+    try {
+
+        const users = await User.findAll( )
+            res.json({ result: "Success", users: users})
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
 
 export const update_user = async (req, res) => {
     try {

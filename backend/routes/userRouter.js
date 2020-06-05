@@ -17,4 +17,5 @@ userRouter.get("/search", user.search);
 userRouter.get("/dup_phone", user.dup_phone);
 
 userRouter.get("/most_consulting", user.most_consulting);
+userRouter.get("/list", user.read_users);
 export default userRouter;
