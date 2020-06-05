@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
     },
     image_path: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
       allowNull: true
     }
   }, {

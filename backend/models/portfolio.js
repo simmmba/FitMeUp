@@ -27,7 +27,15 @@ module.exports = function(sequelize, DataTypes) {
         main_img : {
             type:DataTypes.STRING(100),
             allowNull : true
-        }
+        },
+        coordi_price : {
+            type:DataTypes.INTEGER(11),
+            allowNull : true
+        },
+        my_price : {
+            type:DataTypes.INTEGER(11),
+            allowNull : true
+        },
     }, {
         tableName: 'portfolio'
     });
@@ -36,6 +44,15 @@ module.exports = function(sequelize, DataTypes) {
         Portfolio.hasMany(models.PortfolioImage, {
           foreignKey: 'portfolio_id',
           onDelete: 'cascade',
+        })
+        Portfolio.hasMany(models.Portfolio_tags, {
+          foreignKey: 'portfolio_id',
+          onDelete: 'cascade',
+        })
+
+        Portfolio.belongsTo(models.User,{
+            foreignKey: 'stylist_id',
+            onDelete: 'cascade',
         })
       }
     
