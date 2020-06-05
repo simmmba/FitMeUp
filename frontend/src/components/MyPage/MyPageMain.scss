@@ -21,12 +21,12 @@
   .outline {
     margin: 10px;
     padding: 10px;
-    //border: grey solid 1px;
+    border: grey solid 1px;
     display: flex;
     justify-content: center;
   }
   .inner_tab {
-    //border: grey solid 1px;
+    border: grey solid 1px;
     height: 510px;
     //margin: 10px;
   }
@@ -84,17 +84,6 @@
   .messageBox {
     height: 90%;
   }
-  //.unread_message {
-  //  margin-top: 10px;
-  //  background: whitesmoke;
-  //  width: 90%;
-  //  margin-left: 10px;
-  //  margin-right: 10px;
-  //  padding: 5px;
-  //  height: 75px;
-  //  //border: $red solid 1px;
-  //  border-radius: 5px;
-  //}
   .unread_message {
     background: $red;
     height: 100%;
@@ -160,8 +149,30 @@
   }
   .leftAlign {
     display: flex;
+    justify-content: flex-start;
+  }
+  .rightAlign {
+    display: flex;
+    justify-content: flex-end;
   }
   .smallText {
     font-size: 0.8em;
+  }
+
+  .backButton {
+    width: 25px;
+    height: 25px;
+    margin-top: 20px;
+    margin-left: 5px;
+  }
+  .message_detail {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 30px;
+    height: 260px;
+  }
+  .sendBtn {
+    height: 50px;
+    width: 50px;
   }
 }

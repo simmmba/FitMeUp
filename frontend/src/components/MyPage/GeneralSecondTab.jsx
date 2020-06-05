@@ -79,6 +79,11 @@ const GeneralSecondTab = () => {
         setModifyMode(!modifyMode)
     }
 
+    const clickCancel = () => {
+        setModifyMode(false)
+    }
+
+
     return (
         <div className="outline col-5 liner">
             <div className="col-7 inner_tab">
@@ -160,7 +165,10 @@ const GeneralSecondTab = () => {
                 </div>
                 <div className="center middleTopMargin">
                     {modifyMode?(
-                        <div className="selectBtn" onClick={handleBtnClick}>수정</div>
+                        <div className="center">
+                            <div className="smallSelectBtn" onClick={clickCancel}>취소</div>
+                            <div className="smallSelectBtn" onClick={handleBtnClick}>수정</div>
+                        </div>
                     ):(
                         <div className="smallSelectBtn" onClick={handleBtnClick}>기본 정보 수정</div>
                     )}
