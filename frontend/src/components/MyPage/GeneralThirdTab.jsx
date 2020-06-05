@@ -73,6 +73,10 @@ const GeneralThirdTab = () => {
     }
 
     const handleSendBtn = () => {
+        if(contents==="" || contents.length===0) {
+            alert("내용을 입력해주세요.")
+            return
+        }
         axios.post(`${process.env.REACT_APP_URL}/message`,
             {
                 source: loginUser.id,
