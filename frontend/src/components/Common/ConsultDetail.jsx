@@ -70,7 +70,6 @@ const ConsultDetail = (props) => {
         setState(res.data.consult.state);
         if (res.data.consult.stylist_id)
           setStylelist(res.data.consult.stylist_id);
-        else setStylelist(user.id);
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
@@ -139,6 +138,30 @@ const ConsultDetail = (props) => {
       });
   };
 
+  // 스타일리스트가 상담 수락, 거절
+  const handleRequest = () => {
+    // 확인 메세지
+    const request = url[url.length - 1];
+
+    axios({
+      method: "put",
+      url: `${process.env.REACT_APP_URL}/consult/recv_confirm`,
+      data: {
+        stylist_id: user.id,
+        consult_id: request,
+        state: "ACCEPTED",
+      },
+    })
+      .then((res) => {
+        // 상담 수락한 경우
+        alert("상담을 수락했습니다");
+        // history로 채팅으로 이동
+      })
+      .catch((error) => {
+        alert("설정에 실패했습니다");
+      });
+  };
+
   return (
     <>
       <Header></Header>
@@ -153,35 +176,67 @@ const ConsultDetail = (props) => {
               <img alt="style" className="profile" src={requser.profile_img} />
               <span className="nickname">{requser.nickname}</span>
             </div>
-            {user.type === "stylist" ? (
+
+            {state === "REQUESTED" && (
               <>
-                {apply ? (
-                  <div className="apply" onClick={clickApply}>
-                    상담 신청 취소하기
-                  </div>
+                {user.type === "stylist" ? (
+                  <>
+                    {stylist !== "" ? (
+                      // 지정한 경우
+                      <div className="apply" onClick={handleRequest}>
+                        상담 수락하기
+                      </div>
+                    ) : (
+                      <>
+                        {apply ? (
+                          <div className="apply" onClick={clickApply}>
+                            상담 신청 취소하기
+                          </div>
+                        ) : (
+                          <div className="apply" onClick={clickApply}>
+                            상담 신청하기
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </>
                 ) : (
-                  <div className="apply" onClick={clickApply}>
-                    상담 신청하기
+                  // 사용자 입장에서
+                  <div className="apply" onClick={deleteConsult}>
+                    상담 삭제하기
                   </div>
                 )}
               </>
-            ) : (
-              <div className="apply" onClick={deleteConsult}>
-                상담 삭제하기
-              </div>
             )}
+
             {state === "COMPLETE" && (
-              <div className="apply complete">상담 완료</div>
+              <>
+                {user.type !== "stylist" ||
+                (user.type === "stylist" && user.id === stylist) ? (
+                  <div className="apply complete">상담 완료</div>
+                ) : (
+                  <div className="apply complete">상담 거절</div>
+                )}
+              </>
             )}
+
             {state === "ACCEPTED" && (
-              <div className="apply complete">상담 진행 중</div>
+              <>
+                {user.type !== "stylist" ||
+                (user.type === "stylist" && user.id === stylist) ? (
+                  <div className="apply complete">상담 진행 중</div>
+                ) : (
+                  <div className="apply complete">상담 거절</div>
+                )}
+              </>
             )}
-            {state === "DENIED" ||
-              (stylist !== user.id && (
-                <div className="apply complete">상담 거절</div>
-              ))}
+            {state === "DENIED" && (
+              <div className="apply complete">상담 거절</div>
+            )}
+
           </div>
         </div>
+
         <div className="total_consult">
           <div className="title">상담 상세 내용</div>
           {/* 시간 */}
@@ -208,7 +263,9 @@ const ConsultDetail = (props) => {
                 </tr>
                 <tr>
                   {list.map((item, index) => (
-                    <td key={index}>{item[2] ? item[2] + "" + item[1] : "-"}</td>
+                    <td key={index}>
+                      {item[2] ? item[2] + "" + item[1] : "-"}
+                    </td>
                   ))}
                   {budget === null ? (
                     <td>-</td>
@@ -228,7 +285,6 @@ const ConsultDetail = (props) => {
                 <div className="contents">{contents}</div>
               </div>
             )}
-
           </div>
           {/* 이미지로 된 정보 */}
           <div className="img_info">

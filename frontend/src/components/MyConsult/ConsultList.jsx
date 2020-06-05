@@ -236,16 +236,18 @@ const ConsultList = ({ filter, consult }) => {
               {/* 승인된 상담 */}
               {(consult.state === "ACCEPTED" || request === "ACCEPTED") && (
                 // 채팅으로 이동 시키기
-                <div className="apply">
+                <div className="apply notclick">
                   승인한
                   <br />
                   상담
                 </div>
               )}
+
               {/* 완료된 상담 */}
               {consult.state === "COMPLETE" && (
                 <div className="apply cancel complete">상담 완료</div>
               )}
+
               {/* 거절한 상담 */}
               {(consult.state === "DENIED" || request === "DENIED") && (
                 // 채팅으로 이동 시키기
@@ -275,19 +277,23 @@ const ConsultList = ({ filter, consult }) => {
               )}
               {/* 거절 */}
               {consult.state === "DENIED" && (
-                <div className="apply denied">상담 거절</div>
+                <div className="apply complete">상담 거절</div>
               )}
 
               {/* 받음 */}
               {consult.state === "ACCEPTED" && (
                 // 채팅으로 url 연결하기
-                <div className="apply">승인된<br/>상담</div>
+                <div className="apply notclick">
+                  승인된
+                  <br />
+                  상담
+                </div>
               )}
 
               {/* 완료 */}
               {consult.state === "COMPLETE" && (
                 // 채팅으로 url 연결하기
-                <div className="apply cancel complete">상담 완료</div>
+                <div className="apply complete">상담 완료</div>
               )}
             </>
           )}
@@ -297,7 +303,11 @@ const ConsultList = ({ filter, consult }) => {
         <>
           <NavLink
             to={{
-              pathname: "/consult/detail/" + consult.id,
+              pathname: "/myconsult/detail",
+              state: {
+                consult: consult,
+                filter: filter,
+              },
             }}
           >
             <div className="plus">
@@ -306,9 +316,37 @@ const ConsultList = ({ filter, consult }) => {
               보기
             </div>
           </NavLink>
-          <div className="apply" onClick={deleteConsult}>
-            상담삭제
-          </div>
+
+          {/* 대기 중 */}
+          {consult.state === "REQUESTED" && (
+            <div className="apply" onClick={deleteConsult}>
+              상담 삭제
+            </div>
+          )}
+          
+          {/* 상담 수락 */}
+          {consult.state === "ACCEPTED" && (
+            <>
+              {filter === "0" ? (
+                <div className="apply notclick">상담 진행 중</div>
+              ) : (
+                <div className="apply notclick">상담 승인</div>
+              )}
+            </>
+          )}
+
+          {/* 상담 거절 */}
+          {consult.state === "DENIED" && (
+            <div className="apply complete">
+              거절된
+              <br />
+              상담
+            </div>
+          )}
+          {/* 상담 완료 */}
+          {consult.state === "COMPLETE" && (
+            <div className="apply complete">상담 완료</div>
+          )}
         </>
       )}
     </div>

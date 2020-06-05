@@ -1,29 +1,27 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Modal from "react-bootstrap/Modal";
 import "./Main.scss";
 
-const ConsultRequireModal = ({ setConsult, reset }) => {
+const ConsultRequireModal = ({ setConsult, reset, setStylist }) => {
   const [show, setShow] = useState(false);
   const user = JSON.parse(window.sessionStorage.getItem("user"));
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-
-  const history = useHistory();
-  const goMatch = () => {
-    history.push("/match");
+  const handleShow = () => {
+    setShow(true);
+    setStylist(null);
+    reset();
   };
+  const handleClose = () => setShow(false);
 
   return (
     <>
       <div className="btnBox">
         {user && user.type === "stylist" ? (
-          <button className="btn" onClick={goMatch}>
+          <Link className="btn" to="/match">
             상담 리스트 확인
-          </button>
+          </Link>
         ) : (
           <button className="btn" onClick={handleShow}>
             실시간 상담 요청
@@ -43,6 +41,7 @@ const ConsultRequireModal = ({ setConsult, reset }) => {
             onClick={() => {
               if (user) {
                 setConsult("category", "coordi");
+                setStylist(null);
                 reset();
               } else {
                 alert("로그인 후 핏미업 서비스를 이용해보세요!");
@@ -58,6 +57,7 @@ const ConsultRequireModal = ({ setConsult, reset }) => {
             onClick={() => {
               if (user) {
                 setConsult("category", "my");
+                setStylist(null);
                 reset();
               } else {
                 alert("로그인 후 핏미업 서비스를 이용해보세요!");
@@ -78,4 +78,5 @@ const ConsultRequireModal = ({ setConsult, reset }) => {
 export default inject(({ consultRequire }) => ({
   setConsult: consultRequire.setConsult,
   reset: consultRequire.reset,
+  setStylist: consultRequire.setStylist,
 }))(observer(ConsultRequireModal));

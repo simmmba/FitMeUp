@@ -20,6 +20,8 @@ import Chatting from "./components/Chatting/Chatting";
 import MyPageMain from "./components/MyPage/MyPageMain";
 import MyConsult from "./components/MyConsult/MyConsult";
 import Search from "./components/Search/Search";
+import MyConsultDetail from "./components/MyConsult/MyConsultDetail"
+import PortfolioUpdate from "./components/Portfolio/PortfolioDetail"
 
 function App() {
   return (
@@ -29,16 +31,18 @@ function App() {
           <Route path="/" component={Main} exact />
           <Route path="/consult" component={ConsultRequire} exact />
           <Route path="/signup" component={Signup} exact />
-          <Route path="/signup/detail:" component={SignupDetail} exact />
+          <Route path="/signup/detail" component={SignupDetail} exact />
           <Route path="/login" component={Login} />
           <Route path="/match" component={Matching} />
           <Route path="/consult/detail/:consultNo" component={ConsultDetail} />
           <Route path="/portfolio/write" component={PortfolioWrite} />
+          <Route path="/portfolio/update" component={PortfolioUpdate} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
           <Route path="/chatting" component={Chatting} />
           <Route path="/mypage" component={MyPageMain} />
-          <Route path="/myconsult" component={MyConsult} />
+          <Route path="/myconsult" component={MyConsult} exact/>
           <Route path="/search" component={Search} />
+          <Route path="/myconsult/detail" component={MyConsultDetail}/>
         </Switch>
       </BrowserRouter>
     </div>

@@ -20,16 +20,32 @@
         .input_title {
             @include input(300);
             width: 100%;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+            border: none;
+
+            &:focus {
+                box-shadow: 0 0 0 2px $red inset;
+            }
         }
 
         .tag {
             .input_tag {
                 @include input(250);
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+                border: none;
+                margin-right: 10px;
+
+                &:focus {
+                    box-shadow: 0 0 0 2px $red inset;
+                }
+
+                &:disabled{
+                    background: $gray;
+                }
             }
             .plus_btn {
                 display: inline-block;
-                margin-left: 7px;
-                @include button(50, 13);
+                @include button(50, 14);
             }
 
             .tags {
@@ -55,10 +71,15 @@
                 width: 100%;
                 padding: 10px;
                 background: white;
-                border: 1px solid rgba(0, 0, 0, 0.4);
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+                border: none;
 
                 // textarea 사이즈 고정
                 resize: none;
+
+                &:focus {
+                    box-shadow: 0 0 0 2px $red inset;
+                }
             }
         }
 

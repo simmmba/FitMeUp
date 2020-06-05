@@ -4,7 +4,7 @@ import axios from "axios";
 
 import MatchingList from "../Matching/MatchingList";
 import Header from "../Common/Header";
-import { Spin } from "antd";
+import { Spin, Empty } from "antd";
 
 const Matching = () => {
   const [category, setCategory] = useState(0);
@@ -53,7 +53,7 @@ const Matching = () => {
       method: "post",
       url: `${process.env.REACT_APP_URL}/consult/reqlist`,
       data: {
-        user_id:user.id,
+        user_id: user.id,
         category_filter: category_list[category][0],
         date_filter: date_list[date][0],
         gender_filter: gender_list[gender][0],
@@ -106,14 +106,11 @@ const Matching = () => {
               <div key={tabitem[0]} className="col-4">
                 <div id={index} onClick={clickCategory}>
                   {tabitem[1]}
-                  {category_list[category][0] === tabitem[0] && list.length !== 0 &&
+                  {category_list[category][0] === tabitem[0] &&
+                    list.length !== 0 &&
                     " (" + list.length + ")"}
                 </div>
-                <div
-                  className={
-                    category_list[category][0] === tabitem[0] ? "focus" : ""
-                  }
-                />
+                <div className={category_list[category][0] === tabitem[0] ? "focus" : ""} />
               </div>
             ))}
           </div>
@@ -133,10 +130,21 @@ const Matching = () => {
         {/* 상담 신청 목록 */}
         {loading && <Spin className="loading" size="large" />}
         <div className="list">
-          {list.map((match, index) => (
-            <MatchingList key={index} match={match}></MatchingList>
-          ))}
-          {list.length === 0 && !loading && <div className="no_consult">해당하는 상담 내역이 없습니다.</div>}
+          {!loading &&
+            list.map((match, index) => (
+              <MatchingList key={index} match={match}></MatchingList>
+            ))}
+          {list.length === 0 && !loading && (
+            <div className="nothing no_consult">
+              <Empty
+                description={
+                  <span className="description">
+                    해당하는 상담이 없습니다.
+                  </span>
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
