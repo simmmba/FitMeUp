@@ -1,87 +1,37 @@
 import React, { useState } from "react";
-import "./ConsultList.scss";
+import "./ConsultListDetail.scss";
 import axios from "axios";
 
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 // import { useEffect } from "react";
 
 const ConsultListDetail = ({ consult }) => {
-  const [apply, setApply] = useState(true);
   const user = JSON.parse(window.sessionStorage.getItem("user"));
-  const history = useHistory();
 
-  // useEffect(() => {
-  //   // 지원한 상태면
-  //   if (consult.applied) {
-  //     setApply(true);
-  //   }
-  // }, []);
-
-  const clickApply = () => {
-    // 이미 상담 신청되어 있으면 취소
-    if (apply) {
+  // 상담 삭제하기
+  const deleteConsult = () => {
+    if (window.confirm("해당 상담을 삭제하시겠습니까?")) {
       axios({
         method: "delete",
-        url: `${process.env.REACT_APP_URL}/consult/apply`,
+        url: `${process.env.REACT_APP_URL}/consult/req`,
         data: {
           user_id: user.id,
           consult_id: consult.id,
         },
       })
         .then((res) => {
-          alert("상담 신청 취소가 완료되었습니다");
-          setApply(!apply);
-        })
-        .catch((error) => {
-          alert("상담 신청 취소를 실패했습니다");
-        });
-    }
-    // 상담 신청하기
-    else {
-      axios({
-        method: "post",
-        url: `${process.env.REACT_APP_URL}/consult/apply`,
-        data: {
-          stylist_id: user.id,
-          consult_id: consult.id,
-          contents: "",
-        },
-      })
-        .then((res) => {
           // axios가 잘되면
-          alert("상담 신청이 완료되었습니다");
-          setApply(!apply);
+          alert("상담 삭제가 완료되었습니다");
+          window.location.reload();
         })
         .catch((error) => {
-          alert("상담 신청을 실패했습니다");
+          alert("상담 삭제를 실패했습니다");
         });
     }
-  };
-
-  // 상담 삭제하기
-  const deleteConsult = () => {
-    if (window.confirm("해당 상담을 삭제하시겠습니까?")) {
-    }
-    axios({
-      method: "delete",
-      url: `${process.env.REACT_APP_URL}/consult/req`,
-      data: {
-        user_id: user.id,
-        consult_id: consult.id,
-      },
-    })
-      .then((res) => {
-        // axios가 잘되면
-        alert("상담 삭제가 완료되었습니다");
-        window.location.reload();
-      })
-      .catch((error) => {
-        alert("상담 삭제를 실패했습니다");
-      });
   };
 
   return (
-    <div className="ConsultList">
+    <div className="ConsultListDetail">
       <div className="style_conditions">
         {user.type !== "general" && (
           <>
@@ -184,14 +134,11 @@ const ConsultListDetail = ({ consult }) => {
           pathname: "/consult/detail/" + consult.id,
         }}
       >
-        <div className="plus">
-          더보기
-        </div>
+        <div className="plus">더보기</div>
       </NavLink>
       <div className="apply" onClick={deleteConsult}>
         상담삭제
       </div>
-      )}
     </div>
   );
 };
