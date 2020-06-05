@@ -4,7 +4,7 @@ import "./MyConsult.scss";
 import Header from "../Common/Header";
 import ConsultList from "./ConsultList";
 import axios from "axios";
-import { Spin } from "antd";
+import { Spin, Empty } from "antd";
 
 class MyConsult extends React.Component {
   user = JSON.parse(window.sessionStorage.getItem("user"));
@@ -103,7 +103,12 @@ class MyConsult extends React.Component {
             {this.user?.type !== "general" ? (
               <>
                 {this.filter_stylist.map((item, index) => (
-                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                  <div
+                    key={index}
+                    id={index}
+                    onClick={this.clickFilter}
+                    className={item[0] === this.state.filter ? "focus" : ""}
+                  >
                     {item[1]}
                   </div>
                 ))}
@@ -111,7 +116,12 @@ class MyConsult extends React.Component {
             ) : (
               <>
                 {this.filter_general.map((item, index) => (
-                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                  <div
+                    key={index}
+                    id={index}
+                    onClick={this.clickFilter}
+                    className={item[0] === this.state.filter ? "focus" : ""}
+                  >
                     {item[1]}
                   </div>
                 ))}
@@ -119,12 +129,27 @@ class MyConsult extends React.Component {
             )}
           </div>
           {/* 받아온 상담 목록 */}
-          {this.state.loading && <Spin className="loading" size="large" />}
+          {this.state.loading && (
+            <Spin className="loading no_consult" size="large" />
+          )}
           <div>
-            {this.state.consult.map((consult, index) => (
-              <ConsultList key={index} filter={this.state.filter} consult={consult}></ConsultList>
-            ))}
-            {this.state.consult.length === 0 && <span className="no_consult">해당하는 상담 내역이 없습니다.</span>}
+            {!this.state.loading &&
+              this.state.consult.map((consult, index) => (
+                <ConsultList
+                  key={index}
+                  filter={this.state.filter}
+                  consult={consult}
+                ></ConsultList>
+              ))}
+            {this.state.consult.length === 0 && !this.state.loading && (
+              <div className="nothing no_consult">
+                <Empty
+                  description={
+                    <span className="description">해당하는 상담이 없습니다.</span>
+                  }
+                />
+              </div>
+            )}
           </div>
         </div>
       </>
