@@ -22,11 +22,9 @@ export const charge = async function (req, res, ) {
 export const checkout = async (req, res) => {
     try {
         const { source_id, target_id, amount } = req.body
-
-        let current_credit = await User.findOne({ attributes: ['credit'], where: { id: source_id } })
-        let checkout_credit = parseInt(current_credit.dataValues.credit) - parseInt(amount);
         
-        console.log(checkout_credit);
+        let current_credit = await User.findOne({ attributes: ['credit'], where: { id: source_id }, raw:true })
+        let checkout_credit = parseInt(current_credit.credit) - parseInt(amount);
         
         if (checkout_credit >= 0) {
             // 사용자 결제
@@ -39,7 +37,7 @@ export const checkout = async (req, res) => {
             let stylist = User.update({ credit: stylist_checkout_credit }, { where: { id: target_id } })
             let stylist_payment = await Payment.create({ source: target_id, target: source_id, type: "income", amount })
             
-            res.json({ result : "Success"})
+            res.json({ result : "Success" , credit : checkout_credit})
         } else {
             res.json({ result : "Fail", detail :"Amount exceeds currunt credit"})
         }
@@ -53,13 +51,13 @@ export const checkout = async (req, res) => {
 export const withdraw = async (req, res) => {
     try {
         const {source_id, amount} = req.body;
-        let current_credit = await User.findOne({ attributes: ['credit'], where: { id: source_id } })
-        let withdraw_credit = parseInt(current_credit.dataValues.credit) - parseInt(amount);
+        let current_credit = await User.findOne({ attributes: ['credit'], where: { id: source_id } ,raw:true})
+        let withdraw_credit = parseInt(current_credit.credit) - parseInt(amount);
         
         if(withdraw_credit >= 0){
             let user = User.update({ credit: withdraw_credit }, { where: { id: source_id } })
             let payment = await Payment.create({ source: source_id, type: "withdraw", amount })
-            res.json({result:"Success"})
+            res.json({result:"Success" , credit : withdraw_credit})
         }else{
             res.json({ result : "Fail", detail :"Amount exceeds currunt credit"})
         }

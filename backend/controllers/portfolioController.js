@@ -66,7 +66,7 @@ export const get_detail = async function (req, res) {
 
 export const create_portfolio = async function (req, res) {
     try {
-        const { stylist_id, title, contents, tags } = req.body
+        const { stylist_id, title, contents, tags, my_price, coordi_price } = req.body
         let p = await Portfolio.create({ stylist_id, title, contents })
 
         for (const t of tags) {
@@ -94,13 +94,21 @@ export const create_portfolio = async function (req, res) {
 
 export const update_portfolio = async function (req, res) {
     try {
-        const { stylist_id } = req.body
-        await Portfolio.destroy({
-            where: {
-                stylist_id: stylist_id
-            }
-        })
-        return create_portfolio(req, res)
+        const { portfolio_id, title, contents, tags, my_price, coordi_price } = req.body
+        
+        let update = await Portfolio.update(
+            { title, contents, tags, my_price, coordi_price },
+            {where :{id : portfolio_id}}
+        )
+
+        let tags_delete = await Portfolio_tags.destroy({ where: {id : portfolio_id}})
+
+        for (const t of tags) {
+            await Portfolio_tags.create({ portfolio_id: p.id, tag: t })
+        }
+
+        return res.status(200).json({result: "Success"})
+
     } catch (e) {
         console.log(e)
         return res.status(500).json({

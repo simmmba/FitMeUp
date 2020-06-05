@@ -62,10 +62,10 @@ export const read_users = async (req, res) => {
 
 export const update_user = async (req, res) => {
     try {
-        const { type, gender, age, nickname, profile_img, platform, api_id, name, phone, height, weight, top, bottom } = req.body;
+        const { type, gender, age, nickname, profile_img, platform, api_id, name, phone, height, weight, top, bottom, occupation, belong  } = req.body;
 
 
-        let user_update = await User.update({ type, gender, age, nickname, profile_img, platform, name, phone, height, weight, top, bottom }, {
+        let user_update = await User.update({ type, gender, age, nickname, profile_img, platform, name, phone, height, weight, top, bottom,occupation, belong }, {
             where: { api_id }
         })
 
