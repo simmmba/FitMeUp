@@ -2,9 +2,18 @@
 
 .PortfolioDetail {
     @include maxcenter;
+    padding-top: 10px;
 
     .col-4 {
         padding-left: 0px;
+        position: fixed;
+        top: 70px;
+        right: 0;
+
+        @media screen and (min-width: 1500px) {
+            left: calc(50% + 245px);
+            width: 550px; //? 왜 이러지
+        }
     }
     .box {
         width: 100%;
@@ -18,7 +27,7 @@
         }
 
         .budget:nth-child(odd) {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .score {
@@ -35,7 +44,7 @@
     .apply {
         @include button(200, 18);
         width: 100%;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .title {

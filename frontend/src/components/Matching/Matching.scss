@@ -2,6 +2,7 @@
 
 .Matching {
     font-family: $sub-font;
+    @include loading(120);
 
     .tab {
         @include tab;

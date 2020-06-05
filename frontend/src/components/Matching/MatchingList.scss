@@ -15,7 +15,7 @@
     .style_conditions {
         // 차지할 수 있는 모든 영역 차지
         // flex: 1;
-        width: calc(100% - 200px);
+        width: calc(100% - 150px);
         display: flex;
         align-items: center;
         overflow-x: auto;
@@ -66,8 +66,7 @@
         }
 
         .male {
-                background-color: $gray;
-
+            background-color: $gray;
         }
 
         .styleimg {
@@ -83,28 +82,33 @@
         @include itemcenter;
         @include circle(80);
         cursor: pointer;
-        font-family: $main-font;
+
         margin-left: 10px;
     }
 
     .plus {
+        font-family: $main-font;
         background: $gray;
     }
 
     .apply {
         background: $red;
-    }
-
-    .remove {
-        display: flex;
-        align-items: center;
-        font-size: 30px;
-        margin-left: 5px;
-        cursor: pointer;
+        font-family: $sub-font;
+        color: white;
 
         &:hover {
-            color: $red;
+            background: $red_hover;
         }
+    }
+
+    .cancel {
+        background: $darkgray;
+        &:hover {
+            // color: black;
+            // font-family: $main-font;
+            background: $red;
+        }
+        // color: white;
     }
 
     // 엘리먼트 사이사이에 테두리를 넣어 줌

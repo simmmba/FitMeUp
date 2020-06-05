@@ -9,7 +9,6 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Main from "../src/components/Main/Main";
 import ConsultRequire from "./components/ConsultRequire/ConsultRequire";
-import Test from "./components/Supermarket/Test";
 import Signup from "../src/components/User/Signup";
 import SignupDetail from "../src/components/User/SignupDetail";
 import Login from "../src/components/User/Login";
@@ -19,6 +18,9 @@ import PortfolioDetail from "../src/components/Portfolio/PortfolioDetail";
 import PortfolioWrite from "../src/components/Portfolio/PortfolioWrite";
 import Stylist from "./components/Stylist/Stylist";
 import Chatting from "./components/Chatting/Chatting";
+import MyPageMain from "./components/MyPage/MyPageMain";
+import MyConsult from "./components/MyConsult/MyConsult";
+import Search from "./components/Search/Search";
 
 function App() {
   return (
@@ -27,16 +29,18 @@ function App() {
         <Switch>
           <Route path="/" component={Main} exact />
           <Route path="/consult" component={ConsultRequire} exact />
-          <Route path="/test" component={Test} />
           <Route path="/signup" component={Signup} exact />
-          <Route path="/signup/detail" component={SignupDetail} exact />
+          <Route path="/signup/detail:" component={SignupDetail} exact />
           <Route path="/login" component={Login} />
           <Route path="/match" component={Matching} />
-          <Route path="/consult/detail" component={ConsultDetail} />
+          <Route path="/consult/detail/:consultNo" component={ConsultDetail} />
           <Route path="/portfolio/write" component={PortfolioWrite} />
           <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
           <Route path="/stylist" component={Stylist} />
           <Route path="/chatting" component={Chatting} />
+          <Route path="/mypage" component={MyPageMain} />
+          <Route path="/myconsult" component={MyConsult} />
+          <Route path="/search" component={Search} />
         </Switch>
       </BrowserRouter>
     </div>

@@ -1,0 +1,40 @@
+@import "../../styles/utils.scss";
+@mixin filter_focus {
+    border: 2px solid $red;
+    color: $red;
+    font-weight: bolder;
+}
+.MyConsult {
+    @include maxcenter;
+    @include loading(120);
+    padding: 10px;
+
+    .filter {
+        text-align: center;
+
+        div {
+            margin: 10px;
+            width: 200px;
+            display: inline-block;
+            padding: 10px;
+            border: 2px solid $gray;
+            border-radius: 20px;
+            cursor: pointer;
+
+            &:hover {
+                @include filter_focus;
+            }
+        }
+
+        .focus {
+            @include filter_focus;
+        }
+    }
+
+    .no_consult{
+        @include center;
+        font-size: 16px;
+    }
+}
+
+

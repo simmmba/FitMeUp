@@ -2,11 +2,8 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { Form } from "react-bootstrap";
 import ResultModal from "./ResultModal";
-// import "./Contents.scss";
 
-const Contents = ({ setConsult, consult, previous, next }) => {
-  console.log(consult.contents);
-
+const Contents = ({ setConsult, consult, previous }) => {
   const setContents = (event) => {
     setConsult("contents", event.target.value);
   };
@@ -44,5 +41,4 @@ export default inject(({ consultRequire }) => ({
   setConsult: consultRequire.setConsult,
   consult: consultRequire.consult,
   previous: consultRequire.previous,
-  next: consultRequire.next,
 }))(observer(Contents));

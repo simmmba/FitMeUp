@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
+import { Spin } from "antd";
+
 import "./Carousel.scss";
-import test from "../../img/test.jpg";
+import defaultImg from "../../img/test.jpg";
 import star from "../../img/star.png";
 
 const Carousel = (props) => {
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let url = "";
@@ -16,8 +19,7 @@ const Carousel = (props) => {
 
     axios.get(url).then((res) => {
       setList(res.data.recommends);
-      // console.log(res.data.recommends[0]);
-      // console.log(res.data.recommends[0].User.nickname);
+      setLoading(true);
     });
   }, [props.kind]);
 
@@ -35,7 +37,7 @@ const Carousel = (props) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: list.length < 3 ? list.length : 3,
     slidesToScroll: 3,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -44,11 +46,12 @@ const Carousel = (props) => {
   const CarouselList = list.map((val, idx) => (
     <div className="listBox" key={idx}>
       <div className="imgBox">
-        <img alt="이미지" src={val.portfolio_img === null || val.portfolio_img === "/default.jpg" ? test : val.portfolio_img} />
+        <img alt="이미지" src={defaultImg} />
+        {/* <img alt="이미지" src={val.portfolio_img === null || val.portfolio_img === "/default.jpg" ? defaultImg : val.portfolio_img} /> */}
       </div>
       <div className="contentBox">
         <div className="profileImg">
-          <img alt="프로필이미지" src={val.User.profile_img === null || val.User.profile_img === "/default.jpg" ? test : val.User.profile_img} />
+          <img alt="프로필이미지" src={val.User.profile_img === null || val.User.profile_img === "/default.jpg" ? defaultImg : val.User.profile_img} />
         </div>
         <div className="content">
           <div className="left">
@@ -76,11 +79,7 @@ const Carousel = (props) => {
     </div>
   ));
 
-  return (
-    <div>
-      {list !== null && <Slider {...settings}>{CarouselList}</Slider>}
-    </div>
-  );
+  return <div className="Carousel">{!loading ? <Spin className="loading" size="large" /> : list !== null && <Slider {...settings}>{CarouselList}</Slider>}</div>;
 };
 
 export default Carousel;

@@ -1,0 +1,119 @@
+@import "../../styles/utils.scss";
+
+.m {
+  font-family: $sub_font;
+
+  .mHeader {
+    border-bottom: 1px solid white;
+  }
+
+  .mbody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 500px;
+
+    .Payment {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 400px;
+      margin-top: 20px;
+
+      .title {
+        font-size: 2rem;
+        font-family: $main_font;
+        margin-bottom: 50px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .box {
+        width: 100%;
+
+        .subject {
+          width: 100%;
+          font-size: 1.1rem;
+        }
+
+        .content {
+          width: 100%;
+          font-size: 1.1rem;
+        }
+      }
+
+      .chargeBtn {
+        @include button(200, 18);
+        width: 100%;
+        margin-top: 50px;
+      }
+    }
+
+    .successBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      height: 97%;
+      width: 80%;
+
+      .result {
+        font-size: 2rem;
+        color: $red_hover;
+        font-family: $main_font;
+      }
+
+      .point {
+        margin: 50px 0 5px 0;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+
+      .explain {
+        margin: 0 0 50px 0;
+        font-size: 1.2rem;
+      }
+
+      a {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        @include whiteButton(135, 15);
+      }
+
+      .btnBox {
+        .btn {
+          @include button(170, 15);
+          margin: 5px;
+        }
+      }
+    }
+
+    .failBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      height: 97%;
+      width: 80%;
+
+      .result {
+        font-size: 2rem;
+        color: $red;
+        font-family: $main_font;
+      }
+
+      .explain {
+        margin: 70px 0 70px 0;
+        font-size: 1.2rem;
+        color: $red;
+      }
+
+      .btn {
+        @include button(180, 15);
+      }
+    }
+  }
+}
