@@ -12,16 +12,13 @@ import "./Search.scss";
 const Stylist = ({ keyword, option, order, result, setResult, setKeyword, setOption, setOrder, first, setFirst }) => {
   const [dumpOption, setDumpOption] = useState(option);
   const [dumpKeyword, setDumpKeyword] = useState(keyword);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(result === null ? false : true);
 
   useEffect(() => {
-    if (result !== null) setLoading(true);
     if (first) {
       axios.get(`${process.env.REACT_APP_URL}/user/search?option=${"all"}&keyword=${""}&sort=${"review_cnt"}`).then((res) => {
         setResult(res.data.stylists);
         setLoading(true);
-        setDumpKeyword(keyword);
-        setDumpOption(option);
       });
     }
   }, [first, setResult]);
@@ -49,13 +46,15 @@ const Stylist = ({ keyword, option, order, result, setResult, setKeyword, setOpt
   };
 
   const handleOption = (e) => {
-    let value = e.target.value;
+    const value = e.target.value;
+    setFirst();
     setSearchDetail(e);
+    setLoading(false);
 
     axios.get(`${process.env.REACT_APP_URL}/user/search?option=${option}&keyword=${keyword}&sort=${value}`).then((res) => {
       setResult(res.data.stylists);
-      setFirst();
       console.log(res.data);
+      setLoading(true);
     });
   };
 
