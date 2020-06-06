@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Consult', {
+module.exports = function (sequelize, DataTypes) {
+  const Consult = sequelize.define('Consult', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -32,15 +32,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(10),
       allowNull: true
     },
+    age: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
     top: {
       type: DataTypes.STRING(100),
       allowNull: true
     },
     bottom: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    want: {
       type: DataTypes.STRING(100),
       allowNull: true
     },
@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: true
     },
-    price: {
+    budget: {
       type: DataTypes.INTEGER(11),
       allowNull: true
     },
@@ -61,11 +61,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(10),
       allowNull: true
     },
     end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(10),
       allowNull: true
     },
     state: {
@@ -75,4 +75,33 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'consult'
   });
+
+  Consult.associate = function (models) {
+    Consult.hasMany(models.ConsultImage, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade',
+    })
+
+    Consult.hasMany(models.ConsultWant, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
+    Consult.hasMany(models.Apply, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
+    Consult.hasMany(models.Review, {
+      foreignKey: 'consult_id',
+      onDelete: 'cascade'
+    })
+
+    Consult.belongsTo(models.User, {
+      foreignKey: 'stylist_id',
+      onDelete: 'cascade',
+    })
+  }
+
+  return Consult;
 };

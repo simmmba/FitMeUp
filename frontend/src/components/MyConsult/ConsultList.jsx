@@ -3,18 +3,45 @@ import "./ConsultList.scss";
 import axios from "axios";
 
 import { NavLink } from "react-router-dom";
-import { useEffect } from "react";
 
-const ConsultList = ({ consult }) => {
-  const [apply, setApply] = useState(false);
+const ConsultList = ({ filter, consult }) => {
+  const [apply, setApply] = useState(true);
   const user = JSON.parse(window.sessionStorage.getItem("user"));
+  // const history = useHistory();
+  const [request, setRequest] = useState("");
 
-  useEffect(() => {
-    // 지원한 상태면
-    if (consult.applied) {
-      setApply(true);
+  // 스타일리스트가 상담 수락, 거절
+  const handleRequest = (res) => {
+    // 확인 메세지
+    let message = "";
+    const request = res.target.id;
+    if (request === "ACCEPTED") message = "해당 상담을 수락하시겠습니까?";
+    else message = "해당 상담을 거절하시겠습니까?";
+
+    if (window.confirm(message)) {
+      axios({
+        method: "put",
+        url: `${process.env.REACT_APP_URL}/consult/recv_confirm`,
+        data: {
+          stylist_id: user.id,
+          consult_id: consult.id,
+          state: request,
+        },
+      })
+        .then((res) => {
+          // 상담 수락한 경우
+          console.log(res);
+          if (request === "ACCEPTED") {
+            setRequest("ACCEPTED");
+          } else {
+            setRequest("DENIED");
+          }
+        })
+        .catch((error) => {
+          alert("설정에 실패했습니다");
+        });
     }
-  }, []);
+  };
 
   const clickApply = () => {
     // 이미 상담 신청되어 있으면 취소
@@ -57,28 +84,55 @@ const ConsultList = ({ consult }) => {
     }
   };
 
-  return (
-    <div className="consultingList">
-      <div className="style_conditions">
-        <div className="items profile_items">
-          <img
-            alt="style"
-            className="profile"
-            src={consult.req_user.profile_img}
-          />
-        </div>
+  // 상담 삭제하기
+  const deleteConsult = () => {
+    if (window.confirm("해당 상담을 삭제하시겠습니까?")) {
+      axios({
+        method: "delete",
+        url: `${process.env.REACT_APP_URL}/consult/req`,
+        data: {
+          user_id: user.id,
+          consult_id: consult.id,
+        },
+      })
+        .then((res) => {
+          // axios가 잘되면
+          alert("상담 삭제가 완료되었습니다");
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert("상담 삭제를 실패했습니다");
+        });
+    }
+  };
 
-        {/* 닉네임 */}
-        <div className="items name">
-          <div>{consult.req_user.nickname}</div>
-        </div>
+  return (
+    <div className="ConsultList">
+      <div className="style_conditions">
+        {user.type !== "general" && (
+          <>
+            <div className="items profile_items">
+              <img
+                alt="style"
+                className="profile"
+                src={consult.req_user.profile_img}
+              />
+            </div>
+            {/* 닉네임*/}
+            <div className="items name">
+              <div>{consult.req_user.nickname}</div>
+            </div>
+          </>
+        )}
+
+        {/* 어떤 종류인지 */}
         <div className={consult.category === "coordi" ? "items male" : "items"}>
           <div>{consult.category === "coordi" ? "코디" : "내 옷"}</div>
         </div>
 
         {/* 성별 */}
         <div className="items">
-          {consult.gender === "male" ? <div>남</div> : <div>여</div>}
+          <div>{consult.gender}</div>
         </div>
 
         {/* 나이 */}
@@ -131,17 +185,12 @@ const ConsultList = ({ consult }) => {
         {consult.budget !== null && (
           <div className="items">
             <div>
-              {consult.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              {consult.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              원
             </div>
           </div>
         )}
 
-        {/* 요구 사항 */}
-        {consult.contents !== "" && (
-          <div className="items">
-            <div className="content">{consult.contents}</div>
-          </div>
-        )}
         {/* 문의 시간 */}
         <div className="items">
           <div>
@@ -156,21 +205,149 @@ const ConsultList = ({ consult }) => {
           </div>
         </div>
       </div>
-      <NavLink
-        to={{
-          pathname: "/consult/detail/" + consult.id,
-        }}
-      >
-        <div className="plus">더보기</div>
-      </NavLink>
-      {apply ? (
-        <div className="apply cancel" onClick={clickApply}>
-          신청취소
-        </div>
+
+      {user.type !== "general" ? (
+        // 스타일리스트
+        <>
+          <NavLink
+            to={{
+              pathname: "/consult/detail/" + consult.id,
+            }}
+          >
+            <div className="plus">더보기</div>
+          </NavLink>
+          {filter === "0" ? (
+            <>
+              {/* // 받은 상담 */}
+              {consult.state === "REQUESTED" && request === "" && (
+                <>
+                  <div className="apply" id="ACCEPTED" onClick={handleRequest}>
+                    상담 수락
+                  </div>
+                  <div
+                    className="apply cancel"
+                    id="DENIED"
+                    onClick={handleRequest}
+                  >
+                    상담 거절
+                  </div>
+                </>
+              )}
+              {/* 승인된 상담 */}
+              {(consult.state === "ACCEPTED" || request === "ACCEPTED") && (
+                // 채팅으로 이동 시키기
+                <div className="apply notclick">
+                  승인한
+                  <br />
+                  상담
+                </div>
+              )}
+
+              {/* 완료된 상담 */}
+              {consult.state === "COMPLETE" && (
+                <div className="apply cancel complete">상담 완료</div>
+              )}
+
+              {/* 거절한 상담 */}
+              {(consult.state === "DENIED" || request === "DENIED") && (
+                // 채팅으로 이동 시키기
+                <div className="apply cancel complete">
+                  거절한
+                  <br />
+                  상담
+                </div>
+              )}
+            </>
+          ) : (
+            // 보낸 상담
+            <>
+              {/* 대기 중 */}
+              {consult.state === "REQUESTED" && (
+                <>
+                  {apply ? (
+                    <div className="apply" onClick={clickApply}>
+                      신청 취소
+                    </div>
+                  ) : (
+                    <div className="apply cancel" onClick={clickApply}>
+                      다시 신청
+                    </div>
+                  )}
+                </>
+              )}
+              {/* 거절 */}
+              {consult.state === "DENIED" && (
+                <div className="apply complete">상담 거절</div>
+              )}
+
+              {/* 받음 */}
+              {consult.state === "ACCEPTED" && (
+                // 채팅으로 url 연결하기
+                <div className="apply notclick">
+                  승인된
+                  <br />
+                  상담
+                </div>
+              )}
+
+              {/* 완료 */}
+              {consult.state === "COMPLETE" && (
+                // 채팅으로 url 연결하기
+                <div className="apply complete">상담 완료</div>
+              )}
+            </>
+          )}
+        </>
       ) : (
-        <div className="apply" onClick={clickApply}>
-          상담신청
-        </div>
+        // 일반 유저
+        <>
+          <NavLink
+            to={{
+              pathname: "/myconsult/detail",
+              state: {
+                consult: consult,
+                filter: filter,
+              },
+            }}
+          >
+            <div className="plus">
+              자세히
+              <br />
+              보기
+            </div>
+          </NavLink>
+
+          {/* 대기 중 */}
+          {consult.state === "REQUESTED" && (
+            <div className="apply" onClick={deleteConsult}>
+              상담 삭제
+            </div>
+          )}
+          
+          {/* 상담 수락 */}
+          {consult.state === "ACCEPTED" && (
+            <>
+              {filter === "0" ? (
+                <div className="apply notclick">상담 진행 중</div>
+              ) : (
+                <div className="apply notclick">상담 승인</div>
+              )}
+            </>
+          )}
+
+          {/* 상담 거절 */}
+          {consult.state === "DENIED" && (
+            <div className="apply complete">
+              거절된
+              <br />
+              상담
+            </div>
+          )}
+          {/* 상담 완료 */}
+          {consult.state === "COMPLETE" && (
+            <div className="apply complete">상담 완료</div>
+          )}
+        </>
       )}
     </div>
   );

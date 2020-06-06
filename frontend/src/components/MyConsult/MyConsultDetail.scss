@@ -1,0 +1,24 @@
+@import "../../styles/utils.scss";
+
+.MyConsultDetail {
+    @include maxcenter;
+    @include loading(120);
+    padding: 10px;
+
+    .title {
+        font-size: 20px;
+        font-weight: bolder;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .loading {
+        @include center;
+    }
+
+    .no_consult {
+        @include center;
+        font-size: 16px;
+        padding-top: 100px;
+    }
+}

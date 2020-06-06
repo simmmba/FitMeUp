@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from "react"
-import './MyPageMain.scss'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Payment from "../Payment/Payment";
+import "./MyPageMain.scss";
+import axios from "axios";
 
 const GeneralFirstTab = () => {
     const loginUser = JSON.parse(window.sessionStorage.getItem('user'))
@@ -42,16 +44,16 @@ const GeneralFirstTab = () => {
         })
     }
 
-    const get_req_stylist = () => {
-        axios.get(`${process.env.REACT_APP_URL}/consult/apply?user_id=` + loginUser.id)
-            .then(res => {
-                setReqOfStylistCount(res.data.list.length)
-            }).catch(err => {
-            console.log(err)
-        })
-    }
-
-
+  const get_req_stylist = () => {
+    axios
+      .get(`${process.env.REACT_APP_URL}/consult/apply?user_id=` + loginUser.id)
+      .then((res) => {
+        setReqOfStylistCount(res.data.list.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
     return (
         <div className="one_tab col-2">
             <div className="center middleTopMargin">

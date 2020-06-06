@@ -5,9 +5,8 @@ import axios from "axios";
 import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import firebaseConfig from "../../firebaseConfig";
+import firebaseApp from "../../firebaseConfig";
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
 const firebaseAppAuth = firebaseApp.auth();
 
 // 이름하고 폰 번호 받기

@@ -4,27 +4,31 @@
   @include maxcenter;
 
   .title {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     font-family: $main_font;
-    padding: 50px 0 50px 0;
+    padding: 50px 0 40px 10px;
   }
 
   .searchOption {
-    padding-left: 10px;
+    padding: 0 0 20px 10px;
     display: flex;
 
     select {
-      width: 150px;
+      width: 160px;
       margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
     }
 
     input {
       width: 500px;
       margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
     }
 
     button {
-      @include button(70, 12);
+      @include button(70, 16);
     }
   }
 
@@ -38,23 +42,28 @@
       display: flex;
       padding: 0;
       color: black;
+      width: 100%;
 
-      .imgBox {
-        position: relative;
+      .left {
         width: 272px;
-        height: 153px;
-        // overflow: hidden;
         margin-right: 20px;
 
-        img {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          border-radius: 5px;
+        .imgBox {
+          position: relative;
+          width: 272px;
+          height: 153px;
+          // overflow: hidden;
+
+          img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 5px;
+          }
         }
       }
 
@@ -67,14 +76,34 @@
         // width: 80%;
         width: auto;
         max-width: 1200px;
-        // width: 100%;
+        width: 100%;
 
-        .portfolioName {
-          font-size: 1.2rem;
-          font-family: $main_font;
+        .portfolioBox {
+          display: flex;
+          justify-content: space-between;
           margin-bottom: 5px;
+          width: 100%;
 
-          @include overflow_hidden;
+          .portfolioName {
+            font-size: 1.2rem;
+            font-family: $main_font;
+            max-width: 830px;
+            height: 32px;
+            @include overflow_hidden;
+          }
+
+          .priceBox {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: $darkgray;
+            font-size: 14px;
+            width: 350px;
+
+            .price {
+              margin: 0 10px;
+            }
+          }
         }
 
         .nicknameBox {
@@ -161,8 +190,11 @@
       flex-direction: column;
       text-align: center;
 
+      .ant-empty-image {
+        margin-bottom: 15px;
+      }
+
       .description {
-        margin-top: 20px;
         font-size: 1.2rem;
         color: $darkgray;
       }

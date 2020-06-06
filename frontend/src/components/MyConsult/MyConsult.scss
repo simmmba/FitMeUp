@@ -6,6 +6,7 @@
 }
 .MyConsult {
     @include maxcenter;
+    @include loading(120);
     padding: 10px;
 
     .filter {
@@ -13,7 +14,7 @@
 
         div {
             margin: 10px;
-            width: 150px;
+            width: 200px;
             display: inline-block;
             padding: 10px;
             border: 2px solid $gray;
@@ -33,6 +34,10 @@
     .no_consult{
         @include center;
         font-size: 16px;
+    }
+
+    .loading{
+        @include center;
     }
 }
 

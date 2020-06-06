@@ -69,7 +69,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-# .env
+.env
 # .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -162,6 +162,7 @@ yarn-error.log
 **/node_modules/*
 **/.firebaserc
 **/.idea/*
+**/upload/*
 
 ### Firebase Patch ###
 .runtimeconfig.json

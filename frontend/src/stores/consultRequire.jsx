@@ -18,9 +18,10 @@ export default class CounterStore {
   ];
   @observable num = 0;
   @observable percent = 10;
+  @observable stylist = null;
+  @observable price = 0;
 
   @observable consult = {
-    stylist_id: null,
     category: "coordi", // 코디 추천 / 내옷 코디
     gender: null, // 1-1. 성별 (필수)
     age: "", // 1-2. 나이 (필수)
@@ -35,6 +36,7 @@ export default class CounterStore {
     start_time: 0, // 6-1. 상담 가능 시작 시간 (선택)
     end_time: 24, // 6-2. 상담 가능 종료 시간 (선택)
     contents: "", // 7. 추가 참고사항(직업, 특수 목적 등)
+    finished: false, // 상담 항목 작성 여부
   };
 
   @observable size = {
@@ -90,8 +92,17 @@ export default class CounterStore {
   };
 
   @action
+  setStylist = (val) => {
+    this.stylist = val;
+  };
+
+  @action
+  setPrice = (val) => {
+    this.price = val;
+  };
+
+  @action
   reset = () => {
-    this.stylist_id = null;
     this.num = 0;
     this.percent = 10;
     this.consult.gender = null;
@@ -107,6 +118,7 @@ export default class CounterStore {
     this.consult.start_time = 0;
     this.consult.end_time = 24;
     this.consult.contents = "";
+    this.consult.finished = false; // 상담 항목 작성 여부
     this.style = {
       fstyle: [
         { val: "캐주얼", img: "f_casual.jpg", select: false },

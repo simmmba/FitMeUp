@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -60,7 +60,41 @@ module.exports = function(sequelize, DataTypes) {
       unique: true
     },
 
+    top: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    bottom: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    height: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
+    weight: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    }
   }, {
     tableName: 'user'
   });
+
+  User.associate = function (models){
+    User.hasMany(models.Apply,{
+      foreignKey:'stylist_id',
+      onDelete:'cascade',
+    })
+
+    User.hasMany(models.Review,{
+      foreignKey:'target'
+    })
+
+    User.hasMany(models.Consult,{
+      foreignKey:'stylist_id'
+    })
+    
+  }
+
+  return User;
 };
