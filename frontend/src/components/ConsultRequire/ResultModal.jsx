@@ -28,7 +28,7 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
     }
   };
 
-  const handleClick = () => {
+  const handleRequire = (success) => {
     axios({
       method: "post",
       url: `${process.env.REACT_APP_URL}/consult/req`,
@@ -67,23 +67,8 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
           .then(() => {
             console.log("사진 등록 성공");
 
-            if (stylist !== null) {
-              // 포인트 출금
-              axios({
-                method: "post",
-                url: `${process.env.REACT_APP_URL}/payment/checkout`,
-                data: { source_id: user.id, target_id: stylist, amount: price },
-              })
-                .then((res) => {
-                  console.log(res);
-                  console.log("포인트 출금 성공");
-                  setRemainPoint(res.data.credit);
-                  setShow(false);
-                  setResultShow(true);
-                })
-                .catch((error) => {
-                  alert("포인트 출금에 실패했습니다.");
-                });
+            if (success) {
+              setResultShow(true);
             } else {
               alert("현재 활동 중인 스타일리스트에게 상담 요청되었습니다. \n스타일리스트의 연락을 기다려주세요.");
               reset();
@@ -96,6 +81,32 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
       .catch((error) => {
         alert("상담 요청에 실패했습니다.");
       });
+  };
+
+  const handleClick = () => {
+    if (stylist !== null) {
+      // 포인트 출금
+      axios({
+        method: "post",
+        url: `${process.env.REACT_APP_URL}/payment/checkout`,
+        data: { source_id: user.id, target_id: stylist, amount: price },
+      })
+        .then((res) => {
+          if (res.data.result === "Success") {
+            console.log("포인트 출금 성공");
+            setRemainPoint(res.data.credit);
+            handleRequire(true);
+          } else {
+            console.log("포인트 출금 실패");
+          }
+        })
+        .catch((error) => {
+          alert("포인트 출금에 실패했습니다.");
+        });
+    } else {
+      alert("현재 활동 중인 스타일리스트에게 상담 요청되었습니다. \n스타일리스트의 연락을 기다려주세요.");
+      reset();
+    }
   };
 
   const handleSearch = () => {
@@ -115,7 +126,7 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
         <Modal.Body className="body">
           <div className="Result">
             <div className="service">원하는 요청을 선택해 주세요</div>
-            <Link to="/" className="reqBtn" onClick={handleClick}>
+            <Link to="/" className="reqBtn" onClick={() => handleRequire(false)}>
               스타일리스트의 상담 연락 기다리기
             </Link>
             <Link to="/search" className="reqBtn" onClick={handleSearch}>

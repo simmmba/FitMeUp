@@ -22,72 +22,74 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
       setFinishedShow(false);
       setCreditShow(true);
     } else {
-      // 상담 요청
+      // 포인트 출금
+      const price = consult.category === "coordi" ? coordi_price : my_price;
+      setUsePoint(price);
+
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_URL}/consult/req`,
-        data: {
-          stylist_id: stylist_id,
-          user_id: JSON.parse(window.sessionStorage.getItem("user")).id,
-          category: consult.category, // 코디 추천 / 내옷 코디
-          gender: consult.gender, // 1-1. 성별 (필수)
-          age: consult.age, // 1-2. 나이 (필수)
-          top: consult.top, // 2-1. 상의 사이즈 (선택, 성별에 따라 다르게 보이도록)
-          bottom: consult.bottom, // 2-2. 하의 사이즈 (선택, 성별에 따라 다르게 보이도록)
-          height: consult.height, // 2-3. 키 (선택)
-          weight: consult.weight, // 2-4. 몸무게 (선택)
-          want: consult.want, // 3. 원하는 스타일 (필수, 성별에 따라 다르게 보이도록)
-          budget: consult.budget, // 5. 예산 (선택)
-          start_time: consult.start_time, // 6-1. 상담 가능 시작 시간 (선택)
-          end_time: consult.end_time, // 6-2. 상담 가능 종료 시간 (선택)
-          contents: consult.contents, // 7. 추가 참고사항(직업, 특수 목적 등)
-        },
+        url: `${process.env.REACT_APP_URL}/payment/checkout`,
+        data: { source_id: user.id, target_id: stylist_id, amount: price },
       })
         .then((res) => {
-          const id = res.data.consult.id;
-          const currImg = consult.current_img;
+          if (res.data.result === "Success") {
+            console.log("포인트 출금 성공");
+            setRemainPoint(res.data.credit);
 
-          let img = new FormData();
-          // 이미지 추가
-          for (let i = 0; i < currImg.length; i++) {
-            img.append("img", currImg[i]);
-          }
-
-          // 상담 이미지 등록
-          axios({
-            method: "post",
-            url: `${process.env.REACT_APP_URL}/upload/consult?consult_id=${id}`,
-            data: img,
-          })
-            .then(() => {
-              console.log("사진 등록 성공");
-              const price = consult.category === "coordi" ? coordi_price : my_price;
-              setUsePoint(price);
-
-              // 포인트 출금
-              axios({
-                method: "post",
-                url: `${process.env.REACT_APP_URL}/payment/checkout`,
-                data: { source_id: user.id, target_id: stylist_id, amount: price },
-              })
-                .then((res) => {
-                  console.log(res);
-                  console.log("포인트 출금 성공");
-                  setRemainPoint(res.data.credit);
-                  setFinishedShow(false);
-                  setResultShow(true);
-                  reset();
-                })
-                .catch((error) => {
-                  alert("포인트 출금에 실패했습니다.");
-                });
+            // 상담 요청
+            axios({
+              method: "post",
+              url: `${process.env.REACT_APP_URL}/consult/req`,
+              data: {
+                stylist_id: stylist_id,
+                user_id: JSON.parse(window.sessionStorage.getItem("user")).id,
+                category: consult.category, // 코디 추천 / 내옷 코디
+                gender: consult.gender, // 1-1. 성별 (필수)
+                age: consult.age, // 1-2. 나이 (필수)
+                top: consult.top, // 2-1. 상의 사이즈 (선택, 성별에 따라 다르게 보이도록)
+                bottom: consult.bottom, // 2-2. 하의 사이즈 (선택, 성별에 따라 다르게 보이도록)
+                height: consult.height, // 2-3. 키 (선택)
+                weight: consult.weight, // 2-4. 몸무게 (선택)
+                want: consult.want, // 3. 원하는 스타일 (필수, 성별에 따라 다르게 보이도록)
+                budget: consult.budget, // 5. 예산 (선택)
+                start_time: consult.start_time, // 6-1. 상담 가능 시작 시간 (선택)
+                end_time: consult.end_time, // 6-2. 상담 가능 종료 시간 (선택)
+                contents: consult.contents, // 7. 추가 참고사항(직업, 특수 목적 등)
+              },
             })
-            .catch((error) => {
-              alert("사진 등록에 실패했습니다.");
-            });
+              .then((res) => {
+                const id = res.data.consult.id;
+                const currImg = consult.current_img;
+                let img = new FormData();
+                // 이미지 추가
+                for (let i = 0; i < currImg.length; i++) {
+                  img.append("img", currImg[i]);
+                }
+                // 상담 이미지 등록
+                axios({
+                  method: "post",
+                  url: `${process.env.REACT_APP_URL}/upload/consult?consult_id=${id}`,
+                  data: img,
+                })
+                  .then(() => {
+                    console.log("사진 등록 성공");
+                    setFinishedShow(false);
+                    setResultShow(true);
+                    reset();
+                  })
+                  .catch((error) => {
+                    alert("사진 등록에 실패했습니다.");
+                  });
+              })
+              .catch((error) => {
+                alert("상담 요청에 실패했습니다.");
+              });
+          } else {
+            console.log("포인트 출금 실패");
+          }
         })
         .catch((error) => {
-          alert("상담 요청에 실패했습니다.");
+          alert("포인트 출금에 실패했습니다.");
         });
     }
   };
