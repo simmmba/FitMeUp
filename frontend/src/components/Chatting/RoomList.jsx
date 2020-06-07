@@ -87,7 +87,14 @@ class RoomList extends Component {
             }`}
             key={room.id}
           >
-            {`@ ${room.name}`}
+            <Avatar alt='' src={user.profile_img} className='avatar' />
+            <div className='user-info-content'>
+              <span className='display-name'>{user.nickname}</span>
+              <span className='type'>
+                {user.type == 'general' ? '일반유저' : '스타일리스트'}
+              </span>
+            </div>
+            <span>{`@ ${room.name}`}</span>
           </button>
         ))
       )

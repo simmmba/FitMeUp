@@ -24,11 +24,11 @@ class SidePanel extends Component {
 
     return (
       <div className='chatting-side-panel'>
-        <button onClick={this.openModal} type='button'>
+        {/* <button onClick={this.openModal} type='button'>
           <Tooltip title='방 만들기'>
             <AddBoxIcon className='icon' />
           </Tooltip>
-        </button>
+        </button> */}
         <CreateRoomModal
           currentUser={currentUser}
           isOpen={CreateRoomModalIsOpen}

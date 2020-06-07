@@ -80,7 +80,7 @@ class Room extends Component {
   displayMessages = messages =>
     messages.length > 0 &&
     messages.map(message => (
-      <Message key={message.timestamp} message={message} user={message.user} />
+      <Message key={message.timestamp} message={message} user={message.user} currentUser={this.props.currentUser}/>
     ))
 
   scrollDown = () => {

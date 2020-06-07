@@ -21,7 +21,6 @@ class Chatting extends React.Component {
   }
 
   render () {
-    console.log('render Chatting.jsx')
     const { currentRoom } = this.props.chatting
     return (
       <div>

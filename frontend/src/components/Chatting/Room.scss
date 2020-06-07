@@ -3,7 +3,6 @@
 .room-messages {
   position: relative;
   width: 100%;
-  height: calc(100vh - 60px);
   padding: 20px;
   background-color: '#fff';
   .custom-paper {
@@ -12,9 +11,10 @@
     top: 120px;
     bottom: 120px;
     padding: 2rem;
+    padding-right: 0rem;
   }
   .message-content {
-    width: calc(100% - 60px);
+    width: calc(100% - 35px);
     position: absolute;
     overflow: scroll;
     top: 20px;

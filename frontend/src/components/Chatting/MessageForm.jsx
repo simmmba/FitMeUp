@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import firebase from '../../firebaseConfig'
 import { v4 as uuidv4 } from 'uuid'
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import Tooltip from '@material-ui/core/Tooltip'
 import './MessageForm.scss'
 
@@ -70,25 +70,34 @@ class MessageForm extends Component {
    *  }
    * }
    */
-  sendMessage = event => {
-    if (event.key === 'Enter') {
-      const { scrollDown } = this.props
-      const { currentRoom } = this.props
-      const { message, messagesRef } = this.state
+  sendMessage = () => {
+    const { scrollDown } = this.props
+    const { currentRoom } = this.props
+    const { message, messagesRef } = this.state
 
-      if (message) {
-        messagesRef
-          .child(currentRoom.id)
-          .push()
-          .set(this.createMessage())
-          .then(() => {
-            this.setState({ message: '' })
-            scrollDown()
-          })
-          .catch(err => {
-            console.error(err)
-          })
-      }
+    if (message && this.messageCheck(message)) {
+      messagesRef
+        .child(currentRoom.id)
+        .push()
+        .set(this.createMessage())
+        .then(() => {
+          this.setState({ message: '' })
+          scrollDown()
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+  }
+
+  messageCheck = message => {
+    if(message.replace(/(\s*)/g, '') === '') return false
+    return true;
+  }
+
+  keyPress = event => {
+    if (event.key === 'Enter') {
+      this.sendMessage()
     }
   }
 
@@ -162,13 +171,15 @@ class MessageForm extends Component {
             onClick={this.openModal}
           >
             <Tooltip title='사진 업로드'>
-              <PhotoLibraryIcon className='upload-icon'/>
+              <PhotoLibraryIcon className='upload-icon' />
             </Tooltip>
           </button>
           <input
             disabled={!currentRoom}
-            placeholder={currentRoom ? '메세지를 적어주세요' : '방을 생성해주세요'}
-            onKeyPress={this.sendMessage}
+            placeholder={
+              currentRoom ? '메세지를 적어주세요' : '방을 생성해주세요'
+            }
+            onKeyPress={this.keyPress}
             onChange={this.handleChange}
             className='message-input'
             id='message'

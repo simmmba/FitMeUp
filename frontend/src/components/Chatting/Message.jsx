@@ -6,13 +6,15 @@ class Message extends Component {
   isImage = message =>
     message.hasOwnProperty('image') && !message.hasOwnProperty('content')
 
+  
+
   render () {
-    const { message, user } = this.props
+    const { message, user, currentUser } = this.props
     return (
-      <div className='room-message'>
+      <div className={`room-message ${currentUser.id == user.id ? 'my-message':''}`}>
         <Avatar className='avatar' alt='' src={user.profile_img} />
         <div className='message-content'>
-          <span className='display-name'>{user.nickname}</span>
+          <span className={`display-name ${currentUser.id == user.id ? 'my-message':''}`}>{user.nickname}</span>
           {this.isImage(message) ? (
             <div className='image-wrapper'>
               <img
@@ -22,7 +24,9 @@ class Message extends Component {
               />
             </div>
           ) : (
-            <p className='message-text'>{message.content}</p>
+            <div className={`${currentUser.id == user.id ? 'my-balloon':'balloon'}`}>
+            <p className={`message-text ${currentUser.id == user.id ? 'my-message':''}`}>{message.content}</p>
+            </div>
           )}
         </div>
       </div>
