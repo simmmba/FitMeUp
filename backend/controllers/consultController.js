@@ -668,15 +668,10 @@ export const stylist_info = async (req, res) => {
     })
     
     let user_id = consult.stylist_id;
-    console.log(user_id);
-    
-    
     let user_info = await User.findOne({
       where: { id: user_id },
       raw: true
     })
-
-    
     
     // 최근 리뷰 달기
     let review = await Review.findOne({
