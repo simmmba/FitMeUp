@@ -145,9 +145,9 @@ export const check_portfolio = async function (req, res) {
             where: { stylist_id: stylist_id }
         })
 
-        let result = portfolio ? "true" : "false";
+        let isExist = portfolio ? "true" : "false";
 
-        res.json({ state: "Success", result: result })
+        res.json({ result: "Success", isExist: isExist })
 
     } catch (err) {
         console.log(err);

@@ -719,7 +719,7 @@ export const stylist_info = async (req, res) => {
     let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
     user_info.consult_cnt = consult_cnt;
     res.json({
-      state : "Success", list : [user_info]
+      result : "Success", list : [user_info]
     })
   } catch (err) {
     console.log("consultController.js stylist_info method\n ==> " + err);
