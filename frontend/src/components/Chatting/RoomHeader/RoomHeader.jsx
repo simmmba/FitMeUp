@@ -84,14 +84,6 @@ class MessageHeader extends Component {
         <Paper className='message-header'>
           <div className='room-info'>
             <h3 className='room-name'>{`# ${currentRoom ? currentRoom.name : 'Welcome to Open Chat'}`}</h3>
-            <button
-              type="button"
-              className='user-count'
-              onClick={this.openCurrentRoomUsersModal}
-              disabled={!currentRoom}
-            >
-              {`참여자 수 : ${currentRoomUsers.length}`}
-            </button>
           </div>
           <button type="button" onClick={this.openModal} disabled={!currentRoom}>
             <Tooltip title="초대하기">

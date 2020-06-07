@@ -4,13 +4,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
-  height: 60px;
-  
+  height:71.6px;
   .room-name {
     color: $color-black;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+    margin-bottom: 0;
   }
   
   .room-info {

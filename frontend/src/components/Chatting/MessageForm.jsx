@@ -163,6 +163,7 @@ class MessageForm extends Component {
     const { currentRoom } = this.props
     return (
       <div className='message-form'>
+        <ProgressBar completed={percentUploaded} />
         <div className='message-form-content'>
           <button
             disabled={!currentRoom}
@@ -189,7 +190,6 @@ class MessageForm extends Component {
             autoComplete='off'
           />
         </div>
-        <ProgressBar completed={percentUploaded} />
         <FileUploadModal
           isOpen={fileUploadModalIsOpen}
           closeModal={this.closeModal}

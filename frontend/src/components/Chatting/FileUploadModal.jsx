@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import mime from 'mime-types';
 import './FileUploadModal.scss';
 
-import Input from './Common/Input';
 import Button from './Common/Button';
 
 class FileUploadModal extends Component {
@@ -48,14 +47,19 @@ class FileUploadModal extends Component {
         left: '50%',
         right: 'auto',
         bottom: 'auto',
-        width: '60rem',
+        width: '35rem',
+        height: '80vh',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         border: 'none',
-        background: '#eee',
-        padding: '3rem',
-        boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+        background: '#fff',
+        padding: '2rem',
+        boxShadow:
+          '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
       },
+      overlay: {
+        backgroundColor: 'rgba(0,0,0,.3)'
+      }
     };
 
     const { isOpen, closeModal } = this.props;
@@ -67,8 +71,7 @@ class FileUploadModal extends Component {
         style={customStyles}
         ariaHideApp={false}
       >
-        <h1>이미지 파일을 선택하세요</h1>
-        <Input
+        <input
           id="file"
           name="file"
           type="file"
