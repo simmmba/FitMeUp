@@ -1,24 +1,60 @@
-import React, { Component } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import "./Message.scss";
+import React, { Component } from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Modal from 'react-modal'
+import './Message.scss'
 
 class Message extends Component {
-  isImage = (message) =>
-    message.hasOwnProperty("image") && !message.hasOwnProperty("content");
+  state = {
+    imageModalOpen: false,
+    selectedImage: null
+  }
 
-  render() {
-    const { message, user, currentUser } = this.props;
+  isImage = message =>
+    message.hasOwnProperty('image') && !message.hasOwnProperty('content')
+
+  openModal = image => {
+    this.setState({ imageModalOpen: true, selectedImage: image })
+  }
+
+  closeModal = () => {
+    this.setState({ imageModalOpen: false })
+  }
+
+  render () {
+    const { imageModalOpen, selectedImage } = this.state
+    const { message, user, currentUser } = this.props
+    const customStyles = {
+      content: {
+        top: '52%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        maxHeight: '88vh',
+        maxWidth: '80vw',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        border: 'none',
+        background: '#fff',
+        padding: '.2rem',
+        zIndex: 9999,
+        boxShadow:
+          '0px 1p 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
+      },
+      overlay: {
+        backgroundColor: 'rgba(0,0,0,.3)'
+      }
+    }
     return (
       <div
         className={`room-message ${
-          currentUser.id === user.id ? "my-message" : ""
+          currentUser.id === user.id ? 'my-message' : ''
         }`}
       >
-        <Avatar className="avatar" alt="" src={user.profile_img} />
-        <div className="message-content">
+        <Avatar className='avatar' alt='' src={user.profile_img} />
+        <div className='message-content'>
           <span
             className={`display-name ${
-              currentUser.id === user.id ? "my-message" : ""
+              currentUser.id === user.id ? 'my-message' : ''
             }`}
           >
             {user.nickname}
@@ -26,26 +62,32 @@ class Message extends Component {
           {this.isImage(message) ? (
             <div
               className={`${
-                currentUser.id === user.id ? "my-balloon" : "balloon"
+                currentUser.id === user.id ? 'my-balloon' : 'balloon'
               }`}
             >
-              <div className="image-wrapper">
-                <img
-                  className="message-img"
-                  src={message.image}
-                  alt={message.image}
-                />
+              <div className='image-wrapper'>
+                <button
+                  className='image-btn'
+                  type='button'
+                  onClick={() => this.openModal(message.image)}
+                >
+                  <img
+                    className='message-img'
+                    src={message.image}
+                    alt='이미지를 찾을 수 없습니다'
+                  />
+                </button>
               </div>
             </div>
           ) : (
             <div
               className={`${
-                currentUser.id === user.id ? "my-balloon" : "balloon"
+                currentUser.id === user.id ? 'my-balloon' : 'balloon'
               }`}
             >
               <p
                 className={`message-text ${
-                  currentUser.id === user.id ? "my-message" : ""
+                  currentUser.id === user.id ? 'my-message' : ''
                 }`}
               >
                 {message.content}
@@ -53,9 +95,24 @@ class Message extends Component {
             </div>
           )}
         </div>
+        <Modal
+          shouldCloseOnOverlayClick
+          isOpen={imageModalOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+        >
+          <button class='image-btn' type='button' onClick={this.closeModal}>
+            <img
+              className='modal-img'
+              src={selectedImage}
+              alt={selectedImage}
+            />
+          </button>
+        </Modal>
       </div>
-    );
+    )
   }
 }
 
-export default Message;
+export default Message

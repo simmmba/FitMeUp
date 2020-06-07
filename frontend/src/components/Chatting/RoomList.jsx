@@ -122,12 +122,6 @@ class RoomList extends Component {
           <SearchIcon />
           <InputBase
             placeholder="Search…"
-            classes={{
-              root: {
-                height:'200px',
-                paddingLeft: "20px",
-              },
-            }}
           />
         </div>
         <div className="list-wrapper">

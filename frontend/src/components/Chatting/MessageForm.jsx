@@ -7,7 +7,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import './MessageForm.scss'
 
 import FileUploadModal from './FileUploadModal'
-import ProgressBar from './ProgressBar'
 
 @inject('chatting')
 @observer
@@ -15,7 +14,6 @@ class MessageForm extends Component {
   state = {
     storageRef: firebase.storage().ref(),
     uploadTask: null,
-    percentUploaded: 0,
     message: '',
     messagesRef: firebase.database().ref('messages'),
     fileUploadModalIsOpen: false
@@ -105,7 +103,7 @@ class MessageForm extends Component {
    * 구글 storage에 image를 업로드합니다.
    */
   uploadFile = (file, metadata) => {
-    const { currentRoom } = this.props
+    const { currentRoom, setPercent } = this.props
     const pathToUpload = currentRoom.id
     const ref = this.state.messagesRef
     const filePath = `images/${uuidv4()}.jpg`
@@ -121,7 +119,7 @@ class MessageForm extends Component {
             const percentUploaded = Math.round(
               (snap.bytesTransferred / snap.totalBytes) * 100
             )
-            this.setState({ percentUploaded })
+            setPercent( percentUploaded )
           },
           err => {
             console.error(err)
@@ -159,11 +157,10 @@ class MessageForm extends Component {
   }
 
   render () {
-    const { fileUploadModalIsOpen, percentUploaded } = this.state
+    const { fileUploadModalIsOpen } = this.state
     const { currentRoom } = this.props
     return (
       <div className='message-form'>
-        <ProgressBar completed={percentUploaded} />
         <div className='message-form-content'>
           <button
             disabled={!currentRoom}
@@ -172,13 +169,13 @@ class MessageForm extends Component {
             onClick={this.openModal}
           >
             <Tooltip title='사진 업로드'>
-              <PhotoLibraryIcon className='upload-icon' />
+              <PhotoLibraryIcon className='upload-icon' color='secondary' />
             </Tooltip>
           </button>
           <input
             disabled={!currentRoom}
             placeholder={
-              currentRoom ? '메세지를 적어주세요' : '방을 생성해주세요'
+              currentRoom ? '메세지를 적어주세요' : ''
             }
             onKeyPress={this.keyPress}
             onChange={this.handleChange}
@@ -189,6 +186,13 @@ class MessageForm extends Component {
             type='text'
             autoComplete='off'
           />
+          <button
+            className='send-btn'
+            type='button'
+            onClick={this.sendMessage}
+          >
+            <span className='send-btn-text'>전송</span>
+          </button>
         </div>
         <FileUploadModal
           isOpen={fileUploadModalIsOpen}

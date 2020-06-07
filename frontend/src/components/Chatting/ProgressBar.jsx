@@ -11,7 +11,6 @@ const styles = {
 
 class LinearDeterminate extends React.Component {
   render() {
-    const { classes } = this.props;
     return (
       <div className='progressbar'>
         <LinearProgress variant="determinate" color='secondary' value={this.props.completed} />

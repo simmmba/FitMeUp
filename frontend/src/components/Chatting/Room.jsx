@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { v4 as uuidv4 } from 'uuid'
+import mime from 'mime-types'
 import firebase from '../../firebaseConfig'
 import './Room.scss'
 
 import RoomHeader from './RoomHeader/RoomHeader'
 import MessageForm from './MessageForm'
-import Paper from './Common/Paper'
+import DragAndDrop from './Common/DragAndDrop'
 import Message from './Message'
+import ProgressBar from './ProgressBar'
 
 @inject('chatting')
 @observer
@@ -18,8 +21,12 @@ class Room extends Component {
 
   state = {
     messages: [],
-    messagesRef: firebase.database().ref('messages')
+    messagesRef: firebase.database().ref('messages'),
+    storageRef: firebase.storage().ref(),
+    uploadTask: null,
+    percentUploaded: 0
   }
+  fileUpload = false
 
   componentDidMount () {
     const { currentRoom, currentUser } = this.props
@@ -53,24 +60,35 @@ class Room extends Component {
    * @param roomId
    */
   addMessageListener = async roomId => {
-    const loadedMessages = []
     const ref = this.state.messagesRef
     await ref
       .child(roomId)
       .once('value')
       .then(snapshot => {
-        ref.child(roomId).on('child_added', snap => {
-          loadedMessages.push(snap.val())
-          this.setState({
-            messages: loadedMessages
-          })
+        ref.child(roomId).on('child_changed', snap => {
+          this.loadMessages()
         })
+        this.loadMessages()
         if (!snapshot.exists()) {
           this.setState({
             messages: []
           })
         }
       })
+  }
+
+  loadMessages = () => {
+    const { currentRoom } = this.props
+    const ref = this.state.messagesRef
+    let loadedMessages = []
+
+    ref.child(currentRoom.id).once('value', async snapshot => {
+      snapshot.forEach(childSnapshot => {
+        loadedMessages.push(childSnapshot.val())
+      })
+
+      this.setState({ messages: loadedMessages })
+    })
   }
 
   removeListeners = () => {
@@ -80,28 +98,163 @@ class Room extends Component {
   displayMessages = messages =>
     messages.length > 0 &&
     messages.map(message => (
-      <Message key={message.timestamp} message={message} user={message.user} currentUser={this.props.currentUser}/>
+      <Message
+        key={message.timestamp}
+        message={message}
+        user={message.user}
+        currentUser={this.props.currentUser}
+      />
     ))
 
   scrollDown = () => {
     this.messageContentRef.current.scrollTop = this.messageContentRef.current.scrollHeight
   }
 
+  handleDrop = async files => {
+    console.log(files)
+    let fileList = []
+    for (var i = 0; i < files.length; i++) {
+      if (!files[i].name) return
+      fileList.push(files[i])
+    }
+    // for(const file of fileList){
+    //   await this.sendFile(file)
+    // }
+    let count = 0
+    let timeout = 0
+    while (count < fileList.length && timeout < 30000) {
+      console.log(count)
+      timeout++
+      if (!this.fileUpload) {
+        console.log('if')
+        this.fileUpload = true
+        this.sendFile(fileList[count++])
+      }
+    }
+  }
+
+  sendFile = file => {
+    console.log('sendfile')
+    if (file !== null) {
+      if (this.isAuthorized(file.name)) {
+        const metadata = { contentType: mime.lookup(file.name) }
+        this.uploadFile(file, metadata)
+      }
+    }
+  }
+
+  /**
+   * 파일의 mime type의 유효성을 검사합니다. mime.lookup(file)은 해당 파일의 mime type을 리턴합니다.
+   * @param filename
+   * @return boolean
+   */
+  isAuthorized = filename =>
+    ['image/jpeg', 'image/png'].includes(mime.lookup(filename))
+
+  uploadFile = (file, metadata) => {
+    console.log('uploadfile')
+    const { currentRoom } = this.props
+    const pathToUpload = currentRoom.id
+    const ref = this.state.messagesRef
+    const filePath = `images/${uuidv4()}.jpg`
+
+    this.setState(
+      state => ({
+        uploadTask: state.storageRef.child(filePath).put(file, metadata)
+      }),
+      () => {
+        this.state.uploadTask.on(
+          'state_changed',
+          snap => {
+            const percentUploaded = Math.round(
+              (snap.bytesTransferred / snap.totalBytes) * 100
+            )
+            this.setPercentage(percentUploaded)
+          },
+          err => {
+            console.error(err)
+            this.setState({ uploadTask: null })
+          },
+          () => {
+            this.state.uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(downloadUrl => {
+                this.sendFileMessage(downloadUrl, ref, pathToUpload)
+              })
+              .catch(err => {
+                console.error(err)
+                this.setState({
+                  uploadTask: null
+                })
+              })
+          }
+        )
+      }
+    )
+  }
+
+  sendFileMessage = (fileUrl, ref, pathToUpload) => {
+    console.log(fileUrl)
+    ref
+      .child(pathToUpload)
+      .push()
+      .set(this.createMessage(fileUrl))
+      .then(() => {
+        console.log('sendFileMessage')
+        this.fileUpload = false
+        this.setState({ percentUploaded: 0 })
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }
+
+  createMessage = (fileUrl = null) => {
+    const { currentUser } = this.props
+
+    const message = {
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+      user: {
+        id: currentUser.id,
+        nickname: currentUser.nickname,
+        profile_img: currentUser.profile_img,
+        type: currentUser.type
+      }
+    }
+    if (fileUrl !== null) {
+      message.image = fileUrl
+    } else {
+      message.content = this.state.message
+    }
+    return message
+  }
+
+  setPercentage = percent => {
+    this.setState({ percentUploaded: percent })
+  }
+
   render () {
     const { currentRoom, currentUser } = this.props
-    const { messages } = this.state
+    const { messages, percentUploaded } = this.state
+    const dropbox = {
+      position: 'relative',
+      width: '100%',
+      height: 'calc(100% - 71.6px - 75px)'
+    }
     return (
       <section className='room-messages'>
         <RoomHeader currentRoom={currentRoom} />
-        <Paper className='custom-paper'>
+        <DragAndDrop dropbox={dropbox} handleDrop={this.handleDrop}>
           <div className='message-content' ref={this.messageContentRef}>
             {this.displayMessages(messages)}
           </div>
-        </Paper>
+        </DragAndDrop>
+        <ProgressBar completed={percentUploaded} />
         <MessageForm
           scrollDown={this.scrollDown}
           currentUser={currentUser}
           currentRoom={currentRoom}
+          setPercent={this.setPercentage}
         />
       </section>
     )

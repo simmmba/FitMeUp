@@ -6,8 +6,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './RoomHeader.scss';
 
 import Paper from '../Common/Paper';
-import UserInviteModal from './UserInviteModal';
-import CurrentRoomUsersModal from './CurrentRoomUsersModal';
+// import UserInviteModal from './UserInviteModal';
+// import CurrentRoomUsersModal from './CurrentRoomUsersModal';
 
 @inject('chatting')
 @observer
@@ -83,25 +83,25 @@ class MessageHeader extends Component {
       <Fragment>
         <Paper className='message-header'>
           <div className='room-info'>
-            <h3 className='room-name'>{`# ${currentRoom ? currentRoom.name : 'Welcome to Open Chat'}`}</h3>
+            <h3 className='room-name'>{`${currentRoom ? currentRoom.name : 'Welcome to FitMeUp Chat'}`}</h3>
           </div>
-          <button type="button" onClick={this.openModal} disabled={!currentRoom}>
+          {/* <button type="button" onClick={this.openModal} disabled={!currentRoom}>
             <Tooltip title="초대하기">
               <PersonAddIcon className='icon'/>
             </Tooltip>
-          </button>
+          </button> */}
         </Paper>
-        <UserInviteModal
+        {/* <UserInviteModal
           isOpen={UserListModalIsOpen}
           closeModal={this.closeModal}
           currentRoom={currentRoom}
           currentRoomUsers={currentRoomUsers}
-        />
-        <CurrentRoomUsersModal
+        /> */}
+        {/* <CurrentRoomUsersModal
           isOpen={CurrentRoomUsersIsOpen}
           closeModal={this.closeCurrentRoomUsersModal}
           currentRoomUsers={currentRoomUsers}
-        />
+        /> */}
       </Fragment>
     );
   }

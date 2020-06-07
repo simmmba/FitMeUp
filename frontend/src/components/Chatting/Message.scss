@@ -12,6 +12,11 @@
     margin-top: 5px;
     max-width: 300px;
     height:auto;
+
+    .image-btn{
+      background: none;
+      border: none;
+    }
   }
   .message-img {
     width: 100%;
@@ -91,4 +96,8 @@
     }
   }
 
+}
+
+.modal-img{
+  flex:1;
 }
