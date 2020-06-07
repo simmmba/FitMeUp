@@ -3,19 +3,19 @@ import "./MyPageMain.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const GeneralSecondTab = () => {
+const MyInfo = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [user, setUser] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
   const [stylistList, setStylistList] = useState([]);
 
-  const basicInfo = {
-    height: 0,
-    weight: 0,
-    top: "",
-    bottom: "",
-    occupation: "",
-  };
+  const [basicInfo, setBasicInfo] = useState({
+    height: user.height,
+    weight: user.weight,
+    top: user.top,
+    bottom: user.bottom,
+    occupation: user.occupation,
+  });
 
   useEffect(() => {
     get_stylist_list();
@@ -24,7 +24,9 @@ const GeneralSecondTab = () => {
 
   const get_user = () => {
     axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((res) => {
-      setUser(res.data.user);
+      const user = res.data.user;
+      setUser(user);
+      setBasicInfo(user);
     });
   };
 
@@ -36,7 +38,7 @@ const GeneralSecondTab = () => {
   };
 
   const handleChange = (e) => {
-    basicInfo[e.target.name] = e.target.value;
+    setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });
   };
 
   const handleBtnClick = () => {
@@ -80,60 +82,63 @@ const GeneralSecondTab = () => {
     setModifyMode(false);
   };
 
+  console.log(basicInfo.weight);
   return (
-    <div className="outline col-5">
-      <div className="col-7 inner_tab">
-        <div className="center middleTopMargin">
-          <h3>기본 정보</h3>
+    <>
+      <div className="col-6 middle_tab">
+        <div className="center">
+          <h3>
+            <b>기본 정보</b>
+          </h3>
         </div>
         <div className="center info">
-          <div className="col-6 title">키</div>
+          <div className="col-5 title">키</div>
           {modifyMode ? (
-            <div className="col-6">
-              <input type="number" name="height" onChange={handleChange} className="input" placeholder={"cm 단위 입력"} />
+            <div className="col-7 content">
+              <input type="number" name="height" onChange={handleChange} value={basicInfo.height} className="input" placeholder={"cm 단위 입력"} />
             </div>
           ) : (
-            <div className="col-6">{user.height ? user.height : "*"}</div>
+            <div className="col-7 contentFill">{user.height ? user.height + "cm" : "*"}</div>
           )}
         </div>
         <div className="center info">
-          <div className="col-6 title">몸무게</div>
+          <div className="col-5 title">몸무게</div>
           {modifyMode ? (
-            <div className="col-6">
-              <input type="number" name="weight" onChange={handleChange} className="input" placeholder={"kg 단위 입력"} />
+            <div className="col-7 content">
+              <input type="number" name="weight" onChange={handleChange} value={basicInfo.weight} className="input" placeholder={"kg 단위 입력"} />
             </div>
           ) : (
-            <div className="col-6">{user.weight ? user.weight : "*"}</div>
+            <div className="col-7 contentFill">{user.weight ? user.weight + "kg" : "*"}</div>
           )}
         </div>
         <div className="center info">
-          <div className="col-6 title">상의 사이즈</div>
+          <div className="col-5 title">상의 사이즈</div>
           {modifyMode ? (
-            <div className="col-6">
-              <input type="text" name="top" onChange={handleChange} className="input" placeholder={"예시) 100 / L"} />
+            <div className="col-7 content">
+              <input type="text" name="top" onChange={handleChange} value={basicInfo.top} className="input" placeholder={"예시) 100 / L"} />
             </div>
           ) : (
-            <div className="col-6">{user.top ? user.top : "*"}</div>
+            <div className="col-7 contentFill">{user.top ? user.top : "*"}</div>
           )}
         </div>
         <div className="center info">
-          <div className="col-6 title">하의 사이즈</div>
+          <div className="col-5 title">하의 사이즈</div>
           {modifyMode ? (
-            <div className="col-6">
-              <input type="text" name="bottom" onChange={handleChange} className="input" placeholder={"예시) 31 / L"} />
+            <div className="col-7 content">
+              <input type="text" name="bottom" onChange={handleChange} value={basicInfo.bottom} className="input" placeholder={"예시) 31 / L"} />
             </div>
           ) : (
-            <div className="col-6">{user.bottom ? user.bottom : "*"}</div>
+            <div className="col-7 contentFill">{user.bottom ? user.bottom : "*"}</div>
           )}
         </div>
         <div className="center info">
-          <div className="col-6 title">직업</div>
+          <div className="col-5 title">직업</div>
           {modifyMode ? (
-            <div className="col-6">
-              <input type="text" name="occupation" onChange={handleChange} className="input" placeholder={"예시) 회사원"} />
+            <div className="col-7 content">
+              <input type="text" name="occupation" onChange={handleChange} value={basicInfo.occupation} className="input" placeholder={"예시) 회사원"} />
             </div>
           ) : (
-            <div className="col-6">{user.occupation ? user.occupation : "*"}</div>
+            <div className="col-7 contentFill">{user.occupation ? user.occupation : "*"}</div>
           )}
         </div>
         <div className="center middleTopMargin">
@@ -153,25 +158,8 @@ const GeneralSecondTab = () => {
           )}
         </div>
       </div>
-      <div className="col-4 inner_tab">
-        <div className="center middleTopMargin">가장 교류가 많은 스타일리스트</div>
-        <div className="topMargin center">
-          {stylistList.map((s) => {
-            return (
-              <Link to={`/portfolio/${s.stylist_id}`} className="stylist center textBlack" key={s.stylist_id}>
-                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt="profile img" className="stylistProfile" />
-                <div className="smallLeftMargin">
-                  {s.User.nickname}
-                  <div>스타일리스트</div>
-                </div>
-                <div className="smallLeftMargin">{s.consult_cnt}회 상담</div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
-export default GeneralSecondTab;
+export default MyInfo;
