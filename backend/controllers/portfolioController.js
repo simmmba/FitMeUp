@@ -42,7 +42,7 @@ export const get_detail = async function (req, res) {
             res.json({
                 result: "Success",
                 portfolio: p,
-                avg_scroe: review_info.avg_score,
+                avg_score: review_info.avg_score,
                 review_cnt: review_info.review_cnt,
                 consult_cnt: consult_info.consult_cnt
             })
@@ -104,7 +104,7 @@ export const update_portfolio = async function (req, res) {
         let tags_delete = await Portfolio_tags.destroy({ where: {id : portfolio_id}})
 
         for (const t of tags) {
-            await Portfolio_tags.create({ portfolio_id: p.id, tag: t })
+            await Portfolio_tags.create({ portfolio_id, tag: t })
         }
 
         return res.status(200).json({result: "Success"})
