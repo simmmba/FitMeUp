@@ -56,11 +56,7 @@ class MyConsultDetail extends React.Component {
       <>
         <Header></Header>
         <div className="MyConsultDetail">
-          {this.state.consult.length !== 0 && (
-            <ConsultListDetial
-              consult={this.state.consult[0]}
-            ></ConsultListDetial>
-          )}
+          {this.state.consult.length !== 0 && <ConsultListDetial consult={this.state.consult[0]}></ConsultListDetial>}
 
           {this.props.location.state.filter === "0" ? (
             <>
@@ -71,6 +67,7 @@ class MyConsultDetail extends React.Component {
                   val={item}
                   filter={this.props.location.state.filter}
                   stylist_id={this.props.location.state.consult.stylist_id}
+                  category={this.props.location.state.consult.category}
                 ></Stylist>
               ))}
             </>
@@ -83,21 +80,16 @@ class MyConsultDetail extends React.Component {
                   val={item}
                   filter={this.props.location.state.filter}
                   stylist_id={this.props.location.state.consult.stylist_id}
+                  category={this.props.location.state.consult.category}
                 ></Stylist>
               ))}
             </>
           )}
 
-          {this.state.loading && (
-            <Spin className="loading no_consult" size="large" />
-          )}
+          {this.state.loading && <Spin className="loading no_consult" size="large" />}
           {this.state.list.length === 0 && !this.state.loading && (
             <div className="nothing no_consult">
-              <Empty
-                description={
-                  <span className="description">해당하는 상담이 없습니다.</span>
-                }
-              />
+              <Empty description={<span className="description">해당하는 상담이 없습니다.</span>} />
             </div>
           )}
         </div>

@@ -22,7 +22,7 @@ const CreditHistory = () => {
       .get(`${process.env.REACT_APP_URL}/payment/list?user_id=` + loginUser.id)
       .then((res) => {
         console.log(res.data.payments);
-        setPaymentList(res.data.payments);
+        setPaymentList(res.data.payments.reverse());
         setCount(parseInt(res.data.payments.length / 5) + 1);
         setPage(1);
       })

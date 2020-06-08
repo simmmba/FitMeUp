@@ -64,11 +64,12 @@
 
     .mentionBottom {
       color: $darkgray;
+      font-size: 1.2rem;
       margin: 20px 0 40px 0;
     }
 
     .selectBtn {
-      @include button(200, 16);
+      @include button(240, 16);
       margin: 10px;
     }
   }

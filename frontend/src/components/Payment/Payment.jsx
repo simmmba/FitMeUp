@@ -95,7 +95,10 @@ const Payment = () => {
     setPrice(0);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    window.location.reload(true);
+  };
 
   const handleRetry = () => {
     setResult("");
@@ -107,6 +110,7 @@ const Payment = () => {
   const handlePointHistory = () => {
     setShow(false);
     history.push("/mypage/credit");
+    window.location.reload(true);
   };
 
   const Payment = (
