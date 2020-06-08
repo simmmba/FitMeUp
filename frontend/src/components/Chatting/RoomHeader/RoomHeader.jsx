@@ -1,21 +1,17 @@
-import React, { Component, Fragment } from 'react';
-import { inject, observer } from 'mobx-react'
-import firebase from '../../../firebaseConfig';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import Tooltip from '@material-ui/core/Tooltip';
-import './RoomHeader.scss';
+import React, { Component, Fragment } from "react";
+import { inject, observer } from "mobx-react";
+import firebase from "../../../firebaseConfig";
+import "./RoomHeader.scss";
 
-import Paper from '../Common/Paper';
-// import UserInviteModal from './UserInviteModal';
-// import CurrentRoomUsersModal from './CurrentRoomUsersModal';
+import Paper from "../Common/Paper";
 
-@inject('chatting')
+@inject("chatting")
 @observer
 class MessageHeader extends Component {
   state = {
     UserListModalIsOpen: false,
     CurrentRoomUsersIsOpen: false,
-    roomsRef: firebase.database().ref('rooms'),
+    roomsRef: firebase.database().ref("rooms"),
     currentRoomUsers: [],
   };
 
@@ -23,8 +19,8 @@ class MessageHeader extends Component {
     this.addListeners();
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.currentRoom !== prevProps.currentRoom){
+  componentDidUpdate(prevProps) {
+    if (this.props.currentRoom !== prevProps.currentRoom) {
       this.addListeners();
     }
   }
@@ -65,10 +61,13 @@ class MessageHeader extends Component {
     const { currentRoom } = this.props;
     const currentRoomUsers = [];
     if (currentRoom) {
-      roomsRef.child(currentRoom.id).child('users').on('child_added', (snap) => {
-        currentRoomUsers.push(snap.val());
-        this.setState({ currentRoomUsers });
-      });
+      roomsRef
+        .child(currentRoom.id)
+        .child("users")
+        .on("child_added", (snap) => {
+          currentRoomUsers.push(snap.val());
+          this.setState({ currentRoomUsers });
+        });
     }
   };
 
@@ -78,30 +77,13 @@ class MessageHeader extends Component {
 
   render() {
     const { currentRoom } = this.props;
-    const { UserListModalIsOpen, currentRoomUsers, CurrentRoomUsersIsOpen } = this.state;
     return (
       <Fragment>
-        <Paper className='message-header'>
-          <div className='room-info'>
-            <h3 className='room-name'>{`${currentRoom ? currentRoom.name : 'Welcome to FitMeUp Chat'}`}</h3>
+        <Paper className="message-header">
+          <div className="room-info">
+            <h3 className="room-name">{`${currentRoom ? currentRoom.name : "Welcome to FitMeUp Chat"}`}</h3>
           </div>
-          {/* <button type="button" onClick={this.openModal} disabled={!currentRoom}>
-            <Tooltip title="초대하기">
-              <PersonAddIcon className='icon'/>
-            </Tooltip>
-          </button> */}
         </Paper>
-        {/* <UserInviteModal
-          isOpen={UserListModalIsOpen}
-          closeModal={this.closeModal}
-          currentRoom={currentRoom}
-          currentRoomUsers={currentRoomUsers}
-        /> */}
-        {/* <CurrentRoomUsersModal
-          isOpen={CurrentRoomUsersIsOpen}
-          closeModal={this.closeCurrentRoomUsersModal}
-          currentRoomUsers={currentRoomUsers}
-        /> */}
       </Fragment>
     );
   }

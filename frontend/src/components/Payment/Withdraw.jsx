@@ -7,7 +7,6 @@ import "./Withdraw.scss";
 import { Form } from "react-bootstrap";
 
 const Withdraw = () => {
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const history = useHistory();
   const [show, setShow] = useState(false);
   const [ongoing, setOngoing] = useState(false);
@@ -15,14 +14,10 @@ const Withdraw = () => {
   const [credit, setCredit] = useState(0);
 
   useEffect(() => {
-    get_user();
-  }, []);
-
-  const get_user = () => {
-    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id).then((res) => {
+    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
       setCredit(res.data.user.credit);
     });
-  };
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -44,7 +39,7 @@ const Withdraw = () => {
         method: "post",
         url: `${process.env.REACT_APP_URL}/payment/withdraw`,
         data: {
-          source_id: user.id,
+          source_id: JSON.parse(window.sessionStorage.getItem("user")).id,
           amount: price,
         },
       })

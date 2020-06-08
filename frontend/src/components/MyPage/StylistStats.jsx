@@ -85,7 +85,7 @@ const StylistStats = () => {
         setCreditInfo(credits);
       }
     });
-  }, []);
+  }, [loginUser.id]);
 
   const handleSelectorChange = (e) => {
     console.log(e.target.value);

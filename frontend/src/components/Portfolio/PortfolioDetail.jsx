@@ -18,7 +18,6 @@ class PortfolioDetail extends React.Component {
       consult_cnt: 0,
       review_cnt: 0,
       avg_score: 0,
-      review_cnt: 0,
       slice_review: [],
       reviews: [],
       mloading: true,

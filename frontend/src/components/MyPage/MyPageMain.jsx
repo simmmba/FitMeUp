@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, Route, Switch } from "react-router-dom";
 import Header from "../Common/Header";
 import "./MyPageMain.scss";
@@ -27,7 +27,7 @@ const MyPageMain = () => {
         <div className="MyPageMain">
           {loginUser.type === "general" && (
             <div className="MyPageMenu">
-              <div className="leftMenu"/>
+              <div className="leftMenu" />
               <div className="middleMenu">
                 <NavLink to="/mypage" className="selectBtn" activeClassName="selectedBtn" exact>
                   내 상담

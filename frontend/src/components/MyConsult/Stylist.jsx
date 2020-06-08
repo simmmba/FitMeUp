@@ -22,29 +22,44 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
 
     axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id).then((res) => {
       userCredit = res.data.user.credit;
-      // console.log(stylistPrice);
-      // console.log(userCredit);
+
       if (userCredit < stylistPrice) {
         alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
       } else {
         axios({
-          method: "put",
-          url: `${process.env.REACT_APP_URL}/consult/apply`,
-          data: {
-            user_id: user.id,
-            consult_id: val.consult_id,
-            apply_id: val.id,
-            state: "ACCEPTED",
-          },
+          method: "post",
+          url: `${process.env.REACT_APP_URL}/payment/checkout`,
+          data: { source_id: user.id, target_id: stylist_id, amount: stylistPrice },
         })
           .then((res) => {
-            // axios가 잘되면
-            alert("상담 수락이 완료되었습니다");
-            // 채팅 생성
-            createChat();
+            if (res.data.result === "Success") {
+              console.log("포인트 출금 성공");
+
+              axios({
+                method: "put",
+                url: `${process.env.REACT_APP_URL}/consult/apply`,
+                data: {
+                  user_id: user.id,
+                  consult_id: val.consult_id,
+                  apply_id: val.id,
+                  state: "ACCEPTED",
+                },
+              })
+                .then((res) => {
+                  // axios가 잘되면
+                  alert("상담 수락이 완료되었습니다");
+                  // 채팅 생성
+                  createChat();
+                })
+                .catch((error) => {
+                  alert("상담 수락에 실패했습니다");
+                });
+            } else {
+              console.log("포인트 출금 실패");
+            }
           })
           .catch((error) => {
-            alert("상담 수락에 실패했습니다");
+            alert("포인트 출금에 실패했습니다.");
           });
       }
     });

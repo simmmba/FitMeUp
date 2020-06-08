@@ -3,7 +3,6 @@ import "./MyPageMain.scss";
 import axios from "axios";
 
 const MyInfo = () => {
-  const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [user, setUser] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
 
@@ -16,17 +15,12 @@ const MyInfo = () => {
   });
 
   useEffect(() => {
-    get_user();
-  }, []);
-
-  const get_user = () => {
-    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((res) => {
+    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
       const user = res.data.user;
       setUser(user);
       setBasicInfo(user);
     });
-  };
-
+  }, []);
 
   const handleChange = (e) => {
     setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });
@@ -56,7 +50,7 @@ const MyInfo = () => {
         .then((res) => {
           console.log(res);
           if (res.data.result === "Success") {
-            axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((response) => {
+            axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((response) => {
               window.sessionStorage.setItem("user", JSON.stringify(response.data.user));
               setUser(response.data.user);
             });

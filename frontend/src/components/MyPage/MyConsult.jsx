@@ -24,7 +24,7 @@ const MyFrequent = () => {
       setCount(parseInt(res.data.list.length / 5) + 1);
       setPage(1);
     });
-  }, []);
+  }, [loginUser.id]);
 
   return (
     <div className="middle_tab">
@@ -102,9 +102,7 @@ const MyFrequent = () => {
           })
         )}
       </div>
-        <Pagination className="center" size={"small"} count={count}
-                    color={"secondary"} page={page} variant="outlined"
-                    shape="rounded" onChange={handleChange} />
+      <Pagination className="center" size={"small"} count={count} color={"secondary"} page={page} variant="outlined" shape="rounded" onChange={handleChange} />
     </div>
   );
 };
