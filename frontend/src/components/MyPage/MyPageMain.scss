@@ -419,7 +419,7 @@
       width: 50px;
     }
     .line {
-      border: solid 1px black;
+      //border: solid 1px black;
       height: 100%;
     }
     .half {
@@ -489,5 +489,15 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
+  }
+
+  .selector {
+    width: 30%;
+  }
+  .full_height {
+    height: 100%;
+  }
+  .leftPadding {
+    padding-left: 120px;
   }
 }

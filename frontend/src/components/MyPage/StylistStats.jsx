@@ -2,15 +2,17 @@ import React, {useEffect, useState} from 'react'
 import "./MyPageMain.scss";
 import {Chart} from "react-google-charts";
 import axios from 'axios'
+import {Form} from "react-bootstrap";
 
 const StylistStats = () => {
     const loginUser = JSON.parse(window.sessionStorage.getItem("user"))
     const [creditInfo, setCreditInfo] = useState([])
     const [isCreditExist, setIsCreditExist] = useState(false)
-    const [consultInfo, setConsultInfo] = useState()
+    const [consultInfo, setConsultInfo] = useState([])
     const [isConsultExist, setIsConsultExist] = useState(false)
     const [scoreInfo, setScoreInfo] = useState({score_1: 0, score_2: 0, score_3: 0, score_4: 0, score_5: 0})
     const [isScoreExist, setIsScoreExist] = useState(false)
+    const [stat, setStat] = useState("revenue")
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_URL}/statistics/score?stylist_id=` + loginUser.id)
             .then(res => {
@@ -30,11 +32,21 @@ const StylistStats = () => {
 
         axios.get(`${process.env.REACT_APP_URL}/statistics/consult?stylist_id=` + loginUser.id)
             .then(res => {
-                console.log(res.data)
                 if(res.data.info.length === 0) {
                     setIsConsultExist(false)
                 } else {
-
+                    setIsConsultExist(true)
+                    const consultings = [["월", "내 옷장 Pick", "스타일리스트 Pick"]]
+                    res.data.info.push({
+                        month:"5", my: 5, coordi: 6
+                    })
+                    res.data.info.push({
+                        month:"4", my: 3, coordi: 5
+                    })
+                    res.data.info.forEach(c => {
+                        consultings.push([c.month+"월", parseInt(c.my), parseInt(c.coordi)])
+                    })
+                    setConsultInfo(consultings)
                 }
             }).catch(err => {
                 console.log(err)
@@ -47,11 +59,15 @@ const StylistStats = () => {
                     setIsCreditExist(false)
                 } else {
                     // console.log(res.data.info)
-                    // setIsCreditExist(true)
+                    setIsCreditExist(true)
                     const credits = [["월", "수익", "출금"]]
-                    // res.data.info.push({
-                    //     month:"5", income: 50000, witdraw: 100000
-                    // })
+
+                    res.data.info.push({
+                        month:"5", income: 50000, witdraw: 100000
+                    })
+                    res.data.info.push({
+                        month:"4", income: 30000, witdraw: 0
+                    })
                     res.data.info.forEach(c => {
                         credits.push([c.month + "월", parseInt(c.income), parseInt(c.witdraw)])
                     })
@@ -59,6 +75,12 @@ const StylistStats = () => {
                 }
             })
     }, [])
+
+    const handleSelectorChange = (e) => {
+        console.log(e.target.value)
+        setStat(e.target.value)
+    }
+
     return (
         <div className="middle_tab">
             <div className="center">
@@ -66,25 +88,39 @@ const StylistStats = () => {
                     <b>통계 정보</b>
                 </h3>
             </div>
-            <div className="center half">
-                <div className="col-6">
-                    {setIsCreditExist?(
-                        <Chart
-                            chartType="AreaChart"
-                            loader={<div>Loading Chart</div>}
-                            data={creditInfo}
-                            options={{
-                                title: "수익",
-                                hAxis: { title: "Month", titleTextStyle: { color: "#333" } },
-                                vAxis: { minValue: 0 },
-                                chartArea: { width: "60%", height: "70%" },
-                            }}
-                        />
-                    ):(<div>수익 내역이 없습니다.</div>)}
+            <div className="center">
+                <div className="selector">
+                    <Form.Control as="select" id="option" value={stat} onChange={handleSelectorChange}>
+                        <option value="revenue">수익</option>
+                        <option value="consulting">컨설팅</option>
+                        <option value="score">평점</option>
+                    </Form.Control>
                 </div>
-                <div className="col-6">
+            </div>
+            {stat==="revenue"?(
+                <div className="center full_height">
+                        {isCreditExist?(
+                            <Chart
+                                width={'100%'}
+                                height={'100%'}
+                                chartType="LineChart"
+                                loader={<div>Loading Chart</div>}
+                                data={creditInfo}
+                                options={{
+                                    title: "수익",
+                                    hAxis: { title: "Month", titleTextStyle: { color: "#333" } },
+                                    vAxis: { minValue: 0 },
+                                    chartArea: { width: "60%", height: "70%" },
+                                }}
+                            />
+                        ):(<div>수익 내역이 없습니다.</div>)}
+                </div>
+            ):(stat==="consulting"?(
+                <div className="center full_height leftPadding">
                     {isScoreExist?(
                         <Chart
+                            width={'100%'}
+                            height={'100%'}
                             chartType="PieChart"
                             loader={<div>Loading Chart</div>}
                             data={[
@@ -104,39 +140,31 @@ const StylistStats = () => {
                         <div>평점 내역이 없습니다.</div>
                     )}
                 </div>
-            </div>
-            <div className="center half">
-                <Chart
-                    width={'500px'}
-                    height={'300px'}
-                    chartType="ComboChart"
-                    loader={<div>Loading Chart</div>}
-                    data={[
-                        [
-                            'Month',
-                            'Bolivia',
-                            'Ecuador',
-                            'Madagascar',
-                            'Papua New Guinea',
-                            'Rwanda',
-                            'Average',
-                        ],
-                        ['2004/05', 165, 938, 522, 998, 450, 614.6],
-                        ['2005/06', 135, 1120, 599, 1268, 288, 682],
-                        ['2006/07', 157, 1167, 587, 807, 397, 623],
-                        ['2007/08', 139, 1110, 615, 968, 215, 609.4],
-                        ['2008/09', 136, 691, 629, 1026, 366, 569.6],
-                    ]}
-                    options={{
-                        title: 'Monthly Coffee Production by Country',
-                        vAxis: { title: 'Cups' },
-                        hAxis: { title: 'Month' },
-                        seriesType: 'bars',
-                        series: { 5: { type: 'line' } },
-                    }}
-                    rootProps={{ 'data-testid': '1' }}
-                />
-            </div>
+            ):(
+                <div className="center full_height">
+                    {isConsultExist?(
+                        <Chart
+                            width={'100%'}
+                            height={'100%'}
+                            chartType="ComboChart"
+                            loader={<div>Loading Chart</div>}
+                            data={consultInfo}
+                            options={{
+                                title: '월별 컨설팅 수',
+                                vAxis: { title: 'Cups' },
+                                hAxis: { title: 'Month' },
+                                seriesType: 'bars',
+                                series: { 5: { type: 'line' } },
+                            }}
+                            rootProps={{ 'data-testid': '1' }}
+                        />
+                    ):(
+                        <div>텅...</div>
+                    )}
+                </div>
+            ))}
+            {/*<div className="center half">*/}
+            {/*</div>*/}
         </div>
     )
 }
