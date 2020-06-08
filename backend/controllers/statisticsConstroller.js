@@ -1,5 +1,5 @@
 import sequelize from 'sequelize'
-import { Review, User } from '../models'
+import { Review, User,Payment, Consult} from '../models'
 
 export const review_statistics = async (req, res) => {
     try {
@@ -15,8 +15,7 @@ export const review_statistics = async (req, res) => {
             replacements: { stylist_id: stylist_id },
             type: sequelize.QueryTypes.SELECT
         })
-        console.log(score_info);
-        res.json({ state: "Success", info: score_info })
+        res.json({ result: "Success", info: score_info })
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
@@ -33,12 +32,11 @@ export const consult_statistics = async (req, res) => {
         and createdAt > subdate(now(), INTERVAL 3 MONTH)\
         group by month;";
 
-        let review_info = await Review.sequelize.query(query, {
+        let consult_info = await Consult.sequelize.query(query, {
             replacements: { stylist_id: stylist_id },
             type: sequelize.QueryTypes.SELECT
         })
-        console.log(review_info);
-        res.json({ state: "Success", info: review_info })
+        res.json({ result: "Success", info: consult_info })
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
@@ -59,9 +57,30 @@ export const score_statistics = async (req, res) => {
             type: sequelize.QueryTypes.SELECT,
             raw: true
         });
-        console.log(score_info[0]);
         
-        res.json({ state: "Success", info: score_info[0] })
+        res.json({ result: "Success", info: score_info[0] })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+    }
+}
+
+export const payment_statistics = async (req, res) => {
+    try {
+        const { stylist_id } = req.query;
+
+        let query = "select month(createdAt) month, sum(if(type like 'income',amount,0)) 'income',\
+        sum(if(type like 'checkout',amount,0)) 'checkout'\
+        from payment where source = :stylist_id and createdAt > subdate(now(), INTERVAL 3 MONTH)\
+        group by month;"
+
+        let payment_info = await Payment.sequelize.query(query, {
+            replacements: { stylist_id: stylist_id },
+            type: sequelize.QueryTypes.SELECT,
+            raw: true
+        });
+        
+        res.json({ result: "Success", info: payment_info })
     } catch (err) {
         console.log(err);
         res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
