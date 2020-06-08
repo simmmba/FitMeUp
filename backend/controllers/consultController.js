@@ -661,18 +661,18 @@ export const stylist_info = async (req, res) => {
   try {
 
     const { consult_id } = req.query;
-    
+
     let consult = await Consult.findOne({
       where: { id: consult_id },
       raw: true
     })
-    
+
     let user_id = consult.stylist_id;
     let user_info = await User.findOne({
       where: { id: user_id },
       raw: true
     })
-    
+
     // 최근 리뷰 달기
     let review = await Review.findOne({
       where: { target: user_id },
@@ -719,10 +719,43 @@ export const stylist_info = async (req, res) => {
     let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
     user_info.consult_cnt = consult_cnt;
     res.json({
-      result : "Success", list : [user_info]
+      result: "Success", list: [user_info]
     })
   } catch (err) {
     console.log("consultController.js stylist_info method\n ==> " + err);
+    res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
+
+}
+
+// 리뷰 작성을 위한 상담 리스트
+export const consult_for_review = async (req, res) => {
+  try {
+
+    const { user_id } = req.query;
+    console.log("????????????",user_id);
+    
+    let consult_list = await Consult.findAll({
+      include: [ConsultWant],
+      where: { user_id: user_id, state :{[Op.like]:"COMPLETE"} },
+    })
+
+    //리뷰 작성 여부
+    for (const consult of consult_list) {
+      let consult_id = consult.dataValues.id;
+      let review = await Review.findOne({
+        where : {consult_id : consult_id, user_id: user_id}
+      })
+
+      consult.dataValues.review = review;
+    }
+
+    
+
+    console.log(consult_list);
+    res.json({result : "Success",list:consult_list })
+  } catch (err) {
+    console.log("consultController.js consult_for_review method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 
