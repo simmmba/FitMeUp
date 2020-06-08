@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./MyPageMain.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const MyInfo = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [user, setUser] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
-  const [stylistList, setStylistList] = useState([]);
 
   const [basicInfo, setBasicInfo] = useState({
     height: user.height,
@@ -18,7 +16,6 @@ const MyInfo = () => {
   });
 
   useEffect(() => {
-    get_stylist_list();
     get_user();
   }, []);
 
@@ -30,12 +27,6 @@ const MyInfo = () => {
     });
   };
 
-  const get_stylist_list = () => {
-    axios.get(`${process.env.REACT_APP_URL}/user/most_consulting?user_id=` + loginUser.id).then((res) => {
-      setStylistList(res.data.stylists);
-      console.log(res.data.stylists);
-    });
-  };
 
   const handleChange = (e) => {
     setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });
@@ -88,74 +79,78 @@ const MyInfo = () => {
       <div className="middle_tab">
         <div className="center">
           <h3>
-            <b>기본 정보</b>
+            <b>내 정보 조회</b>
           </h3>
         </div>
-        <div className="center info">
-          <div className="col-5 title">키</div>
-          {modifyMode ? (
-            <div className="col-7 content">
-              <input type="number" name="height" onChange={handleChange} value={basicInfo.height} className="input" placeholder={"cm 단위 입력"} />
+        <div className="infoBox">
+          <div className="infoContent">
+            <div className="center info">
+              <div className="col-5 title">키</div>
+              {modifyMode ? (
+                <div className="col-7 content">
+                  <input type="number" name="height" onChange={handleChange} value={basicInfo.height} className="input" placeholder={"cm 단위 입력"} />
+                </div>
+              ) : (
+                <div className="col-7 contentFill">{user.height ? user.height + "cm" : "*"}</div>
+              )}
             </div>
-          ) : (
-            <div className="col-7 contentFill">{user.height ? user.height + "cm" : "*"}</div>
-          )}
-        </div>
-        <div className="center info">
-          <div className="col-5 title">몸무게</div>
-          {modifyMode ? (
-            <div className="col-7 content">
-              <input type="number" name="weight" onChange={handleChange} value={basicInfo.weight} className="input" placeholder={"kg 단위 입력"} />
+            <div className="center info">
+              <div className="col-5 title">몸무게</div>
+              {modifyMode ? (
+                <div className="col-7 content">
+                  <input type="number" name="weight" onChange={handleChange} value={basicInfo.weight} className="input" placeholder={"kg 단위 입력"} />
+                </div>
+              ) : (
+                <div className="col-7 contentFill">{user.weight ? user.weight + "kg" : "*"}</div>
+              )}
             </div>
-          ) : (
-            <div className="col-7 contentFill">{user.weight ? user.weight + "kg" : "*"}</div>
-          )}
-        </div>
-        <div className="center info">
-          <div className="col-5 title">상의 사이즈</div>
-          {modifyMode ? (
-            <div className="col-7 content">
-              <input type="text" name="top" onChange={handleChange} value={basicInfo.top} className="input" placeholder={"예시) 100 / L"} />
+            <div className="center info">
+              <div className="col-5 title">상의 사이즈</div>
+              {modifyMode ? (
+                <div className="col-7 content">
+                  <input type="text" name="top" onChange={handleChange} value={basicInfo.top} className="input" placeholder={"예시) 100 / L"} />
+                </div>
+              ) : (
+                <div className="col-7 contentFill">{user.top ? user.top : "*"}</div>
+              )}
             </div>
-          ) : (
-            <div className="col-7 contentFill">{user.top ? user.top : "*"}</div>
-          )}
-        </div>
-        <div className="center info">
-          <div className="col-5 title">하의 사이즈</div>
-          {modifyMode ? (
-            <div className="col-7 content">
-              <input type="text" name="bottom" onChange={handleChange} value={basicInfo.bottom} className="input" placeholder={"예시) 31 / L"} />
+            <div className="center info">
+              <div className="col-5 title">하의 사이즈</div>
+              {modifyMode ? (
+                <div className="col-7 content">
+                  <input type="text" name="bottom" onChange={handleChange} value={basicInfo.bottom} className="input" placeholder={"예시) 31 / L"} />
+                </div>
+              ) : (
+                <div className="col-7 contentFill">{user.bottom ? user.bottom : "*"}</div>
+              )}
             </div>
-          ) : (
-            <div className="col-7 contentFill">{user.bottom ? user.bottom : "*"}</div>
-          )}
-        </div>
-        <div className="center info">
-          <div className="col-5 title">직업</div>
-          {modifyMode ? (
-            <div className="col-7 content">
-              <input type="text" name="occupation" onChange={handleChange} value={basicInfo.occupation} className="input" placeholder={"예시) 회사원"} />
+            <div className="center info">
+              <div className="col-5 title">직업</div>
+              {modifyMode ? (
+                <div className="col-7 content">
+                  <input type="text" name="occupation" onChange={handleChange} value={basicInfo.occupation} className="input" placeholder={"예시) 회사원"} />
+                </div>
+              ) : (
+                <div className="col-7 contentFill">{user.occupation ? user.occupation : "*"}</div>
+              )}
             </div>
-          ) : (
-            <div className="col-7 contentFill">{user.occupation ? user.occupation : "*"}</div>
-          )}
-        </div>
-        <div className="center middleTopMargin">
-          {modifyMode ? (
-            <div className="center">
-              <div className="smallSelectBtn" onClick={clickCancel}>
-                취소
+          </div>
+          <div className="center middleTopMargin">
+            {modifyMode ? (
+              <div className="center">
+                <div className="smallSelectBtn" onClick={clickCancel}>
+                  취소
+                </div>
+                <div className="smallSelectBtn" onClick={handleBtnClick}>
+                  수정
+                </div>
               </div>
+            ) : (
               <div className="smallSelectBtn" onClick={handleBtnClick}>
-                수정
+                내 정보 수정
               </div>
-            </div>
-          ) : (
-            <div className="smallSelectBtn" onClick={handleBtnClick}>
-              기본 정보 수정
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </>

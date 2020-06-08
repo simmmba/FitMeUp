@@ -49,7 +49,7 @@ const GeneralThirdTab = () => {
   };
 
   const handleMessageClick = (mid) => {
-    axios.get(`${process.env.REACT_APP_URL}/message?mid=` + mid).then((res) => {
+    axios.get(`${process.env.REACT_APP_URL}/message?mid=` + mid + `&uid=` + loginUser.id).then((res) => {
       setMessage(res.data.message);
       setReadMode(true);
     });
@@ -109,7 +109,11 @@ const GeneralThirdTab = () => {
               <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile" />
             </div>
             <div className="col-8">
-              <div className="leftAlign">{message.source.nickname}</div>
+              {loginUser.type==="general"?(
+                  <div className="leftAlign">{messageType ? message.source.name : message.target.name}</div>
+              ):(
+                  <div className="leftAlign">{messageType ? message.source.nickname : message.target.nickname}</div>
+              )}
               <div className="rightAlign smallText">{message.createdAt.substring(0, 10) + " " + message.createdAt.substring(11, 16)}</div>
             </div>
           </div>
@@ -163,7 +167,11 @@ const GeneralThirdTab = () => {
                           <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile" />
                         </div>
                         <div className="col-8">
-                          <div className="leftAlign">{messageType ? m.source.nickname : m.target.nickname}</div>
+                          {loginUser.type==="general"?(
+                              <div className="leftAlign">{messageType ? m.source.name : m.target.name}</div>
+                          ):(
+                              <div className="leftAlign">{messageType ? m.source.nickname : m.target.nickname}</div>
+                          )}
                           <div className="leftAlign">{m.contents.length > 15 ? m.contents.substring(0, 15) + ".." : m.contents}</div>
                           <div className="rightAlign smallText">{m.createdAt.substring(0, 10) + " " + m.createdAt.substring(11, 16)}</div>
                         </div>
