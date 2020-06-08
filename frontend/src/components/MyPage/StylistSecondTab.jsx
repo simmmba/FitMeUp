@@ -89,7 +89,7 @@ const StylistSecondTab = () => {
 
   return (
     <div className="outline col-5">
-      <div className="col-5 inner_tab">
+      <div className="col-5">
         <div className="center middleTopMargin">
           <h3>기본 정보</h3>
         </div>
@@ -150,7 +150,7 @@ const StylistSecondTab = () => {
           )}
         </div>
       </div>
-      <div className="col-7 inner_tab">
+      <div className="col-7">
         <div className="center middleTopMargin">
           <h4>통계</h4>
         </div>

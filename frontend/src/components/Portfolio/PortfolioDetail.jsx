@@ -7,6 +7,7 @@ import ImageList from "./ImageList";
 import ConsultRequireModal from "./ConsultRequireModal";
 import star from "../../img/star.png";
 import { NavLink } from "react-router-dom";
+import ReviewList from "../Review/ReviewList";
 
 class PortfolioDetail extends React.Component {
   constructor(props) {
@@ -16,6 +17,10 @@ class PortfolioDetail extends React.Component {
       consult_cnt: 0,
       review_cnt: 0,
       avg_score: 0,
+      review_cnt:0,
+      slice_review:[],
+      reviews: [],
+      mloading:true
     };
   }
 
@@ -42,8 +47,40 @@ class PortfolioDetail extends React.Component {
         });
       })
       .catch((error) => {
-        alert("상담 요청 내역을 가져오는데 실패했습니다.");
+        alert("포트폴리오 정보를 가져오는데 실패했습니다.");
       });
+
+    // 리뷰 받아오기
+    axios({
+      method: "get",
+      url: `${process.env.REACT_APP_URL}/review/receive?user_id=${
+        this.url[this.url.length - 1]
+      }`,
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          reviews: res.data.list,
+          mloading: false
+        });
+        this.moreReview();
+      })
+      .catch((error) => {
+        this.setState({
+          mloading: false
+        })
+        alert("리뷰 내역을 가져오는데 실패했습니다.");
+      });
+  }
+
+  // 더보기
+  moreReview = () => {
+    let max_num = this.state.slice_review.length + 3;
+    if(max_num > this.state.reviews.length) max_num = this.state.reviews.length;
+
+    this.setState({
+      slice_review : this.state.reviews.slice(0, max_num)
+    })
   }
 
   render() {
@@ -78,6 +115,10 @@ class PortfolioDetail extends React.Component {
                       &nbsp;Point
                     </b>
                   </div>
+                  {!this.user ||
+                  (this.user.id !== this.state.portfolio?.stylist_id && (
+                    <div className="message"><img className="send" src="https://image.flaticon.com/icons/png/512/2983/2983788.png" alt="send"/></div>
+                  ))}
                 </div>
                 <div className="box">
                   <div className="score">
@@ -110,9 +151,7 @@ class PortfolioDetail extends React.Component {
                         },
                       }}
                     >
-                      <div className="apply">
-                        포트폴리오 수정하기
-                      </div>
+                      <div className="apply">포트폴리오 수정하기</div>
                     </NavLink>
                   )}
               </div>
@@ -125,7 +164,7 @@ class PortfolioDetail extends React.Component {
                   {this.state.portfolio.User?.nickname} 스타일리스트
                 </div>
                 <div className="tags">
-                  {this.state.portfolio.tag?.map((tag, index) => (
+                  {this.state.portfolio.Portfolio_tags?.map((tag, index) => (
                     <div key={index} className="tag">
                       #{tag.tag}
                     </div>
@@ -138,22 +177,29 @@ class PortfolioDetail extends React.Component {
               <div className="col-8">
                 {/* 이미지 들어가는 부분 */}
                 <div className="img_list">
-                  {this.state.portfolio.PortfolioImages?.map((port_img, index) => (
-                    <img
-                      key={index}
-                      alt="myimg"
-                      src={port_img.image_path}
-                      onClick={() => {
-                        window.open(port_img.image_path);
-                      }}
-                    ></img>
-                  ))}
+                  {this.state.portfolio.PortfolioImages?.map(
+                    (port_img, index) => (
+                      <img
+                        key={index}
+                        alt="myimg"
+                        src={port_img.image_path}
+                        onClick={() => {
+                          window.open(port_img.image_path);
+                        }}
+                      ></img>
+                    )
+                  )}
                 </div>
               </div>
             </div>
             <div>
               {/* 리뷰 들어가는 부분 */}
               <div className="title">리뷰 목록</div>
+              {this.state.slice_review.map((review, index) => (
+                <ReviewList key={index} review={review}></ReviewList>
+              ))}
+              {!this.state.mloading && this.state.reviews.length === 0 && <div className="noReview">작성된 리뷰가 없습니다</div>}
+              {this.state.reviews.length > this.state.slice_review.length && <div className="plus_btn"><span onClick={this.moreReview}>&nbsp;&nbsp;더보기&nbsp;&nbsp;</span></div>}
             </div>
           </div>
         </div>

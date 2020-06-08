@@ -3,6 +3,7 @@
 .PortfolioDetail {
     @include maxcenter;
     padding-top: 10px;
+    padding-bottom: 20px;
 
     .col-4 {
         padding-left: 0px;
@@ -13,6 +14,56 @@
         @media screen and (min-width: 1500px) {
             left: calc(50% + 245px);
             width: 550px; //? 왜 이러지
+        }
+    }
+
+    .message{
+        position: absolute;
+        top:15px;
+        right: 30px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        // background-color: $red;
+        border-radius: 20px;
+    }
+
+    .send{
+        width: 35px;
+        margin-top: 3px;
+        margin-right: 3px;
+
+        &:hover{
+            filter: invert(70%);
+        }
+    }
+
+    .noReview{
+        margin-top: 20px;
+        font-size: 16px;
+        color: $darkgray;
+        width: calc(66.666666666666% - 10px);
+        border: 1px solid $gray;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        border-radius: 3px;
+        text-align: center;
+    }
+
+    .plus_btn{
+        width: calc(66.666666666666% - 10px);
+        padding: 10px;
+        text-align: center;
+        font-size: 17px;
+        background: white;
+        border-radius: 3px;
+        margin-top: 10px;
+        color: $red;
+        font-weight: bolder;
+        span{cursor: pointer;
+            &:hover{
+                color: $red-hover;
+            }
         }
     }
 
@@ -62,7 +113,6 @@
     }
 
     .tags {
-        margin-bottom: 10px;
         .tag {
             display: inline-block;
             margin-right: 10px;
@@ -70,6 +120,7 @@
             padding-left: 3px;
             padding-right: 3px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
     }
 
