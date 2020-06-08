@@ -4,16 +4,25 @@ import axios from "axios";
 import { Rate, Empty } from "antd";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import Pagination from "@material-ui/lab/Pagination";
 
 const MyFrequent = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [consult, setConsult] = useState([]);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(0);
   const history = useHistory();
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL}/consult/list_for_review/?user_id=` + loginUser.id).then((res) => {
       console.log(res.data.list);
       setConsult(res.data.list);
+      setCount(parseInt(res.data.list.length / 5) + 1);
+      setPage(1);
     });
   }, []);
 
@@ -30,7 +39,7 @@ const MyFrequent = () => {
             <Empty description={<span className="description">아직 상담 내역이 없습니다.</span>} />
           </div>
         ) : (
-          consult.map((val, idx) => {
+          consult.slice((page - 1) * 5, page * 5).map((val, idx) => {
             return (
               <div key={idx} className="consultGrid">
                 <div className="consultVal">
@@ -93,6 +102,9 @@ const MyFrequent = () => {
           })
         )}
       </div>
+        <Pagination className="center" size={"small"} count={count}
+                    color={"secondary"} page={page} variant="outlined"
+                    shape="rounded" onChange={handleChange} />
     </div>
   );
 };

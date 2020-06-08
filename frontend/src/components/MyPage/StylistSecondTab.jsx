@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MyPageMain.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { Chart } from "react-google-charts";
 
@@ -10,7 +9,6 @@ const StylistSecondTab = () => {
   const [user, setUser] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
   const [selectorValue, setSelectorValue] = useState("revenue");
-  const [paymentList, setPaymentList] = useState([]);
 
   const basicInfo = {
     name: "",
@@ -22,13 +20,6 @@ const StylistSecondTab = () => {
   useEffect(() => {
     get_user();
   }, []);
-
-  const get_payment_list = () => {
-    axios.get(`${process.env.REACT_APP_URL}/payment/list?uset_id` + loginUser.id).then((res) => {
-      setPaymentList(res.data.list);
-      res.data.list.forEach((p) => {});
-    });
-  };
 
   const get_user = () => {
     axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((res) => {

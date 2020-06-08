@@ -22,7 +22,7 @@ const MyFrequent = () => {
     <div className="right_tab">
       <div className="center">
         <h3>
-          <b>자주 상담한 스타일리스트</b>
+          <b>단골 스타일리스트</b>
         </h3>
       </div>
       {stylistList.length > 0 ? (
