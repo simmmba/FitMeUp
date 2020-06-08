@@ -14,7 +14,6 @@ const Stylist = ({ val, filter, stylist_id }) => {
 
   // 유저가 스타일리스트 선택
   const approveConsult = () => {
-    console.log(user.credit);
     axios({
       method: "put",
       url: `${process.env.REACT_APP_URL}/consult/apply`,
@@ -135,7 +134,7 @@ const Stylist = ({ val, filter, stylist_id }) => {
           )}
 
           {/* 수락한게 있으면 나이면 */}
-          {stylist_id && stylist_id === user.id && (
+          {stylist_id && stylist_id === val.stylist_id && (
             <>
               {/* 진행중이면 */}
               {val.state === "ACCEPTED" && (
@@ -151,15 +150,6 @@ const Stylist = ({ val, filter, stylist_id }) => {
               )}
             </>
           )}
-
-          {/* 수락한게 있으면 내가 아니면 */}
-          {/* {stylist_id && stylist_id !== user.id && (
-            <div className="apply">
-              거절한
-              <br />
-              상담
-            </div>
-          )} */}
         </>
       )}
 
