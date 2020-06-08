@@ -24,5 +24,6 @@ consultRouter.get("/apply_in_consult", consult.apply_in_consult);
 consultRouter.get("/complete", consult.consult_complete);
 
 consultRouter.get("/stylist_info", consult.stylist_info);
+consultRouter.get("/list_for_review", consult.consult_for_review);
 
 export default consultRouter;
