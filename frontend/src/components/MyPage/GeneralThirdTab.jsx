@@ -100,7 +100,7 @@ const GeneralThirdTab = () => {
   };
 
   return (
-    <div className="one_tab col-3">
+    <div className="right_tab">
       {readMode ? (
         <div>
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1uOFms-ofcQ8ZzpT7yf4plp2tDs4mmNBaQeuNNMJQn3fE1mBM&usqp=CAU" alt="back" className="backButton" onClick={handleBackBtn} />
@@ -145,10 +145,10 @@ const GeneralThirdTab = () => {
         <div>
           <div className="messageBox">
             <div className="center">
-              <div className="smallSelectBtn" onClick={get_received_message}>
+              <div className="messageBtn" onClick={get_received_message}>
                 받은 메시지
               </div>
-              <div className="smallSelectBtn" onClick={get_sent_message}>
+              <div className="messageBtn" onClick={get_sent_message}>
                 보낸 메시지
               </div>
             </div>

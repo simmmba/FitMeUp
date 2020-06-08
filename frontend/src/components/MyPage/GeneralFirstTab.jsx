@@ -56,7 +56,7 @@ const GeneralFirstTab = () => {
       });
   };
   return (
-    <div className="one_tab col-3">
+    <div className="left_tab">
       <div className="center">
         <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="profile" />
       </div>
