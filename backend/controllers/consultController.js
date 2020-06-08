@@ -522,7 +522,6 @@ export const update_apply = async (req, res) => {
       { contents: contents, state: state },
       { where: { id: apply_id } },
       )
-      console.log(">>>>>>>>>>>>>>",state);
 
     // 일반 사용자 수락시 해당 상담 및 지원 처리
     if (state === 'ACCEPTED') {
@@ -672,7 +671,6 @@ export const stylist_info = async (req, res) => {
       where: { id: consult_id },
       raw: true
     })
-    console.log(consult);
     
     
     let user_id = consult.stylist_id;
@@ -771,9 +769,6 @@ export const consult_for_review = async (req, res) => {
       consult.dataValues.review = review;
     }
 
-    
-
-    console.log(consult_list);
     res.json({result : "Success",list:consult_list })
   } catch (err) {
     console.log("consultController.js consult_for_review method\n ==> " + err);
