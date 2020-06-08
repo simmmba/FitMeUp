@@ -66,7 +66,7 @@ export const get_detail = async function (req, res) {
 export const create_portfolio = async function (req, res) {
     try {
         const { stylist_id, title, contents, tags, my_price, coordi_price } = req.body
-        let p = await Portfolio.create({ stylist_id, title, contents,my_price, corrdi_price })
+        let p = await Portfolio.create({ stylist_id, title, contents,my_price, coordi_price })
 
         for (const t of tags) {
             await Portfolio_tags.create({ portfolio_id: p.id, tag: t })

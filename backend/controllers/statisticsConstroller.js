@@ -70,7 +70,7 @@ export const payment_statistics = async (req, res) => {
         const { stylist_id } = req.query;
 
         let query = "select month(createdAt) month, sum(if(type like 'income',amount,0)) 'income',\
-        sum(if(type like 'checkout',amount,0)) 'checkout'\
+        sum(if(type like 'witdraw',amount,0)) 'witdraw'\
         from payment where source = :stylist_id and createdAt > subdate(now(), INTERVAL 3 MONTH)\
         group by month;"
 
