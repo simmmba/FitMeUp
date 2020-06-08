@@ -20,27 +20,31 @@ class Room extends Component {
   }
 
   state = {
-    messages: [],
     messagesRef: firebase.database().ref("messages"),
     storageRef: firebase.storage().ref(),
+    messages: [],
+    firstLoad: true,
     uploadTask: null,
     percentUploaded: 0,
     files: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { currentRoom, currentUser } = this.props;
     if (currentRoom && currentUser) {
+      await this.loadMessages();
       this.addListeners(currentRoom.id);
     }
+    this.scrollDown();
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     if (
       this.props.currentRoom &&
       prevProps.currentRoom !== this.props.currentRoom &&
       this.props.currentUser
     ) {
+      await this.loadMessages();
       this.addListeners(this.props.currentRoom.id);
     }
     this.scrollDown();
@@ -61,34 +65,38 @@ class Room extends Component {
    */
   addMessageListener = async (roomId) => {
     const ref = this.state.messagesRef;
-    await ref
-      .child(roomId)
-      .once("value")
-      .then((snapshot) => {
-        ref.child(roomId).on("child_changed", (snap) => {
-          this.loadMessages();
+    const loadedMessages = [];
+    ref.child(roomId).on("child_added", (snap) => {
+      loadedMessages.push(snap.val());
+      if (
+        !this.state.firstLoad ||
+        this.state.messages.length <= loadedMessages.length
+      ) {
+        this.setState({
+          messages: loadedMessages,
+          firstLoad: false,
         });
-        this.loadMessages();
-        if (!snapshot.exists()) {
-          this.setState({
-            messages: [],
-          });
-        }
-      });
+      }
+    });
   };
 
-  loadMessages = () => {
+  loadMessages = async () => {
     const { currentRoom } = this.props;
     const ref = this.state.messagesRef;
+
     let loadedMessages = [];
-
-    ref.child(currentRoom.id).once("value", async (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        loadedMessages.push(childSnapshot.val());
+    await ref
+      .child(currentRoom.id)
+      .once("value", (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          loadedMessages.push(childSnapshot.val());
+        });
+      })
+      .then(() => {
+        this.setState({
+          messages: loadedMessages,
+        });
       });
-
-      this.setState({ messages: loadedMessages });
-    });
   };
 
   removeListeners = () => {
