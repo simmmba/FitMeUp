@@ -5,8 +5,9 @@ import path from 'path'
 export const upload_profile = async (req, res) => {
     try {
 
-        const {user_id} = req.body;
+        const {user_id} = req.query;
         const file = req.file;
+        
         const user = await User.update(
             {profile_img : process.env.IMAGE_URL+file.filename},
             {where :{ id:user_id}}
@@ -113,6 +114,8 @@ export const upload_img = multer({
             cb(null, process.env.IMAGE_PATH);
         },
         filename: function (req, file, cb) {
+            console.log(file);
+            
             cb(null, new Date().valueOf() + path.extname(file.originalname));
         }
     })
