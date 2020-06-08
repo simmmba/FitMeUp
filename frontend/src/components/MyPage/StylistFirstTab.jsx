@@ -73,7 +73,7 @@ const StylistFirstTab = () => {
       <div className="center">스타일리스트</div>
       <div className="center middleTopMargin">{user.credit} Point</div>
       <div className="center">
-        <div className="smallSelectBtn">출금하기</div>
+        <Withdraw />
         <Link to={"/mypage/credit"} className="smallSelectBtn">
           히스토리
         </Link>
