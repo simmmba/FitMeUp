@@ -63,7 +63,9 @@ const Stylist = ({ val, filter, stylist_id }) => {
       const newRoom = {
         id: key,
         consumer: consumer,
-        provider: provider
+        provider: provider,
+        lastMessage: ' ',
+        updated: firebase.database.ServerValue.TIMESTAMP
       };
 
       // 새 채팅룸 생성

@@ -25,6 +25,28 @@
     flex: 1;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+
+    .time-wrapper{
+      position: absolute;
+      margin-left: .5rem;
+      margin-right: .5rem;
+      width: 70px;
+      float:right;
+      bottom:0;
+      left:0;
+      transform:translateX(-120%);
+    }
+
+    .time-wrapper2{
+      position: absolute;
+      margin-left: .5rem;
+      margin-right: .5rem;
+      width: 70px;
+      float:right;
+      bottom:0;
+      right:0;
+      transform:translateX(130%);
+    }
   }
 
   .avatar {
