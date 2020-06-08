@@ -5,6 +5,7 @@ import Header from "../Common/Header";
 import ConsultListDetial from "./ConsultListDetail";
 import axios from "axios";
 import { Spin, Empty } from "antd";
+import Stylist from "./Stylist";
 
 class MyConsultDetail extends React.Component {
   constructor(props) {
@@ -12,14 +13,27 @@ class MyConsultDetail extends React.Component {
     this.state = {
       list: [],
       loading: true,
+      consult: [],
     };
   }
 
   componentDidMount() {
+    console.log(this.props.location.state);
+    this.setState({
+      consult: [this.props.location.state.consult],
+    });
+
+    var axiosUrl = "";
     // 스타일리스트 목록 받아오기
+    if (this.props.location.state.filter === "0") {
+      axiosUrl = `${process.env.REACT_APP_URL}/consult/apply_in_consult?consult_id=${this.props.location.state.consult.id}`;
+    } else {
+      axiosUrl = `${process.env.REACT_APP_URL}/consult/stylist_info?consult_id=${this.props.location.state.consult.id}`;
+    }
+
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_URL}/consult/apply_in_consult?consult_id=${this.props.location.state.consult.id}`,
+      url: axiosUrl,
     })
       .then((res) => {
         // axios가 잘되면
@@ -42,22 +56,34 @@ class MyConsultDetail extends React.Component {
       <>
         <Header></Header>
         <div className="MyConsultDetail">
-          <ConsultListDetial
-            consult={this.props.location.state.consult}
-          ></ConsultListDetial>
+          {this.state.consult.length !== 0 && (
+            <ConsultListDetial
+              consult={this.state.consult[0]}
+            ></ConsultListDetial>
+          )}
 
           {this.props.location.state.filter === "0" ? (
             <>
               <div className="title">신청한 스타일리스트 목록</div>
               {this.state.list.map((item, index) => (
-                <div key={index}>{item.nickname}</div>
+                <Stylist
+                  key={index}
+                  val={item}
+                  filter={this.props.location.state.filter}
+                  stylist_id={this.props.location.state.consult.stylist_id}
+                ></Stylist>
               ))}
             </>
           ) : (
             <>
               <div className="title">지정한 스타일리스트</div>
               {this.state.list.map((item, index) => (
-                <div key={index}>{item.nickname}</div>
+                <Stylist
+                  key={index}
+                  val={item}
+                  filter={this.props.location.state.filter}
+                  stylist_id={this.props.location.state.consult.stylist_id}
+                ></Stylist>
               ))}
             </>
           )}

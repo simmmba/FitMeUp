@@ -111,7 +111,7 @@ const MatchingList = ({ match }) => {
         {/* 평소 내 스타일 */}
         {match.ConsultImages.length !== 0 && (
           <div className="items">
-            <img alt="style" className="styleimg" src={match.ConsultImages[0]} />
+            <img alt="style" className="styleimg" src={match.ConsultImages[0].image_path} />
           </div>
         )}
 

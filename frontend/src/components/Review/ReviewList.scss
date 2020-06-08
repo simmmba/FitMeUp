@@ -1,0 +1,113 @@
+@import "../../styles/utils.scss";
+.ReviewList {
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 3px;
+    width: calc(66.666666666666% - 10px);
+    margin-top: 10px;
+    padding: 10px;
+    padding-top: 15px;
+
+    .user_info {
+        .user_name {
+            font-size: 20px;
+            margin-right: 10px;
+            margin-left: 10px;
+            vertical-align: -2px;
+        }
+        .profile {
+            display: inline-block;
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-top: -5px;
+            width: 50px;
+            border-radius: 25px;
+            border: 1px solid white;
+        }
+        .tscore{
+            margin-left: 10px;
+            height: 30px;
+            color: rgb(145, 145, 145);
+        }
+    }
+
+    .contents{
+        margin-top: 20px;
+        margin-bottom: 15px;
+        padding-left: 5px;
+    }
+
+    .review_img_bundle {
+        margin-top: 15px;
+        .review_img:nth-child(odd) {
+            margin-right: 10px;
+        }
+        .review_img {
+            cursor: pointer;
+            display: inline-block;
+            width: calc(50% - 5px);
+
+            .thumbnail {
+                position: relative;
+                padding-top: 100%;
+                overflow: hidden;
+
+                .centered {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+
+                    .store_img {
+                        position: absolute;
+                        top: 0px;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .mebtn{
+        border: 2px solid $red;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 5px 10px;
+
+        &:hover {
+            color: white;
+            background: $red;
+            cursor: pointer;
+        }
+    }
+
+    .edit_button {
+        display: inline-block;
+        width: 110px;
+    }
+
+    .date {
+        display: inline-block;
+        width: calc(100% - 110px);
+        // text-align: right;
+        font-size: 15px;
+        vertical-align: -7px;
+        color: black;
+        height: 20px;
+        padding-left: 5px;
+    }
+
+    @media screen and (min-width: 500px) {
+        .review_img_bundle {
+            .review_img {
+                width: 100px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
