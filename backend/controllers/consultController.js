@@ -666,6 +666,7 @@ export const stylist_info = async (req, res) => {
       where: { id: consult_id },
       raw: true
     })
+    user_info.state = consult.state;
 
     let user_id = consult.stylist_id;
     let user_info = await User.findOne({
