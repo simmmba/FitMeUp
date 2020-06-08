@@ -109,7 +109,7 @@ const GeneralFirstTab = () => {
       </div>
       <div className="center">
         <Payment />
-        <div className="smallSelectBtn">히스토리</div>
+          <Link to={"/mypage/credit"} className="smallSelectBtn">히스토리</Link>
       </div>
       <div className="center middleTopMargin">
         <table>

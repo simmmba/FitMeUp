@@ -68,6 +68,7 @@ const MyPageMain = () => {
             <Switch>
               <Route path={`/mypage`} component={MyConsult} exact={true} />
               <Route path={`/mypage/myinfo`} component={MyInfo} />
+                <Route path={`/mypage/credit`} component={CreditHistory}/>
             </Switch>
             {rightTab === "freq" ? <MyFrequent /> : <GeneralThirdTab />}
           </div>
