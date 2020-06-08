@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import { Rate } from "antd";
+import firebase from "../../firebaseConfig";
 import "./Stylist.scss";
 import { NavLink, withRouter } from "react-router-dom";
 import axios from "axios";
 
 const Stylist = ({ val, filter, stylist_id }) => {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const [roomsRef] = useState(firebase.database().ref("rooms"));
+  const [usersRef] = useState(firebase.database().ref("users"));
+  const history = useHistory();
 
   // 유저가 스타일리스트 선택
   const approveConsult = () => {
@@ -16,19 +21,102 @@ const Stylist = ({ val, filter, stylist_id }) => {
       data: {
         user_id: user.id,
         consult_id: val.consult_id,
-        apply_id : val.id,
-        state: "ACCEPTED"
+        apply_id: val.id,
+        state: "ACCEPTED",
       },
     })
       .then((res) => {
         // axios가 잘되면
         alert("상담 수락이 완료되었습니다");
-        // 채팅으로 연결하기
+        // 채팅 생성
+        createChat();
       })
       .catch((error) => {
         alert("상담 수락에 실패했습니다");
       });
-  }
+  };
+
+  const createChat = async () => {
+    const { key } = roomsRef.push();
+
+    const newRoom = {
+      id: key,
+    };
+
+    const consumer = {
+      ...user,
+      role: "consumer",
+    };
+
+    try {
+      let provider = await axios
+        .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${stylist_id}`)
+        .then((res) => {
+          if (res.data.result === "Success") {
+            return res.data.user;
+          } else {
+            console.log(res.data.detail);
+          }
+        });
+
+      provider = {
+        ...provider,
+        role: "provider",
+      };
+
+      // 새 채팅룸 생성
+      roomsRef
+        .child(key)
+        .update(newRoom)
+        .then(() => {
+          // 소비자 정보 입력
+          roomsRef
+            .child(key)
+            .child("users")
+            .child(consumer.id)
+            .set(consumer)
+            .catch((err) => {
+              console.error(err);
+            });
+          // 스타일리스트 정보 입력
+          roomsRef
+            .child(key)
+            .child("users")
+            .child(provider.id)
+            .set(provider)
+            .catch((err) => {
+              console.error(err);
+            });
+
+          // 소비자 유저 db에 방정보 입력
+          usersRef
+            .child(consumer.id)
+            .child("rooms")
+            .child(key)
+            .set(newRoom)
+            .catch((err) => {
+              console.error(err);
+            });
+
+          // 스타일리스트 유저 db에 방정보 입력
+          usersRef
+            .child(provider.id)
+            .child("rooms")
+            .child(key)
+            .set(newRoom)
+            .catch((err) => {
+              console.error(err);
+            });
+
+          history.push("/chatting");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="Stylist_Item">
@@ -40,14 +128,22 @@ const Stylist = ({ val, filter, stylist_id }) => {
       {filter === "0" && (
         <>
           {/* 아직 수락한게 없으면 수락하기 */}
-          {!stylist_id && <div className="apply" onClick={approveConsult}>수락하기</div>}
+          {!stylist_id && (
+            <div className="apply" onClick={approveConsult}>
+              수락하기
+            </div>
+          )}
 
           {/* 수락한게 있으면 나이면 */}
           {stylist_id && stylist_id === user.id && (
             <>
               {/* 진행중이면 */}
               {val.state === "ACCEPTED" && (
-                <div className="apply">진행중<br/>상담</div>
+                <div className="apply">
+                  진행중
+                  <br />
+                  상담
+                </div>
               )}
               {/* 완료면 */}
               {val.state === "COMPLETE" && (
@@ -73,9 +169,21 @@ const Stylist = ({ val, filter, stylist_id }) => {
           {/* 대기중 */}
           {val.state === "REQUESTED" && <div className="apply">대기 중</div>}
           {/* 진행중 */}
-          {val.state === "ACCEPTED" && <div className="apply">진행중<br/>상담</div>}
+          {val.state === "ACCEPTED" && (
+            <div className="apply">
+              진행중
+              <br />
+              상담
+            </div>
+          )}
           {/* 거절 */}
-          {val.state === "DENIED" && <div className="apply">거절된<br/>상담</div>}
+          {val.state === "DENIED" && (
+            <div className="apply">
+              거절된
+              <br />
+              상담
+            </div>
+          )}
           {/* 완료 */}
           {val.state === "COMPLETE" && <div className="apply">상담 왼료</div>}
         </>

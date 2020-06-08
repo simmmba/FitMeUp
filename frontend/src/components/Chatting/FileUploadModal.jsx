@@ -6,7 +6,6 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import ClearIcon from "@material-ui/icons/Clear";
 import "./FileUploadModal.scss";
 
-import Button from "./Common/Button";
 import DragAndDrop from "./Common/DragAndDrop";
 
 class FileUploadModal extends Component {
