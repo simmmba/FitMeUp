@@ -418,5 +418,76 @@
       height: 50px;
       width: 50px;
     }
+    .line {
+      border: solid 1px black;
+      height: 100%;
+    }
+    .half {
+      height: 50%;
+    }
+    .creditHistoryList {
+      width: 90%;
+      height: 80%;
+      //border: solid black 1px;
+      .creditHistoryBox {
+        //border: solid black 1px;
+        height: 18.5%;
+        margin: 5px;
+        display: flex;
+        background: white;
+        .type {
+          width: 10%;
+        }
+        .red {
+          color: $red;
+        }
+        .blue {
+          color: #5643fa;
+        }
+        .contents {
+          width: 50%;
+        }
+        .amount {
+          width: 20%;
+        }
+        .date {
+          width: 30%;
+        }
+      }
+      :hover {
+        background: whitesmoke;
+      }
+    }
+
+
+    .filebox {
+      text-align: left;
+    }
+    .filebox label {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      font-size: 15px;
+      line-height: normal;
+      vertical-align: middle;
+      border: none;
+      color: black;
+      border-radius: 0.25em;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .filebox label:hover {
+      color: $red;
+    }
+
+    .filebox input[type="file"] {
+      /* 파일 필드 숨기기 */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
   }
 }
