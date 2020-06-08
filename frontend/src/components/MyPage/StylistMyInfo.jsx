@@ -71,31 +71,6 @@ const StylistMyInfo = () => {
         setModifyMode(false);
     };
 
-    const handleImgChange = (e) => {
-        console.log(e.target.files[0])
-        let img = new FormData()
-        img.append("img", e.target.files[0])
-        axios({
-            method: "post",
-            url: `${process.env.REACT_APP_URL}/upload/profile?user_id=` + loginUser.id,
-            data: img,
-        })
-            .then((res) => {
-                if(res.data.result==="Success") {
-                    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id)
-                        .then(res => {
-                            window.sessionStorage.setItem("user", JSON.stringify(res.data.user));
-                            setUser(res.data.user)
-                            console.log(res.data.user)
-                        })
-                }
-                alert("프로필 사진 등록 성공");
-            })
-            .catch((error) => {
-                alert("프로필 사진 등록 중 오류가 발생했습니다.");
-            });
-    }
-
     return (
         <>
             <div className="middle_tab">
@@ -104,30 +79,9 @@ const StylistMyInfo = () => {
                         <b>기본 정보</b>
                     </h3>
                 </div>
-                <div className="center topMargin">
-                    <img src={user.profile_img} alt={"Profile Image"} className="profile"/>
-                </div>
-                <div className="center">
-                    <div className="center">
-                        <div className="filebox center">
-                            <label className="center">
-                                프로필 사진 수정
-                                <input
-                                    type="file"
-                                    name="main_img"
-                                    accept="image/gif, image/jpeg, image/png"
-                                    className="center"
-                                    onChange={handleImgChange}
-                                />
-                            </label>
-                        </div>
-                        {/*{this.state.main_base64 !== "" && (*/}
-                        {/*    <img alt="메인이미지" src={this.state.main_base64}></img>*/}
-                        {/*)}*/}
-                    </div>
-                </div>
+                <div className="bigTopMargin"/>
                 <div className="center info">
-                    <div className="col-5 title">이름</div>
+                    <div className="col-5 title ">이름</div>
                     {modifyMode ? (
                         <div className="col-7 content">
                             <input type="text" name="name" onChange={handleChange} value={basicInfo.name} className="input"/>
@@ -177,7 +131,7 @@ const StylistMyInfo = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="smallSelectBtn" onClick={handleBtnClick}>
+                        <div className="smallSelectBtn bigTopMargin" onClick={handleBtnClick}>
                             기본 정보 수정
                         </div>
                     )}

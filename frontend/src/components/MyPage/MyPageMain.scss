@@ -471,6 +471,10 @@
 
     .filebox {
       text-align: left;
+
+      .profileImgBtn {
+        @include whiteButton(110, 11);
+      }
     }
     .filebox label {
       display: inline-block;
@@ -498,15 +502,24 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
-  }
 
-  .MuiPaginationItem-outlinedSecondary.Mui-selected {
-    color: white;
-    border: 1px solid $red;
-    background-color: $red;
+    .MuiPaginationItem-outlinedSecondary.Mui-selected {
+      color: white;
+      border: 1px solid $red;
+      background-color: $red;
 
-    &:hover {
-      color: $red;
+      &:hover {
+        color: $red;
+      }
+    }
+    .selector {
+      width: 30%;
+    }
+    .full_height {
+      height: 100%;
+    }
+    .leftPadding {
+      padding-left: 120px;
     }
   }
 }

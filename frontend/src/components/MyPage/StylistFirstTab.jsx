@@ -31,19 +31,49 @@ const StylistFirstTab = () => {
     });
   };
 
+  const handleImgChange = (e) => {
+    console.log(e.target.files[0]);
+    let img = new FormData();
+    img.append("img", e.target.files[0]);
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_URL}/upload/profile?user_id=` + loginUser.id,
+      data: img,
+    })
+      .then((res) => {
+        if (res.data.result === "Success") {
+          axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((res) => {
+            window.sessionStorage.setItem("user", JSON.stringify(res.data.user));
+            setUser(res.data.user);
+          });
+        }
+        alert("프로필 사진 등록 성공");
+      })
+      .catch((error) => {
+        alert("프로필 사진 등록 중 오류가 발생했습니다.");
+      });
+  };
+
   return (
     <div className="left_tab">
       <div className="center">
-        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="profile" />
-      </div>
-      <div className="center topMargin nickname">{user.name}</div>
-      <div className="center">스타일리스트</div>
-      <div className="middleTopMargin creditBox">
-        <div className="credit">{user.credit}</div>
-        <div>Point</div>
+        <img src={user.profile_img} alt={"Profile Image"} className="profile" />
       </div>
       <div className="center">
-        <Withdraw />
+        <div className="center">
+          <div className="filebox center">
+            <label className="center profileImgBtn">
+              프로필 사진 수정
+              <input type="file" name="main_img" accept="image/gif, image/jpeg, image/png" className="center" onChange={handleImgChange} />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div className="center topMargin">{user.name}</div>
+      <div className="center">스타일리스트</div>
+      <div className="center middleTopMargin">{user.credit} Point</div>
+      <div className="center">
+        <div className="smallSelectBtn">출금하기</div>
         <Link to={"/mypage/credit"} className="smallSelectBtn">
           히스토리
         </Link>
