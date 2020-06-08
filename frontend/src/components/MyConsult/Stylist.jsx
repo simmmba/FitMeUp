@@ -49,7 +49,7 @@ const Stylist = ({ val, filter, stylist_id }) => {
 
     try {
       let provider = await axios
-        .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${stylist_id}`)
+        .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`)
         .then((res) => {
           if (res.data.result === "Success") {
             return res.data.user;
