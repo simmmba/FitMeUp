@@ -27,7 +27,6 @@ export const get_detail = async function (req, res) {
                 where: { target: stylist_id },
                 raw: true
             })
-            console.log(review_info);
             review_info.avg_score = review_info.avg_score ? review_info.avg_score : 0;
 
 
@@ -67,7 +66,7 @@ export const get_detail = async function (req, res) {
 export const create_portfolio = async function (req, res) {
     try {
         const { stylist_id, title, contents, tags, my_price, coordi_price } = req.body
-        let p = await Portfolio.create({ stylist_id, title, contents })
+        let p = await Portfolio.create({ stylist_id, title, contents,my_price, corrdi_price })
 
         for (const t of tags) {
             await Portfolio_tags.create({ portfolio_id: p.id, tag: t })
