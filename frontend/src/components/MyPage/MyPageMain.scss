@@ -1,21 +1,20 @@
 @import "../../styles/utils.scss";
 
-body {
+.MyPageBox {
   background: $gray;
+  height: 100vh;
 
   .MyPageMain {
     margin-bottom: 100px;
-    // background: $gray;
     @include maxcenter;
 
     .contentBox {
-      // border: orange solid 1px;
-      // border: 1px solid black;
       display: flex;
       width: 100%;
       min-height: 70vh;
 
       .left_tab {
+        font-size: 1.1rem;
         width: 24%;
         background-color: white;
         display: flex;
@@ -28,10 +27,10 @@ body {
       .right_tab {
         padding-top: 30px;
         width: 24%;
+        margin: 0 7px;
         background-color: white;
         display: flex;
         flex-direction: column;
-        margin: 0 7px;
       }
 
       .middle_tab {
@@ -43,11 +42,6 @@ body {
         flex-direction: column;
       }
     }
-    .inner_tab {
-      //border: grey solid 1px;
-      // height: 510px;
-      //margin: 10px;
-    }
 
     .center {
       display: flex;
@@ -56,48 +50,119 @@ body {
       text-align: center;
     }
 
-    .selectBtn {
-      font-family: $main_font;
-      margin: 10px;
-      width: 130px;
-      padding: 10px;
-      text-align: center;
-      font-size: 16px;
-      background-color: white;
-      color: $darkgray;
-      cursor: pointer;
-      // border: none;
-      transition: 0.3s;
-      border-radius: 3px;
-      text-decoration: none;
-      border: 2px solid $gray;
+    .creditBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
 
-      &:hover {
-        color: $red;
-        text-decoration: none;
-        border: 2px solid $red;
+      .credit {
+        font-family: $main_font;
+        font-size: 1.5rem;
+        margin-right: 5px;
+        display: flex;
       }
     }
 
-    .selectedBtn {
-      border: 2px solid $gray;
-      margin: 10px;
-      width: 130px;
-      padding: 10px;
-      text-align: center;
-      font-family: $sub-font;
-      font-size: 16px;
-      color: $red;
-      cursor: pointer;
-      // border: none;
-      transition: 0.3s;
-      border-radius: 3px;
-      text-decoration: none;
+    .infoBox {
+      // border: 1px solid black;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .infoContent {
+        margin-top: 40px;
+      }
+    }
+
+    .nickname {
       font-family: $main_font;
+      font-size: 1.5rem;
+      margin-bottom: 2px;
+    }
+
+    .MyPageMenu {
+      width: 100%;
+      height: 100px;
+      margin: 0px;
+      display: flex;
+      justify-content: center;
+
+      .leftMenu {
+        width: 24%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .middleMenu {
+        width: 52%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .rightMenu {
+        width: 24%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .selectBtn {
+        font-family: $main_font;
+        margin: 20px 10px 20px 10px;
+        width: 120px;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        background-color: white;
+        color: $darkgray;
+        cursor: pointer;
+        // border: none;
+        transition: 0.3s;
+        border-radius: 3px;
+        text-decoration: none;
+        border: 2px solid $gray;
+
+        &:hover {
+          color: $red;
+          text-decoration: none;
+          border: 2px solid $red;
+        }
+      }
+
+      .selectedBtn {
+        border: 2px solid $gray;
+        margin: 20px 10px 20px 10px;
+        width: 120px;
+        padding: 10px;
+        text-align: center;
+        font-family: $sub-font;
+        font-size: 16px;
+        color: $red;
+        cursor: pointer;
+        // border: none;
+        transition: 0.3s;
+        border-radius: 3px;
+        text-decoration: none;
+        font-family: $main_font;
+        background: white;
+
+        &:hover {
+          color: $red;
+          text-decoration: none;
+          border: 2px solid $red;
+        }
+      }
     }
 
     .smallSelectBtn {
-      @include whiteButton(120, 12);
+      @include whiteButton(120, 13);
       margin: 10px;
     }
 
@@ -106,12 +171,8 @@ body {
       margin: 0 10px 10px 10px;
     }
 
-    .container {
-      display: flex;
-      justify-content: center;
-    }
     .profile {
-      @include circle(100);
+      @include circle(130);
       object-fit: cover;
     }
     .smallProfile {
@@ -128,12 +189,13 @@ body {
       margin-top: 100px;
     }
     .tdl {
-      width: 200px;
+      width: 120px;
+      text-align: left;
     }
     .tdr {
-      width: 150px;
+      width: 120px;
+      text-align: right;
       font-weight: bold;
-      font-size: 1.1em;
     }
     .messageBox {
       height: 90%;
@@ -160,9 +222,6 @@ body {
     .leftMargin {
       margin-left: 30px;
     }
-    .smallLeftMargin {
-      margin-left: 15px;
-    }
     .info {
       margin-top: 30px;
     }
@@ -187,27 +246,105 @@ body {
       width: 70%;
     }
 
-    .stylist {
-      margin-top: 10px;
-      background: whitesmoke;
-      width: 90%;
-      margin-left: 10px;
-      margin-right: 10px;
-      padding: 5px;
-      height: 120px;
-      border: $red solid 1px;
-      border-radius: 5px;
+    .nothing {
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+
+      .ant-empty-image {
+        margin-bottom: 15px;
+      }
+
+      .description {
+        color: $darkgray;
+      }
     }
-    .stylist:hover {
-      background: white;
+
+    .recentBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 10px 10px 30px 10px;
+
+      .stylist {
+        color: black;
+        width: 90%;
+        margin-bottom: 15px;
+        border: $red solid 2px;
+        border-radius: 5px;
+        transition: 0.3s;
+
+        &:hover {
+          background: $gray;
+        }
+
+        .cnt {
+          padding: 2px 0;
+          background: $red;
+          color: white;
+          border-bottom: 2px solid $red;
+          font-size: 1.1rem;
+        }
+
+        .stylistBox {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5px;
+
+          .stylistProfile {
+            @include circle(45);
+            object-fit: cover;
+            margin-right: 10px;
+          }
+
+          .name {
+            width: 150px;
+            @include overflow_hidden;
+          }
+        }
+      }
     }
-    .stylistProfile {
-      @include circle(40);
-      object-fit: cover;
+
+    .consultBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin-top: 20px;
+
+      .consultGrid {
+        width: 90%;
+
+        .consultVal {
+          padding: 0 20px;
+
+          .first {
+            font-size: 20px;
+            font-family: $main_font;
+            margin-bottom: 3px;
+            display: flex;
+          }
+          .second {
+            display: flex;
+            font-size: 16px;
+
+            .consultNickname {
+              margin-right: 20px;
+            }
+
+            .consultPrice {
+            }
+          }
+        }
+      }
     }
-    .textBlack {
-      color: black;
-    }
+
     .leftAlign {
       display: flex;
       justify-content: flex-start;

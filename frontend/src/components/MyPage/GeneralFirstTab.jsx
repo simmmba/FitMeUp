@@ -60,9 +60,12 @@ const GeneralFirstTab = () => {
       <div className="center">
         <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="profile" />
       </div>
-      <div className="center topMargin">{user.nickname}</div>
+      <div className="center topMargin nickname">{user.nickname}</div>
       <div className="center">개인 회원</div>
-      <div className="center middleTopMargin">{user.credit} Point</div>
+      <div className="middleTopMargin creditBox">
+        <div className="credit">{user.credit}</div>
+        <div>Point</div>
+      </div>
       <div className="center">
         <Payment />
         <div className="smallSelectBtn">히스토리</div>
