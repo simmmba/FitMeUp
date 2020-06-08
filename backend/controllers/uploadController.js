@@ -12,7 +12,7 @@ export const upload_profile = async (req, res) => {
             {where :{ id:user_id}}
         )
 
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_profile method\n ==> ' + err)
         res
@@ -24,29 +24,29 @@ export const upload_profile = async (req, res) => {
 export const upload_portfolio = async (req, res) => {
     try {
         const {portfolio_id} = req.query;
-
         const files = req.files;
-        console.log(files);
         
+        let img_delete = await PortfolioImage.destroy(
+            {where : {portfolio_id: portfolio_id}}
+        )
+
         let idx = 0;
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
             if(idx == 0){
-                console.log("메인");
                 
                 const portfolio = await Portfolio.update(
                     {main_img : file_path},
                     {where : {id:portfolio_id}}
                     )
                 }else{
-                    console.log("그외");
                     const portfolioImage = await PortfolioImage.create(
                         {portfolio_id : portfolio_id, image_path : file_path}
                         )
                 }
                 idx++;
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_portfolio method\n ==> ' + err)
         res
@@ -60,13 +60,17 @@ export const upload_review = async (req, res) => {
         const {review_id} = req.query;
         const files = req.files;
 
+        let img_delete = await ReviewImage.destroy(
+            {where : {review_id: review_id}}
+        )
+
         for (const file of files) {
             let file_path = process.env.IMAGE_URL+file.filename
             const reviewImage = await ReviewImage.create(
                 {review_id : review_id, image_path : file_path}
             )
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_review method\n ==> ' + err)
         res
@@ -78,10 +82,12 @@ export const upload_review = async (req, res) => {
 export const upload_consult = async (req, res) => {
     try {
         const {consult_id} = req.query;
-        console.log(req.file);
-        // console.log(req);
-        
         const files = req.files;
+        
+        let img_delete = await ConsultImage.destroy(
+            {where : {consult_id: consult_id}}
+        )
+        
         if(consult_id == null){
             throw new Error('wrong consult_id');
         }
@@ -92,7 +98,7 @@ export const upload_consult = async (req, res) => {
                 {consult_id : consult_id, image_path : file_path}
             )
         }
-        res.json({state:'Success'})
+        res.json({result:'Success'})
     }catch(err){
         console.log('uploadController.js upload_review method\n ==> ' + err)
         res
@@ -100,7 +106,6 @@ export const upload_consult = async (req, res) => {
           .json({ result: 'Fail', detail: '500 Internal Server Error' })
     }
 }
-
 
 export const upload_img = multer({
     storage: multer.diskStorage({
