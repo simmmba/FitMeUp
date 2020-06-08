@@ -40,6 +40,10 @@
         background-color: white;
         display: flex;
         flex-direction: column;
+
+        h3 {
+          color: $red_hover;
+        }
       }
     }
 
@@ -321,24 +325,65 @@
       .consultGrid {
         width: 90%;
 
+        hr {
+          margin: 0;
+        }
+
         .consultVal {
-          padding: 0 20px;
+          padding: 15px 20px;
+          display: flex;
+          width: 100%;
 
-          .first {
-            font-size: 20px;
-            font-family: $main_font;
-            margin-bottom: 3px;
-            display: flex;
+          &:hover {
+            background-color: $gray;
           }
-          .second {
-            display: flex;
-            font-size: 16px;
 
-            .consultNickname {
-              margin-right: 20px;
+          .left {
+            width: 80%;
+            .first {
+              font-size: 20px;
+              font-family: $main_font;
+              margin-bottom: 3px;
+              display: flex;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
             }
+            .second {
+              display: flex;
+              font-size: 16px;
 
-            .consultPrice {
+              .consultNickname {
+                margin-right: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              .consultPrice {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              .consultScore {
+                margin-left: 20px;
+              }
+            }
+          }
+
+          .right {
+            width: 20%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .reviewBtn {
+              border: 1px solid black;
+
+              @include whiteButton(100, 15);
             }
           }
         }

@@ -27,10 +27,9 @@ export const get_detail = async function (req, res) {
                 where: { target: stylist_id },
                 raw: true
             })
-            console.log(review_info);
             review_info.avg_score = review_info.avg_score ? review_info.avg_score : 0;
-            
-            
+
+
             let consult_info = await Consult.findOne({
                 attributes: [
                     [sequelize.fn('count', sequelize.col('*')), 'consult_cnt']
@@ -42,7 +41,7 @@ export const get_detail = async function (req, res) {
             res.json({
                 result: "Success",
                 portfolio: p,
-                avg_scroe: review_info.avg_score,
+                avg_score: review_info.avg_score,
                 review_cnt: review_info.review_cnt,
                 consult_cnt: consult_info.consult_cnt
             })
@@ -67,7 +66,7 @@ export const get_detail = async function (req, res) {
 export const create_portfolio = async function (req, res) {
     try {
         const { stylist_id, title, contents, tags, my_price, coordi_price } = req.body
-        let p = await Portfolio.create({ stylist_id, title, contents })
+        let p = await Portfolio.create({ stylist_id, title, contents,my_price, corrdi_price })
 
         for (const t of tags) {
             await Portfolio_tags.create({ portfolio_id: p.id, tag: t })
@@ -95,19 +94,19 @@ export const create_portfolio = async function (req, res) {
 export const update_portfolio = async function (req, res) {
     try {
         const { portfolio_id, title, contents, tags, my_price, coordi_price } = req.body
-        
+
         let update = await Portfolio.update(
             { title, contents, tags, my_price, coordi_price },
-            {where :{id : portfolio_id}}
+            { where: { id: portfolio_id } }
         )
 
-        let tags_delete = await Portfolio_tags.destroy({ where: {id : portfolio_id}})
+        let tags_delete = await Portfolio_tags.destroy({ where: { portfolio_id: portfolio_id } })
 
         for (const t of tags) {
-            await Portfolio_tags.create({ portfolio_id: p.id, tag: t })
+            await Portfolio_tags.create({ portfolio_id, tag: t })
         }
 
-        return res.status(200).json({result: "Success"})
+        return res.status(200).json({ result: "Success" })
 
     } catch (e) {
         console.log(e)
@@ -130,6 +129,29 @@ export const delete_portfolio = async function (req, res) {
     } catch (e) {
         console.log(e)
         return res.status(500).json({
+            result: "Fail",
+            detail: "500 Internal Server Error"
+        })
+    }
+}
+
+export const check_portfolio = async function (req, res) {
+
+    try {
+
+        const { stylist_id } = req.query;
+        let portfolio = await Portfolio.findOne({
+            where: { stylist_id: stylist_id }
+        })
+
+        let isExist = portfolio ? "true" : "false";
+
+        res.json({ result: "Success", isExist: isExist })
+
+    } catch (err) {
+        console.log(err);
+        
+        res.status(500).json({
             result: "Fail",
             detail: "500 Internal Server Error"
         })

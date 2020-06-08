@@ -71,7 +71,11 @@ module.exports = function (sequelize, DataTypes) {
     state: {
       type: DataTypes.STRING(100),
       allowNull: true
-    }
+    },
+    appointed: {
+      type: DataTypes.STRING(10),
+      allowNull: true
+    },
   }, {
     tableName: 'consult'
   });

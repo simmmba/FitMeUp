@@ -20,7 +20,10 @@ consultRouter.get("/apply", consult.read_applies);
 consultRouter.put("/apply", consult.update_apply);
 consultRouter.delete("/apply", consult.delete_apply);
 
-consultRouter.get("/apply_in_consult",consult.apply_in_consult);
-consultRouter.get("/complete",consult.consult_complete);
+consultRouter.get("/apply_in_consult", consult.apply_in_consult);
+consultRouter.get("/complete", consult.consult_complete);
+
+consultRouter.get("/stylist_info", consult.stylist_info);
+consultRouter.get("/list_for_review", consult.consult_for_review);
 
 export default consultRouter;
