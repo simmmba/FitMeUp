@@ -105,7 +105,7 @@ const MatchingList = ({ match }) => {
 
         {/* 원하는 스타일 */}
         <div className="items">
-          <img alt="style" className="styleimg" src={"/img/wantStyle/" + match.ConsultWants[0].img} />
+          <img alt="style" className="styleimg" src={"/img/wantStyle/" + match.ConsultWants[0]?.img} />
         </div>
 
         {/* 평소 내 스타일 */}

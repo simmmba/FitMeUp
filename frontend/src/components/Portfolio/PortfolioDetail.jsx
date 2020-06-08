@@ -117,7 +117,7 @@ class PortfolioDetail extends React.Component {
                   </div>
                   {!this.user ||
                   (this.user.id !== this.state.portfolio?.stylist_id && (
-                    <div className="message">쪽지</div>
+                    <div className="message"><img className="send" src="https://image.flaticon.com/icons/png/512/2983/2983788.png" alt="send"/></div>
                   ))}
                 </div>
                 <div className="box">

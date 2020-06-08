@@ -24,8 +24,18 @@
         cursor: pointer;
         width: 40px;
         height: 40px;
-        background-color: $red;
+        // background-color: $red;
         border-radius: 20px;
+    }
+
+    .send{
+        width: 35px;
+        margin-top: 3px;
+        margin-right: 3px;
+
+        &:hover{
+            filter: invert(70%);
+        }
     }
 
     .noReview{
