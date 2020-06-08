@@ -38,34 +38,39 @@ const Stylist = ({ val, filter, stylist_id }) => {
   const createChat = async () => {
     const { key } = roomsRef.push();
 
-    const newRoom = {
-      id: key,
-    };
-
+    
     const consumer = {
       ...user,
       role: "consumer",
     };
-
+    
     try {
       let provider = await axios
-        .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`)
-        .then((res) => {
-          if (res.data.result === "Success") {
-            return res.data.user;
-          } else {
-            console.log(res.data.detail);
-          }
-        });
+      .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`)
+      .then((res) => {
+        if (res.data.result === "Success") {
+          return res.data.user;
+        } else {
+          console.log(res.data.detail);
+        }
+      });
 
       provider = {
         ...provider,
         role: "provider",
       };
+      
+      const newRoom = {
+        id: key,
+        consumer: consumer,
+        provider: provider,
+        lastMessage: ' ',
+        updated: firebase.database.ServerValue.TIMESTAMP
+      };
 
       // 새 채팅룸 생성
       roomsRef
-        .child(key)
+      .child(key)
         .update(newRoom)
         .then(() => {
           // 소비자 정보 입력

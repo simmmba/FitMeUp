@@ -114,8 +114,6 @@ export const upload_img = multer({
             cb(null, process.env.IMAGE_PATH);
         },
         filename: function (req, file, cb) {
-            console.log(file);
-            
             cb(null, new Date().valueOf() + path.extname(file.originalname));
         }
     })
