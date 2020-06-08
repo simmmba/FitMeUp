@@ -149,17 +149,19 @@ export const delete_review = (req, res) => {
 };
 
 // 나에게 등록된 리뷰 불러오기
-export const read_receive_reviews = (req, res) => {
+export const read_receive_reviews = async (req, res) => {
   try {
     // path로 부터 query 추출
     const { user_id } = req.query;
 
-    Review.findAll({
-      where: { target: user_id },
-      order: [["createdAt", "DESC"]],
-    }).then((reviews) => {
-      res.json({ result: "Success", list: reviews });
-    });
+    let review_list = await Review.findAll({
+      include :[User, ReviewImage],
+      where :{target : user_id},
+      order :[['createdAt','DESC']],
+    })
+
+    res.json({ result: "Success", list: review_list });
+
   } catch (err) {
     console.log("reviewController.js read_receive_reviews method\n ==> " + err);
     res
