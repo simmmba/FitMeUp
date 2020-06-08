@@ -72,7 +72,25 @@ export const payment_list = async (req,res) => {
     try {
         const {user_id} = req.query;
         
-        let payments = await Payment.findAll({where : {source : user_id}})
+        let payments = await Payment.findAll({
+            where : {source : user_id},
+            raw : true
+        })
+
+        for (const payment of payments) {
+            let user_id = payment.source;
+            let stylist_id = payment.target;
+            let user,stylist;
+            
+            if(user_id)
+                user = await User.findOne({where :{id : user_id}})
+            if(stylist_id)
+                stylist= await User.findOne({where : { id: stylist_id}})
+
+            payment.user = user ? user : null;
+            payment.stylist = stylist ? stylist : null;
+        }
+
         res.json({result : "Success", payments : payments})
     } catch (err) {
         console.log(err);
