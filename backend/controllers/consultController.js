@@ -37,7 +37,7 @@ export const create_consult = (req, res) => {
 
     // 특정 대상이 존재할 경우 올바른 대상인지 확인
     if (stylist_id) {
-      User.findOne({ where: { api_id: stylist_id } }).then((user) => {
+      User.findOne({ where: { id: stylist_id } }).then((user) => {
         if (!user) {
           console.log(
             "consultController.js's create_consult method occurred error. Couldn't find target."
