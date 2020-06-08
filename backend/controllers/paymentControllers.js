@@ -85,7 +85,7 @@ export const payment_list = async (req,res) => {
             if(user_id)
                 user = await User.findOne({where :{id : user_id}})
             if(stylist_id)
-                stylist= await User.findOne({hwere : { id: stylist_id}})
+                stylist= await User.findOne({where : { id: stylist_id}})
 
             payment.user = user ? user : null;
             payment.stylist = stylist ? stylist : null;
