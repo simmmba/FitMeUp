@@ -62,13 +62,17 @@ class RoomList extends Component {
           .child("rooms")
           .on("child_added", (snap) => {
             loadedRooms.push(snap.val());
-            this.setState({ rooms: loadedRooms, loading: false }, () => {
-              if (this.state.firstLoad) {
-                this.setFirstRoom();
+            this.setState(
+              { rooms: loadedRooms, loading: false },
+              () => {
+                if (this.state.firstLoad) {
+                  this.setFirstRoom();
+                }
               }
-            });
+            );
           });
-        if (!snapshot.exists()) this.setState({ rooms: [], loading: false });
+        if (!snapshot.exists())
+          this.setState({ rooms: [], loading: false });
       });
   };
 
@@ -110,7 +114,7 @@ class RoomList extends Component {
 
   displaySpinner = (user) => (
     <div className="spinner-wrapper">
-      <HashLoader color="#ffffff" />
+      <HashLoader color="#000" />
     </div>
   );
 
@@ -120,9 +124,7 @@ class RoomList extends Component {
       <section className="room-list">
         <div className="search-box">
           <SearchIcon />
-          <InputBase
-            placeholder="Search…"
-          />
+          <InputBase placeholder="Search…" />
         </div>
         <div className="list-wrapper">
           {loading ? this.displaySpinner(user) : this.displayRooms(rooms)}

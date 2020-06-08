@@ -124,7 +124,7 @@ class Room extends Component {
   sendFile = () => {
     const { files } = this.state;
     if (files.length === 0) return;
-    const file = files.pop(0);
+    const file = files.shift();
     if (file !== null) {
       const metadata = { contentType: mime.lookup(file.name) };
       this.uploadFile(file, metadata);

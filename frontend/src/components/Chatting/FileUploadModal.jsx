@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import mime from "mime-types";
 import Modal from "react-modal";
 import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import ClearIcon from "@material-ui/icons/Clear";
 import "./FileUploadModal.scss";
 
 import Button from "./Common/Button";
@@ -11,6 +13,22 @@ class FileUploadModal extends Component {
   state = {
     files: [],
     authorized: ["image/jpeg", "image/png"],
+    selectedId: -1,
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.files.length !== this.state.files.length) {
+      const divs = document.getElementsByName("image-wrapper");
+      this.addClickEventListener(divs);
+    }
+  }
+
+  addClickEventListener = (divs) => {
+    divs.forEach((div) => {
+      div.addEventListener("click", (event) => {
+        this.setState({ selectedId: event.target.id });
+      });
+    });
   };
 
   /**
@@ -34,13 +52,14 @@ class FileUploadModal extends Component {
     this.setState({ files: [...this.state.files, ...fileList] });
   };
 
-  sendFiles = (files) => {
-    const { uploadFile, closeModal } = this.props;
-    if (files.length === 0) return;
-    const file = files.pop(0);
-    const metadata = { contentType: mime.lookup(file.name) };
-    uploadFile(file, metadata);
-    closeModal();
+  sendFiles = () => {
+    console.log("dd");
+    const { files } = this.state;
+    const { setFiles } = this.props;
+    if (files.length !== 0) {
+      setFiles(files);
+    }
+    this.close();
   };
 
   addFile = (event) => {
@@ -51,15 +70,34 @@ class FileUploadModal extends Component {
   };
 
   displayImages = () => {
-    const { files } = this.state;
+    const { files, selectedId } = this.state;
     return files.map((image, i) => {
       const imageURL = window.URL.createObjectURL(image);
       return (
-        <div className="image-wrapper" key={i}>
-          <img className="image" src={imageURL} alt={imageURL} />
+        <div
+          className={`image-wrapper ${selectedId === `${i}` ? "clicked" : ""}`}
+          key={i}
+          name="image-wrapper"
+          id={i}
+        >
+          <img className="image" src={imageURL} alt={imageURL} id={i} />
         </div>
       );
     });
+  };
+
+  close = () => {
+    const { closeModal } = this.props;
+    this.setState({ files: [] });
+    closeModal();
+  };
+
+  removeImage = () => {
+    const { selectedId } = this.state;
+    const new_files = this.state.files;
+
+    new_files.splice(selectedId, 1);
+    this.setState({ files: new_files });
   };
 
   render() {
@@ -70,12 +108,11 @@ class FileUploadModal extends Component {
         right: "auto",
         bottom: "auto",
         width: "80vw",
-        height: "80vh",
         marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, -45%)",
         border: "none",
         background: "#fff",
-        padding: "2rem",
+        padding: "1.5rem",
         justifyContent: "center",
         boxShadow:
           "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)",
@@ -91,15 +128,21 @@ class FileUploadModal extends Component {
       height: "55vh",
     };
     const { files } = this.state;
-    const { isOpen, closeModal } = this.props;
+    const { isOpen, loader } = this.props;
+    const disabled = (files.length === 0);
     return (
       <Modal
         shouldCloseOnOverlayClick
         isOpen={isOpen}
-        onRequestClose={closeModal}
+        onRequestClose={this.close}
         style={customStyles}
         ariaHideApp={false}
       >
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button onClick={this.close}>
+            <ClearIcon className="clear-icon" />
+          </button>
+        </div>
         <div className="button-box">
           <button onClick={() => document.getElementById("file-input").click()}>
             <AddIcon className="icon" />
@@ -111,6 +154,9 @@ class FileUploadModal extends Component {
             onChange={this.addFile}
             style={{ display: "none" }}
           />
+          <button onClick={this.removeImage}>
+            <RemoveIcon className="icon" />
+          </button>
         </div>
         <DragAndDrop dropbox={dropbox} handleDrop={this.handleDrop}>
           <div className="dropbox">
@@ -122,7 +168,13 @@ class FileUploadModal extends Component {
           </div>
         </DragAndDrop>
         <div className="filemodal-button-wrapper">
-          <Button onClick={this.sendFile}>전송</Button>
+          <button
+            className="send-btn"
+            onClick={this.sendFiles}
+            disabled={disabled}
+          >
+            {loader ? <div className="loader" /> : "전송"}
+          </button>
         </div>
       </Modal>
     );
