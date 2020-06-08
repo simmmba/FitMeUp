@@ -85,7 +85,7 @@ const MyInfo = () => {
   console.log(basicInfo.weight);
   return (
     <>
-      <div className="col-6 middle_tab">
+      <div className="middle_tab">
         <div className="center">
           <h3>
             <b>기본 정보</b>

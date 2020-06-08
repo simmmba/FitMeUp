@@ -81,8 +81,12 @@ const MyFrequent = () => {
   };
 
   return (
-    <div className="middle_tab col-6">
-      <div className="center middleTopMargin">가장 교류가 많은 스타일리스트</div>
+    <div className="middle_tab">
+      <div className="center">
+        <h3>
+          <b>가장 교류가 많은 스타일리스트</b>
+        </h3>
+      </div>
       <div className="topMargin center">
         {stylistList.map((s) => {
           return (
