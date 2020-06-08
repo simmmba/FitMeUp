@@ -101,7 +101,7 @@ export const update_portfolio = async function (req, res) {
             { where: { id: portfolio_id } }
         )
 
-        let tags_delete = await Portfolio_tags.destroy({ where: { id: portfolio_id } })
+        let tags_delete = await Portfolio_tags.destroy({ where: { portfolio_id: portfolio_id } })
 
         for (const t of tags) {
             await Portfolio_tags.create({ portfolio_id, tag: t })
