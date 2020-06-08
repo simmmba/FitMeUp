@@ -66,7 +66,6 @@ const StylistStats = () => {
       if (res.data.info.length === 0) {
         setIsCreditExist(false);
       } else {
-        // console.log(res.data.info)
         setIsCreditExist(true);
         const credits = [["월", "수익", "출금"]];
 
@@ -177,8 +176,6 @@ const StylistStats = () => {
           )}
         </div>
       )}
-      {/*<div className="center half">*/}
-      {/*</div>*/}
     </div>
   );
 };

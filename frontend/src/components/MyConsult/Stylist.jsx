@@ -53,10 +53,6 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
   const createChat = async () => {
     const { key } = roomsRef.push();
 
-    const newRoom = {
-      id: key,
-    };
-
     const consumer = {
       ...user,
       role: "consumer",
@@ -74,6 +70,14 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
       provider = {
         ...provider,
         role: "provider",
+      };
+
+      const newRoom = {
+        id: key,
+        consumer: consumer,
+        provider: provider,
+        lastMessage: " ",
+        updated: firebase.database.ServerValue.TIMESTAMP,
       };
 
       // 새 채팅룸 생성

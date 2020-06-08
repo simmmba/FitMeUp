@@ -49,7 +49,7 @@ const GeneralThirdTab = () => {
   };
 
   const handleMessageClick = (mid) => {
-    axios.get(`${process.env.REACT_APP_URL}/message?mid=` + mid).then((res) => {
+    axios.get(`${process.env.REACT_APP_URL}/message?mid=` + mid + `&uid=` + loginUser.id).then((res) => {
       setMessage(res.data.message);
       setReadMode(true);
     });

@@ -17,6 +17,7 @@ class MessageForm extends Component {
     uploadTask: null,
     message: "",
     messagesRef: firebase.database().ref("messages"),
+    usersRef: firebase.database().ref("users"),
     fileUploadModalIsOpen: false,
     files: [],
     loader: false,
@@ -73,8 +74,8 @@ class MessageForm extends Component {
    */
   sendMessage = () => {
     const { scrollDown } = this.props;
-    const { currentRoom } = this.props;
-    const { message, messagesRef } = this.state;
+    const { currentRoom, currentUser } = this.props;
+    const { message, messagesRef, usersRef } = this.state;
 
     if (message && this.messageCheck(message)) {
       messagesRef
@@ -82,8 +83,20 @@ class MessageForm extends Component {
         .push()
         .set(this.createMessage())
         .then(() => {
-          this.setState({ message: "" });
-          scrollDown();
+          const currentRoomRef = usersRef
+            .child(currentUser.id)
+            .child("rooms")
+            .child(currentRoom.id);
+          currentRoomRef
+            .child("lastMessage")
+            .set(message)
+            .then(() => {
+              this.setState({ message: "" });
+              scrollDown();
+            });
+          currentRoomRef
+            .child("updated")
+            .set(firebase.database.ServerValue.TIMESTAMP);
         })
         .catch((err) => {
           console.error(err);
@@ -118,10 +131,10 @@ class MessageForm extends Component {
     const filePath = `images/${uuidv4()}.jpg`;
 
     if (files.length === 0) {
-      this.setState({loader: false})
+      this.setState({ loader: false });
       return;
     }
-    this.setState({loader: true})
+    this.setState({ loader: true });
     const file = files.shift();
     const metadata = { contentType: mime.lookup(file.name) };
     this.setState(
@@ -160,13 +173,13 @@ class MessageForm extends Component {
   };
 
   sendFileMessage = (fileUrl, ref, pathToUpload) => {
-    const {setPercent} = this.props
+    const { setPercent } = this.props;
     ref
       .child(pathToUpload)
       .push()
       .set(this.createMessage(fileUrl))
       .then(async () => {
-        await setPercent(0)
+        await setPercent(0);
         this.uploadFile();
       })
       .catch((err) => {

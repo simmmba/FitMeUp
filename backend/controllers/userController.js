@@ -161,13 +161,17 @@ export const search = async (req, res) => {
         let word = '%' + keyword + '%'
         if (option === "nickname") {
             stylist_search = await User.findAll({
+                include :[{
+                    attributes:[],
+                    model : Portfolio,
+                    required : true
+                }],
                 where: {
                     nickname: { [Op.like]: word },
                     type: "stylist"
                 },
                 raw: true
             })
-            console.log(stylist_search);
 
         } else if (option === "tag") {
             let query = "select * from user \
@@ -176,7 +180,6 @@ export const search = async (req, res) => {
                                 on portfolio.id = portfolio_tags.portfolio_id\
                                 where tag like :word)"
 
-
             stylist_search = await User.sequelize.query(
                 query, {
                 replacements: { word: word },
@@ -184,7 +187,8 @@ export const search = async (req, res) => {
             });
         } else {
             let query = "select * from user \
-                                where type = 'stylist' and (nickname like :word or user.id in (select stylist_id \
+                                where type = 'stylist' and ((nickname like :word and user.id in\
+                                (select stylist_id from portfolio)) or user.id in (select stylist_id \
                                 from portfolio join portfolio_tags\
                                 on portfolio.id = portfolio_tags.portfolio_id\
                                 where tag like :word))"
@@ -211,7 +215,6 @@ export const dup_phone = async (req, res) => {
     try {
         const { phone } = req.query
         let is_exist = await User.findOne({ where: { phone } })
-        console.log(is_exist);
 
         if (is_exist) {
             res.json({ result: "Success", isDuplicate: true })
@@ -234,7 +237,7 @@ export const most_consulting = async (req, res) => {
             group: ['user_id', 'stylist_id'],
             include : [User],
             order : [[sequelize.fn('count', sequelize.col('stylist_id')), 'DESC']],
-            limit : 3,
+            limit : 5,
         })
         res.json({result:"Success", stylists:stylist_list})
     } catch (err) {

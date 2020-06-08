@@ -6,7 +6,8 @@ export const get_received_list = async function(req, res) {
         const message_list = await Message.findAll({
             where: {
                 target: id
-            }
+            },
+            order :[['createdAt','DESC']],
         })
 
         let unread_count = 0
@@ -37,7 +38,8 @@ export const get_sent_list = async function(req, res) {
         const message_list = await Message.findAll({
             where: {
                 source: id
-            }
+            },
+            order :[['createdAt','DESC']],
         })
 
         let unread_count = 0

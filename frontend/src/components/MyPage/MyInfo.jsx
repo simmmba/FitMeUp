@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./MyPageMain.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const MyInfo = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [user, setUser] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
-  const [stylistList, setStylistList] = useState([]);
 
   const [basicInfo, setBasicInfo] = useState({
     height: user.height,
@@ -18,7 +16,6 @@ const MyInfo = () => {
   });
 
   useEffect(() => {
-    get_stylist_list();
     get_user();
   }, []);
 
@@ -30,12 +27,6 @@ const MyInfo = () => {
     });
   };
 
-  const get_stylist_list = () => {
-    axios.get(`${process.env.REACT_APP_URL}/user/most_consulting?user_id=` + loginUser.id).then((res) => {
-      setStylistList(res.data.stylists);
-      console.log(res.data.stylists);
-    });
-  };
 
   const handleChange = (e) => {
     setBasicInfo({ ...basicInfo, [e.target.name]: e.target.value });

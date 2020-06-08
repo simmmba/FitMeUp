@@ -103,16 +103,34 @@ class Room extends Component {
     this.state.messagesRef.off();
   };
 
-  displayMessages = (messages) =>
-    messages.length > 0 &&
-    messages.map((message) => (
-      <Message
-        key={message.timestamp}
-        message={message}
-        user={message.user}
-        currentUser={this.props.currentUser}
-      />
-    ));
+  displayMessages = (messages) => {
+    let cur_day = -1;
+    return (
+      messages.length > 0 &&
+      messages.map((message) => {
+        const time = new Date(message.timestamp);
+        const year = time.getFullYear();
+        const month = time.getMonth() + 1;
+        const day = time.getDate();
+        let draw = false;
+        if (cur_day !== day) {
+          cur_day = day;
+          draw = true;
+        }
+        return (
+          <>
+            {draw && <div className="date-wrapper">{year}년 {month}월 {day}일</div>}
+            <Message
+              key={message.timestamp}
+              message={message}
+              user={message.user}
+              currentUser={this.props.currentUser}
+            />
+          </>
+        );
+      })
+    );
+  };
 
   scrollDown = () => {
     this.messageContentRef.current.scrollTop = this.messageContentRef.current.scrollHeight;

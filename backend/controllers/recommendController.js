@@ -6,37 +6,39 @@ import sequelize from 'sequelize'
 // 평점 기준 추천
 export const recommend_by_score = async (req, res) => {
   try {
-    let recommends = await Review.findAll({
-      attributes: [['target', 'id'], [sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'review_cnt']],
-      include: {
-        model: User,
-      },
-      group: ['target'],
-      order: [[sequelize.fn('avg', sequelize.col('score')), 'DESC']],
-      limit: 9,
+
+    let query = "select user.id, if(avg(score) is not null, round(avg(score),1), 0) avg_score\
+                from user left outer join review on user.id = review.target\
+                where type like 'stylist' group by user.id order by avg_score desc limit 9;"
+
+    let recommends = await User.sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT
     })
 
     for (const r of recommends) {
-      let stylist_id = r.dataValues.id;
+      let stylist_id = r.id;
+      let user = await User.findOne({ where: { id: stylist_id }, raw: true });
+      r.User = user;
+      r.consult_cnt = 0;
 
-      r.dataValues.consult_cnt = 0;
-      let consult_cnt = await Consult.findOne({ 
-        attributes: [[sequelize.fn('count', sequelize.col('*')),'consult_cnt']],
-        where : {stylist_id : stylist_id}
+      let consult_cnt = await Consult.findOne({
+        attributes: [[sequelize.fn('count', sequelize.col('*')), 'consult_cnt']],
+        where: { stylist_id: stylist_id },
+        raw: true
       });
 
-      if(consult_cnt)
-        r.dataValues.consult_cnt = consult_cnt.dataValues.consult_cnt;
+      if (consult_cnt)
+        r.consult_cnt = consult_cnt.consult_cnt;
 
-        r.dataValues.portfolio_title=""
-        r.dataValues.portfolio_img = "";
-        let portfolio = await Portfolio.findOne({
-          where: {stylist_id: stylist_id }
-        })
-      if(portfolio){
-        
-        r.dataValues.portfolio_title = portfolio.dataValues.title;
-        r.dataValues.portfolio_img = portfolio.dataValues.main_img;
+      r.portfolio_title = ""
+      r.portfolio_img = "";
+      let portfolio = await Portfolio.findOne({
+        where: { stylist_id: stylist_id },
+        raw: true
+      })
+      if (portfolio) {
+        r.portfolio_title = portfolio.title;
+        r.portfolio_img = portfolio.main_img;
       }
     }
 
@@ -50,41 +52,45 @@ export const recommend_by_score = async (req, res) => {
 // 상담   기준 추천
 export const recommend_by_consult = async (req, res) => {
   try {
-    let recommends = await Consult.findAll({ 
-      attributes: [['stylist_id','id'], [sequelize.fn('count', sequelize.col('*')),'consult_cnt']],
-      where :{stylist_id : {[Op.ne]:null}},
-      group : ['stylist_id'],
-      include : [User],
-      order : [[sequelize.fn('count', sequelize.col('*')),'DESC']],
-      limit :9,
+
+    let query = "select user.id, if(count(consult.id), count(consult.id), 0) consult_cnt\
+                 from user left outer join consult on user.id = consult.stylist_id\
+                where type like 'stylist' group by user.id order by consult_cnt desc limit 9;"
+
+    let recommends = await User.sequelize.query(query, {
+      type: sequelize.QueryTypes.SELECT
     })
 
     for (const r of recommends) {
-      let stylist_id = r.dataValues.id;
+      let stylist_id = r.id;
 
-      r.dataValues.avg_score = 0;
-      r.dataValues.review_cnt = 0;
-      let avg_score = await Review.findOne({ 
+      let user = await User.findOne({ where: { id: stylist_id }, raw: true });
+      r.User = user;
+      r.consult_cnt = 0;
+
+      r.avg_score = 0;
+      r.review_cnt = 0;
+      let avg_score = await Review.findOne({
         attributes: [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'review_cnt']],
-        where : {target: stylist_id}
+        where: { target: stylist_id },
+        raw: true
       });
-      if(avg_score){
-        r.dataValues.avg_score = avg_score.dataValues.avg_score;
-        r.dataValues.review_cnt = avg_score.dataValues.review_cnt;
+      if (avg_score) {
+        r.avg_score = avg_score.avg_score;
+        r.review_cnt = avg_score.review_cnt;
       }
 
-      r.dataValues.portfolio_title = "";
-      r.dataValues.portfolio_img = "";
+      r.portfolio_title = "";
+      r.portfolio_img = "";
       let portfolio = await Portfolio.findOne({
-        where: {stylist_id: stylist_id }
+        where: { stylist_id: stylist_id },
+        raw : true
       });
-      if(portfolio){
-
-        r.dataValues.portfolio_title = portfolio.dataValues.title;
-        r.dataValues.portfolio_img = portfolio.dataValues.main_img;
+      if (portfolio) {
+        r.portfolio_title = portfolio.title;
+        r.portfolio_img = portfolio.main_img;
       }
     }
-    
 
     res.json({ result: "Success", recommends: recommends })
   } catch (err) {
@@ -92,4 +98,3 @@ export const recommend_by_consult = async (req, res) => {
     res.status(500).json({ result: 'Fail', detail: '500 Internal Server Error' })
   }
 }
-
