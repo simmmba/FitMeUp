@@ -733,7 +733,6 @@ export const consult_for_review = async (req, res) => {
   try {
 
     const { user_id } = req.query;
-    console.log("????????????",user_id);
     
     let consult_list = await Consult.findAll({
       include: [ConsultWant],
