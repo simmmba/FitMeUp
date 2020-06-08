@@ -740,13 +740,23 @@ export const consult_for_review = async (req, res) => {
       where: { user_id: user_id, state :{[Op.like]:"COMPLETE"} },
     })
 
-    //리뷰 작성 여부
+    // 리뷰 작성 여부
     for (const consult of consult_list) {
       let consult_id = consult.dataValues.id;
+      let stylist_id = consult.dataValues.stylist_id;
+      // 리뷰 달기
       let review = await Review.findOne({
         where : {consult_id : consult_id, user_id: user_id}
       })
-
+      // 비용 달기
+      let category = consult.dataValues.category;
+      let portfolio = await Portfolio.findOne({
+        where : {stylist_id : stylist_id},
+        raw : true
+      })
+      let price = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
+      
+      consult.dataValues.price = price;
       consult.dataValues.review = review;
     }
 
