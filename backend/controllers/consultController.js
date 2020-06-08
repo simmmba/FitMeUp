@@ -392,16 +392,16 @@ export const update_recv_consults = async (req, res) => {
           detail: "해당 상담이 존재하지 않거나 권한이 없는 요청자입니다",
         });
       } else {
-        if(state ==='DENIED'){
-          let consult = await Consult.findOne({where : {id:consult_id}, raw:true});
+        if (state === 'DENIED') {
+          let consult = await Consult.findOne({ where: { id: consult_id }, raw: true });
           let category = consult.category;
           let user_id = consult.user_id;
-          let portfolio = await Portfolio.findOne({where:{stylist_id:stylist_id},raw:true});
+          let portfolio = await Portfolio.findOne({ where: { stylist_id: stylist_id }, raw: true });
           let amount = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
-          let payment = await Payment.create({source: user_id, amount: amount, type:"refund"})
+          let payment = await Payment.create({ source: user_id, amount: amount, type: "refund" })
           let user = await User.update({
-            credit : sequelize.literal('credit +'+amount)
-          },{where : {id:user_id}})
+            credit: sequelize.literal('credit +' + amount)
+          }, { where: { id: user_id } })
 
         }
 
@@ -612,16 +612,16 @@ export const consult_complete = async (req, res) => {
       { state: "COMPLETE" },
       { where: { id: consult_id } }
     )
-    let consult = await Consult.findOne({where : {id:consult_id}, raw:true});
+    let consult = await Consult.findOne({ where: { id: consult_id }, raw: true });
     let category = consult.category;
     let user_id = consult.user_id;
     let stylist_id = consult.stylist_id;
-    let portfolio = await Portfolio.findOne({where:{stylist_id:stylist_id},raw:true});
+    let portfolio = await Portfolio.findOne({ where: { stylist_id: stylist_id }, raw: true });
     let amount = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
-    let payment = await Payment.create({source: stylist_id,target:user_id, amount: amount, type:"income"})
+    let payment = await Payment.create({ source: stylist_id, target: user_id, amount: amount, type: "income" })
     let user = await User.update({
-      credit : sequelize.literal('credit +'+amount)
-    },{where : {id:stylist_id}})
+      credit: sequelize.literal('credit +' + amount)
+    }, { where: { id: stylist_id } })
 
     res.json({ result: "Success" })
   } catch (err) {
@@ -744,4 +744,68 @@ export const consult_for_review = async (req, res) => {
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 
+}
+
+// 일반 사용자 상담 집계
+export const count_user = async (req, res) => {
+  try {
+
+    const { user_id } = req.query;
+    //상담
+    let query = "select count(if(state like 'REQUESTED', 1, null)) requested_cnt,\
+    count(if(state like 'ACCEPTED', 1, null)) accepted_cnt,\
+    count(if(state like 'COMPLETE', 1, null)) complete_cnt\
+    from consult where user_id = :user_id;";
+    let count_info = await Consult.sequelize.query(query, {
+      replacements: { user_id: user_id },
+      type: sequelize.QueryTypes.SELECT
+    })
+    
+    
+    query = "select count(*) apply_cnt from apply where consult_id in\
+    (select id from consult where user_id =:user_id and state like 'REQUESTED');"
+    
+    let apply_info = await Consult.sequelize.query(query, {
+      replacements: { user_id: user_id },
+      type: sequelize.QueryTypes.SELECT
+    })
+    count_info[0].apply_cnt = apply_info[0].apply_cnt;
+
+    res.json({ result: "Success", info: count_info[0] })
+  } catch (err) {
+    console.log("consultController.js count method\n ==> " + err);
+    res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
+}
+
+// 스타일리스트 상담 집계
+export const count_stylist = async (req, res) => {
+  try {
+    const { user_id } = req.query;
+    //상담
+    let query = "select count(if(state like 'REQUESTED', 1, null)) requested_cnt,\
+    count(if(state like 'ACCEPTED', 1, null)) accepted_cnt,\
+    count(if(state like 'COMPLETE', 1, null)) complete_cnt\
+    from consult where stylist_id = :user_id;";
+    let count_info = await Consult.sequelize.query(query, {
+      replacements: { user_id: user_id },
+      type: sequelize.QueryTypes.SELECT
+    })
+    
+    query = "select count(*) apply_cnt from apply where stylist_id=:user_id\
+              and state like 'REQUESTED'";
+    
+    let apply_info = await Consult.sequelize.query(query, {
+      replacements: { user_id: user_id },
+      type: sequelize.QueryTypes.SELECT
+    })
+    console.log(apply_info);
+    
+    count_info[0].apply_cnt = apply_info[0].apply_cnt;
+
+    res.json({ result: "Success", info: count_info[0] })
+  } catch (err) {
+    console.log("consultController.js count method\n ==> " + err);
+    res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
+  }
 }
