@@ -6,6 +6,7 @@ import axios from "axios";
 
 const GeneralFirstTab = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
+  const [user, setUser] = useState({});
   const [consultList, setConsultList] = useState([]);
   const [requestedConsultCount, setRequestedConsultCount] = useState(0);
   const [progressConsultCount, setProgressConsultCount] = useState(0);
@@ -15,7 +16,14 @@ const GeneralFirstTab = () => {
   useEffect(() => {
     get_consult_list();
     get_req_stylist();
+    get_user();
   }, []);
+
+  const get_user = () => {
+    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((res) => {
+      setUser(res.data.user);
+    });
+  };
 
   const get_consult_list = () => {
     axios
@@ -27,7 +35,7 @@ const GeneralFirstTab = () => {
             setRequestedConsultCount(requestedConsultCount + 1);
           } else if (c.state === "PROGRESS") {
             setProgressConsultCount(progressConsultCount + 1);
-          } else if (c.state === "DONE") {
+          } else if (c.state === "COMPLETE") {
             setDoneConsultCount(doneConsultCount + 1);
           }
         });
@@ -47,15 +55,14 @@ const GeneralFirstTab = () => {
         console.log(err);
       });
   };
-
   return (
-    <div className="one_tab col-2">
-      <div className="center middleTopMargin">
+    <div className="left_tab">
+      <div className="center">
         <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="profile" />
       </div>
-      <div className="center topMargin">{loginUser.nickname}</div>
+      <div className="center topMargin">{user.nickname}</div>
       <div className="center">개인 회원</div>
-      <div className="center middleTopMargin">{loginUser.credit} Point</div>
+      <div className="center middleTopMargin">{user.credit} Point</div>
       <div className="center">
         <Payment />
         <div className="smallSelectBtn">히스토리</div>

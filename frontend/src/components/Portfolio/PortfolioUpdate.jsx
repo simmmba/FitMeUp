@@ -4,11 +4,10 @@ import axios from "axios";
 
 import Header from "../Common/Header";
 
-class PortfolioWrite extends React.Component {
+class PortfolioUpdate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // stylist_id: this.user.id,
       title: "",
       tag: "",
       tags: [],
@@ -25,6 +24,24 @@ class PortfolioWrite extends React.Component {
   }
 
   user = JSON.parse(window.sessionStorage.getItem("user"));
+
+  componentDidMount(){
+    // console.log(this.props.location.state)
+    const portfolio = this.props.location.state.portfolio;
+    console.log(portfolio)
+    var tags = [];
+    for(let i=0; i<portfolio.Portfolio_tags.length; i++){
+      tags[i] = portfolio.Portfolio_tags[i].tag;
+    }
+
+    this.setState({
+      title:portfolio.title,
+      contents:portfolio.contents,
+      my_price:portfolio.my_price,
+      coordi_price:portfolio.coordi_price,
+      tags: tags,
+    })
+  }
 
   // 타이틀이랑 내용 변경
   changeValues = (res) => {
@@ -240,10 +257,10 @@ class PortfolioWrite extends React.Component {
 
     // 모든 조건 충족 시 axios 호출하기
     axios({
-      method: "post",
+      method: "put",
       url: `${process.env.REACT_APP_URL}/portfolio`,
       data: {
-        stylist_id: this.user.id,
+        portfolio_id: this.props.location.state.portfolio.id,
         title: this.state.title,
         contents: this.state.contents,
         tags: this.state.tags,
@@ -262,18 +279,18 @@ class PortfolioWrite extends React.Component {
         }
         axios({
           method: "post",
-          url: `${process.env.REACT_APP_URL}/upload/portfolio?portfolio_id=${res.data.portfolio.id}`,
+          url: `${process.env.REACT_APP_URL}/upload/portfolio?portfolio_id=${this.props.location.state.portfolio.id}`,
           data: img,
         })
           .then((res) => {
-            alert("포트폴리오를 작성 성공했습니다.");
+            alert("포트폴리오 수정 성공했습니다.");
           })
           .catch((error) => {
-            alert("포트폴리오를 작성하는데 실패했습니다.");
+            alert("포트폴리오를 수정하는데 실패했습니다.");
           });
       })
       .catch((error) => {
-        alert("포트폴리오를 작성하는데 실패했습니다.");
+        alert("포트폴리오를 수정하는데 실패했습니다.");
       });
   };
 
@@ -441,10 +458,10 @@ class PortfolioWrite extends React.Component {
             </div>
             <div className="form_btn">
               <div className="cancel_btn" onClick={this.formConfirm}>
-                작성 취소
+                수정 취소
               </div>
               <div className="complete_btn" onClick={this.formSubmit}>
-                작성 완료
+                수정 완료
               </div>
             </div>
           </div>
@@ -454,4 +471,4 @@ class PortfolioWrite extends React.Component {
   }
 }
 
-export default PortfolioWrite;
+export default PortfolioUpdate;

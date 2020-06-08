@@ -70,7 +70,7 @@ const Carousel = (props) => {
             </div>
           </div>
           <div className="right">
-            <Link to={`/portfolio/${val.id}`}>
+            <Link to={`/portfolio/detail/${val.id}`}>
               <div className="moreBtn">더보기</div>
             </Link>
           </div>

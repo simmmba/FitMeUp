@@ -1,35 +1,103 @@
-@import "../../styles/variable";
+@import '../../styles/variable';
+@import '../../styles/utils';
 
 .room-message {
   display: flex;
-  margin-top: .1rem;
+  margin: 1rem 2rem 0rem 2rem;
+  &.my-message {
+    flex-flow: row-reverse;
+  }
+
   .image-wrapper {
-    margin-top:5px;
-    width: 50%;
+    margin-top: 5px;
+    max-width: 300px;
+    height:auto;
+
+    .image-btn{
+      background: none;
+      border: none;
+    }
   }
   .message-img {
     width: 100%;
   }
   .message-content {
-    position: relative;
-    padding-left:.5rem;
-    top:0px;
+    flex: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
-  
+
   .avatar {
     width: 38px;
     height: 38px;
-    margin-right: .5rem;
-    margin-top:3px;
-  }
-  
-  .message-text {
+    margin-right: 0.5rem;
     margin-top: 3px;
-    font-size: 14px;
+  }
+
+  .balloon {
+    position: relative;
+    margin-left: 7px;
+    min-height: 60px;
+    background: $gray;
+    border-radius: 10px;
+    float: left;
+    padding:15px;
   }
   
+  .balloon:after {
+    border-top: 15px solid  $gray;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: -15px;
+  }
+
+  .my-balloon {
+    position: relative;
+    margin-right: 7px;
+    min-height: 50px;
+    background: $red;
+    border-radius: 10px;
+    float: right;
+    padding:15px;
+  }
+  
+  .my-balloon:after {
+    border-top: 15px solid  $red;
+    border-left: 0px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: -15px;
+  }
+
+  .message-text {
+    display: flex;
+    margin-top: 3px;
+    margin-bottom: 0;
+    font-size: 14px;
+    &.my-message {
+      flex-flow: row-reverse;
+      color:$color-white;
+    }
+  }
+
   .display-name {
     font-size: 14px;
     font-weight: bold;
+    display: flex;
+    &.my-message {
+      flex-flow: row-reverse;
+    }
   }
+
+}
+
+.modal-img{
+  flex:1;
 }

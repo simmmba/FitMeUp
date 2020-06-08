@@ -5,12 +5,17 @@ import axios from "axios";
 import Header from "../Common/Header";
 import ImageList from "./ImageList";
 import ConsultRequireModal from "./ConsultRequireModal";
+import star from "../../img/star.png";
+import { NavLink } from "react-router-dom";
 
 class PortfolioDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       portfolio: {},
+      consult_cnt: 0,
+      review_cnt: 0,
+      avg_score: 0,
     };
   }
 
@@ -22,13 +27,18 @@ class PortfolioDetail extends React.Component {
   componentDidMount() {
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_URL}/portfolio?stylist_id=${this.url[this.url.length - 1]}`,
+      url: `${process.env.REACT_APP_URL}/portfolio?stylist_id=${
+        this.url[this.url.length - 1]
+      }`,
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res.data.portfolio);
+        console.log(res.data);
         this.setState({
           portfolio: res.data.portfolio,
+          consult_cnt: res.data.consult_cnt,
+          review_cnt: res.data.review_cnt,
+          avg_score: res.data?.avg_score | 0,
         });
       })
       .catch((error) => {
@@ -45,7 +55,7 @@ class PortfolioDetail extends React.Component {
             <div className="row">
               <div className="store_image col-8">
                 {/* 포트폴리오 대표 이미지 넣어주는 부분 */}
-                <ImageList img_list={this.state.portfolio.main_img} />
+                <ImageList img_list={this.state.portfolio?.main_img} />
               </div>
               <div className="col-4">
                 {/* 신청버튼 */}
@@ -53,33 +63,67 @@ class PortfolioDetail extends React.Component {
                   <div className="avg_title">서비스 비용</div>
                   <br />
                   <div className="budget">
-                    코 디 추천 - <b>{this.state.portfolio.User && this.state.portfolio.coordi_price} Point</b>
+                    코 디 추천 -&nbsp;
+                    <b>
+                      {this.state.portfolio?.User &&
+                        this.state.portfolio.coordi_price}
+                      &nbsp;Point
+                    </b>
                   </div>
                   <div className="budget">
-                    내 옷 추천 - <b>{this.state.portfolio.User && this.state.portfolio.my_price} Point</b>
+                    내 옷 추천 -&nbsp;
+                    <b>
+                      {this.state.portfolio?.User &&
+                        this.state.portfolio.my_price}
+                      &nbsp;Point
+                    </b>
                   </div>
                 </div>
                 <div className="box">
-                  <div className="score">4.5점</div>
-                  <div className="score">상담 횟수 : 129번</div>
+                  <div className="score">
+                    <img className="star" alt="star" src={star} />
+                    {this.state.avg_score}점 ({this.state.review_cnt})
+                  </div>
+                  <div className="score">
+                    상담 횟수 : {this.state.consult_cnt}회
+                  </div>
                 </div>
 
-                {this.user && this.user.type === "general" && this.state.portfolio.User && (
-                  <ConsultRequireModal
-                    stylist_id={this.url[this.url.length - 1]}
-                    stylist_nickname={this.state.portfolio.User.nickname}
-                    coordi_price={this.state.portfolio.coordi_price}
-                    my_price={this.state.portfolio.my_price}
-                  />
-                )}
+                {(this.user === null || this.user?.type === "general") &&
+                  this.state.portfolio?.User && (
+                    <ConsultRequireModal
+                      stylist_id={this.url[this.url.length - 1]}
+                      stylist_nickname={this.state.portfolio.User.nickname}
+                      coordi_price={this.state.portfolio.coordi_price}
+                      my_price={this.state.portfolio.my_price}
+                    />
+                  )}
 
-                {this.user?.type !== "general" && this.state.portfolio?.stylist_id === this.user.id && <div className="apply">포트폴리오 수정하기</div>}
+                {this.user &&
+                  this.user?.type !== "general" &&
+                  this.state.portfolio?.stylist_id === this.user.id && (
+                    <NavLink
+                      to={{
+                        pathname: "/portfolio/update",
+                        state: {
+                          portfolio: this.state.portfolio,
+                        },
+                      }}
+                    >
+                      <div className="apply">
+                        포트폴리오 수정하기
+                      </div>
+                    </NavLink>
+                  )}
               </div>
             </div>
             <div className="row">
               {/* 포트폴리오 정보 들어가는 부분 */}
               <div className="col-8">
-                <div className="title">[{this.state.portfolio.title}] 한혜연 스타일리스트</div>
+                <div className="title">
+                  [{this.state.portfolio.title}]{" "}
+                  {this.state.portfolio.User?.nickname} 스타일리스트
+                </div>
                 <div className="tags">
                   {this.state.portfolio.tag?.map((tag, index) => (
                     <div key={index} className="tag">
@@ -94,8 +138,9 @@ class PortfolioDetail extends React.Component {
               <div className="col-8">
                 {/* 이미지 들어가는 부분 */}
                 <div className="img_list">
-                  {this.state.portfolio.PortfolioImages?.map((port_img) => (
+                  {this.state.portfolio.PortfolioImages?.map((port_img, index) => (
                     <img
+                      key={index}
                       alt="myimg"
                       src={port_img.image_path}
                       onClick={() => {
