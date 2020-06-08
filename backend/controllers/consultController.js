@@ -48,7 +48,7 @@ export const create_consult = (req, res) => {
         }
       });
     }
-
+    let appointed = stylist_id ? "true" : "false";
     // 상담 생성
     Consult.create({
       stylist_id: stylist_id,
@@ -64,6 +64,7 @@ export const create_consult = (req, res) => {
       contents: contents,
       start_time: start_time,
       end_time: end_time,
+      appointed : appointed
     }).then(async (consult) => {
       // consult_want 테이블에 want 개수만큼 레코드 생성
       if (want || want.length != 0) {
@@ -344,17 +345,18 @@ export const read_consults = (req, res) => {
 export const read_myconsults = async (req, res) => {
   try {
     let { user_id, appointed } = req.query;
+    
     let consults;
     // 일반 상담
     if (appointed === 'true') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
-        where: { user_id: user_id, stylist_id: { [Op.ne]: null } },
+        where: { user_id: user_id, appointed:{[Op.like]:"true"}},
       })
     } else if (appointed === 'false') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
-        where: { user_id: user_id, stylist_id: null },
+        where: { user_id: user_id, appointed:{[Op.like]:"false"} },
       })
     } else {
       {
@@ -507,19 +509,21 @@ export const read_applies = async (req, res) => {
   } catch (err) {
     console.log("consultController.js read_applies method\n ==> " + err);
     res
-      .status(500)
-      .json({ result: "Fail", detail: "500 Internal Server Error" });
+    .status(500)
+    .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
 // 지원 수정
 export const update_apply = async (req, res) => {
   try {
-    const { apply_id, contents, state } = req.body;
-
+    const { apply_id, contents,state } = req.body;
+    
     let apply_update = await Apply.update(
       { contents: contents, state: state },
       { where: { id: apply_id } },
-    )
+      )
+      console.log(">>>>>>>>>>>>>>",state);
+
     // 일반 사용자 수락시 해당 상담 및 지원 처리
     if (state === 'ACCEPTED') {
       let apply = await Apply.findOne({
@@ -529,6 +533,8 @@ export const update_apply = async (req, res) => {
       let consult_id = apply.consult_id;
       let stylist_id = apply.stylist_id;
 
+      console.log(consult_id, stylist_id);
+      
 
       let consult_update = await Consult.update(
         { state: 'ACCEPTED', stylist_id: stylist_id },
@@ -666,14 +672,16 @@ export const stylist_info = async (req, res) => {
       where: { id: consult_id },
       raw: true
     })
-    user_info.state = consult.state;
-
+    console.log(consult);
+    
+    
     let user_id = consult.stylist_id;
     let user_info = await User.findOne({
       where: { id: user_id },
       raw: true
     })
-
+    
+    user_info.state = consult.state;
     // 최근 리뷰 달기
     let review = await Review.findOne({
       where: { target: user_id },
@@ -744,6 +752,9 @@ export const consult_for_review = async (req, res) => {
     for (const consult of consult_list) {
       let consult_id = consult.dataValues.id;
       let stylist_id = consult.dataValues.stylist_id;
+      // 스타일리스트 정보
+      let stylist = await User.findOne({where : {id:stylist_id},raw :true})
+      consult.dataValues.stylist = stylist;
       // 리뷰 달기
       let review = await Review.findOne({
         where : {consult_id : consult_id, user_id: user_id}
