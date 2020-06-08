@@ -120,8 +120,6 @@ export const join_check = async (req, res) => {
     }
 }
 
-
-
 export const dup_nickname = async (req, res) => {
     try {
         const { nickname } = req.query
