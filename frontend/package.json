@@ -96,7 +96,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy": "react-scripts build && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
