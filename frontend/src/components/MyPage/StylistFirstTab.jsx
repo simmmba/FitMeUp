@@ -7,19 +7,31 @@ const StylistFirstTab = () => {
     const loginUser = JSON.parse(window.sessionStorage.getItem('user'))
     const [user, setUser] = useState({})
     const [consultList, setConsultList] = useState([])
-    const [receivedCount, setReceivedCount] = useState(0)
-    const [sentCount, setSentCount] = useState(0)
-    const [progressCount, setProgressCount] = useState(0)
-    const [doneConsultCount, setDoneConsultCount] = useState(0)
+    const [requestedCount, setRequestedCount] = useState(0);
+    const [acceptedCount, setAcceptedCount] = useState(0);
+    const [completedCount, setCompletedCount] = useState(0);
+    const [applyCount, setApplyCount] = useState(0);
 
     useEffect(() => {
         get_user()
+        get_consult_count()
     }, [])
 
     const get_user = () => {
         axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id)
             .then(res => {
                 setUser(res.data.user)
+            })
+    }
+
+    const get_consult_count = () => {
+        axios.get(`${process.env.REACT_APP_URL}/consult/count_stylist?user_id=` + loginUser.id)
+            .then(res => {
+                console.log(res.data.info)
+                setAcceptedCount(res.data.info.accepted_cnt)
+                setApplyCount(res.data.info.apply_cnt)
+                setCompletedCount(res.data.info.complete_cnt)
+                setRequestedCount(res.data.info.requested_cnt)
             })
     }
 
@@ -78,10 +90,10 @@ const StylistFirstTab = () => {
             <div className="center middleTopMargin">
                 <table>
                     <tbody>
-                        <tr><td className="tdl">진행중 상담</td><td className="tdr">{progressCount}</td></tr>
-                        <tr><td className="tdl">받은 요청</td><td className="tdr">{receivedCount}</td></tr>
-                        <tr><td className="tdl">보낸 요청</td><td className="tdr">{sentCount}</td></tr>
-                        <tr><td className="tdl">완료된 상담</td><td className="tdr">{doneConsultCount}</td></tr>
+                        <tr><td className="tdl">진행중 상담</td><td className="tdr">{acceptedCount}</td></tr>
+                        <tr><td className="tdl">받은 요청</td><td className="tdr">{requestedCount}</td></tr>
+                        <tr><td className="tdl">보낸 요청</td><td className="tdr">{applyCount}</td></tr>
+                        <tr><td className="tdl">완료된 상담</td><td className="tdr">{completedCount}</td></tr>
                     </tbody>
                 </table>
             </div>

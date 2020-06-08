@@ -7,16 +7,14 @@ import axios from "axios";
 const GeneralFirstTab = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [user, setUser] = useState({});
-  const [consultList, setConsultList] = useState([]);
-  const [requestedConsultCount, setRequestedConsultCount] = useState(0);
-  const [progressConsultCount, setProgressConsultCount] = useState(0);
-  const [doneConsultCount, setDoneConsultCount] = useState(0);
-  const [reqOfStylistCount, setReqOfStylistCount] = useState(0);
+  const [requestedCount, setRequestedCount] = useState(0);
+  const [acceptedCount, setAcceptedCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [applyCount, setApplyCount] = useState(0);
 
   useEffect(() => {
-    get_consult_list();
-    get_req_stylist();
     get_user();
+    get_consult_count()
   }, []);
 
   const get_user = () => {
@@ -25,36 +23,16 @@ const GeneralFirstTab = () => {
     });
   };
 
-  const get_consult_list = () => {
-    axios
-      .get(`${process.env.REACT_APP_URL}/consult/myreqlist?user_id=` + loginUser.id)
-      .then((res) => {
-        setConsultList(res.data.list);
-        res.data.list.forEach((c) => {
-          if (c.state === "REQUESTED") {
-            setRequestedConsultCount(requestedConsultCount + 1);
-          } else if (c.state === "PROGRESS") {
-            setProgressConsultCount(progressConsultCount + 1);
-          } else if (c.state === "COMPLETE") {
-            setDoneConsultCount(doneConsultCount + 1);
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const get_req_stylist = () => {
-    axios
-      .get(`${process.env.REACT_APP_URL}/consult/apply?user_id=` + loginUser.id)
-      .then((res) => {
-        setReqOfStylistCount(res.data.list.length);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const get_consult_count = () => {
+      axios.get(`${process.env.REACT_APP_URL}/consult/count_user?user_id=` + loginUser.id)
+          .then(res => {
+              console.log(res.data.info)
+              setAcceptedCount(res.data.info.accepted_cnt)
+              setApplyCount(res.data.info.apply_cnt)
+              setCompletedCount(res.data.info.complete_cnt)
+              setRequestedCount(res.data.info.requested_cnt)
+          })
+  }
 
   const handleImgChange = (e) => {
     console.log(e.target.files[0])
@@ -116,19 +94,19 @@ const GeneralFirstTab = () => {
           <tbody>
             <tr>
               <td className="tdl">진행중 상담</td>
-              <td className="tdr">{progressConsultCount}</td>
+              <td className="tdr">{acceptedCount}</td>
             </tr>
             <tr>
               <td className="tdl">요청한 상담</td>
-              <td className="tdr">{requestedConsultCount}</td>
+              <td className="tdr">{requestedCount}</td>
             </tr>
             <tr>
               <td className="tdl">완료된 상담</td>
-              <td className="tdr">{doneConsultCount}</td>
+              <td className="tdr">{completedCount}</td>
             </tr>
             <tr>
               <td className="tdl">받은 요청</td>
-              <td className="tdr">{reqOfStylistCount}</td>
+              <td className="tdr">{applyCount}</td>
             </tr>
           </tbody>
         </table>
