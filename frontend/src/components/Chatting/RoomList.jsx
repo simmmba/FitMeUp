@@ -61,6 +61,7 @@ class RoomList extends Component {
           .child(userId)
           .child("rooms")
           .on("child_added", (snap) => {
+            console.log(snap)
             loadedRooms.push(snap.val());
             this.setState(
               { rooms: loadedRooms, loading: false },
