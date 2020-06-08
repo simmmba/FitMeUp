@@ -296,16 +296,19 @@ export const read_myconsults = async (req, res) => {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, appointed: { [Op.like]: "true" } },
+        order :[['createdAt','DESC']]
       })
     } else if (appointed === 'false') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
         where: { user_id: user_id, appointed: { [Op.like]: "false" } },
+        order :[['createdAt','DESC']]
       })
     } else {
       {
         consults = await Consult.findAll({
           where: { user_id: user_id, state: { [Op.notLike]: 'DENIED' } },
+          order :[['createdAt','DESC']]
         })
 
       }
@@ -341,7 +344,7 @@ export const read_recv_consults = (req, res) => {
     const { stylist_id } = req.query;
     Consult.findAll({
       where: { stylist_id: stylist_id },
-      order: [["updatedAt", "DESC"]],
+      order: [["createdAt", "DESC"]],
       include: [
         {
           model: ConsultImage,
@@ -543,6 +546,7 @@ export const apply_in_consult = async (req, res) => {
         }
       ],
       where: { consult_id: consult_id },
+      order :[['createdAt','DESC']],
       raw: true
     })
 
@@ -713,6 +717,7 @@ export const consult_for_review = async (req, res) => {
     let consult_list = await Consult.findAll({
       include: [ConsultWant],
       where: { user_id: user_id, state: { [Op.like]: "COMPLETE" } },
+      order : [['createdAt','DESC']]
     })
 
     // 리뷰 작성 여부
@@ -799,7 +804,6 @@ export const count_stylist = async (req, res) => {
       replacements: { user_id: user_id },
       type: sequelize.QueryTypes.SELECT
     })
-    console.log(apply_info);
     
     count_info[0].apply_cnt = apply_info[0].apply_cnt;
 
