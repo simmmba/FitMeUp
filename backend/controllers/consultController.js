@@ -1,11 +1,5 @@
 import {
-  Consult,
-  ConsultWant,
-  ConsultImage,
-  User,
-  Apply,
-  Review,
-  Portfolio,
+  Consult, ConsultWant, ConsultImage, User, Apply, Review, Portfolio, Payment
 } from "../models"
 import { Op } from "sequelize"
 import sequelize from 'sequelize'
@@ -14,22 +8,8 @@ import sequelize from 'sequelize'
 export const create_consult = (req, res) => {
   try {
     // body로 부터 param 추출
-    let {
-      stylist_id,
-      user_id,
-      category,
-      gender,
-      age,
-      top,
-      bottom,
-      want,
-      height,
-      weight,
-      budget,
-      contents,
-      start_time,
-      end_time,
-    } = req.body;
+    let { stylist_id, user_id, category, gender, age, top, bottom, want, height, weight, budget, contents,
+      start_time, end_time, } = req.body;
 
     height = height == '' ? null : height;
     weight = weight == '' ? null : weight;
@@ -64,7 +44,7 @@ export const create_consult = (req, res) => {
       contents: contents,
       start_time: start_time,
       end_time: end_time,
-      appointed : appointed
+      appointed: appointed
     }).then(async (consult) => {
       // consult_want 테이블에 want 개수만큼 레코드 생성
       if (want || want.length != 0) {
@@ -96,15 +76,9 @@ export const read_consult = (req, res) => {
     Consult.findOne({
       where: { id: consult_id },
       include: [
-        {
-          model: ConsultImage,
-        },
-        {
-          model: ConsultWant,
-        },
-        {
-          model: Review,
-        },
+        { model: ConsultImage, },
+        { model: ConsultWant, },
+        { model: Review, },
       ],
     })
       .then(async (consult) => {
@@ -115,11 +89,7 @@ export const read_consult = (req, res) => {
         await Apply.findOne({
           where: { consult_id: consult.id, stylist_id: user_id },
         }).then((apply) => {
-          if (apply) {
-            consult.dataValues.applied = "yes";
-          } else {
-            consult.dataValues.applied = "no";
-          }
+          consult.dataValues.applied = apply ? "yes" : "no";
         });
 
         return consult;
@@ -154,40 +124,15 @@ export const read_consult = (req, res) => {
 export const update_consult = (req, res) => {
   try {
     // param 추출
-    const {
-      consult_id,
-      stylist_id,
-      user_id,
-      category,
-      gender,
-      age,
-      top,
-      bottom,
-      want,
-      height,
-      weight,
-      budget,
-      contents,
-      start_time,
-      end_time,
-    } = req.body;
+    const { consult_id, stylist_id, user_id, category, gender, age, top, bottom, want, height, weight,
+      budget, contents, start_time, end_time, } = req.body;
 
     // 상담 수정
     Consult.update(
       {
-        stylist_id: stylist_id,
-        user_id: user_id,
-        category: category,
-        gender: gender,
-        age: age,
-        top: top,
-        bottom: bottom,
-        height: height,
-        weight: weight,
-        budget: budget,
-        contents: contents,
-        start_time: start_time,
-        end_time: end_time,
+        stylist_id: stylist_id, user_id: user_id, category: category, gender: gender, age: age,
+        top: top, bottom: bottom, height: height, weight: weight, budget: budget, contents: contents,
+        start_time: start_time, end_time: end_time,
       },
       {
         where: { id: consult_id },
@@ -205,7 +150,6 @@ export const update_consult = (req, res) => {
           });
         }
       });
-
       res.json({ result: "Success" });
     });
   } catch (err) {
@@ -345,18 +289,18 @@ export const read_consults = (req, res) => {
 export const read_myconsults = async (req, res) => {
   try {
     let { user_id, appointed } = req.query;
-    
+
     let consults;
     // 일반 상담
     if (appointed === 'true') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
-        where: { user_id: user_id, appointed:{[Op.like]:"true"}},
+        where: { user_id: user_id, appointed: { [Op.like]: "true" } },
       })
     } else if (appointed === 'false') {
       consults = await Consult.findAll({
         include: [ConsultImage, ConsultWant],
-        where: { user_id: user_id, appointed:{[Op.like]:"false"} },
+        where: { user_id: user_id, appointed: { [Op.like]: "false" } },
       })
     } else {
       {
@@ -430,7 +374,7 @@ export const read_recv_consults = (req, res) => {
 };
 
 // 스타일리스트에게 요청한 상담 수락/거절
-export const update_recv_consults = (req, res) => {
+export const update_recv_consults = async (req, res) => {
   try {
     const { stylist_id, consult_id, state } = req.body;
 
@@ -441,13 +385,27 @@ export const update_recv_consults = (req, res) => {
       {
         where: { id: consult_id, stylist_id: stylist_id },
       }
-    ).then((consult) => {
+    ).then(async (consult) => {
       if (consult[0] == 0) {
         res.json({
           result: "Fail",
           detail: "해당 상담이 존재하지 않거나 권한이 없는 요청자입니다",
         });
       } else {
+        if(state ==='DENIED'){
+          let consult = await Consult.findOne({where : {id:consult_id}, raw:true});
+          let category = consult.category;
+          let user_id = consult.user_id;
+          let portfolio = await Portfolio.findOne({where:{stylist_id:stylist_id},raw:true});
+          let amount = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
+          let payment = await Payment.create({source: user_id, amount: amount, type:"refund"})
+          let user = await User.update({
+            credit : sequelize.literal('credit +'+amount)
+          },{where : {id:user_id}})
+
+        }
+
+
         res.json({ result: "Success" });
       }
     });
@@ -509,19 +467,19 @@ export const read_applies = async (req, res) => {
   } catch (err) {
     console.log("consultController.js read_applies method\n ==> " + err);
     res
-    .status(500)
-    .json({ result: "Fail", detail: "500 Internal Server Error" });
+      .status(500)
+      .json({ result: "Fail", detail: "500 Internal Server Error" });
   }
 };
 // 지원 수정
 export const update_apply = async (req, res) => {
   try {
-    const { apply_id, contents,state } = req.body;
-    
+    const { apply_id, contents, state } = req.body;
+
     let apply_update = await Apply.update(
       { contents: contents, state: state },
       { where: { id: apply_id } },
-      )
+    )
 
     // 일반 사용자 수락시 해당 상담 및 지원 처리
     if (state === 'ACCEPTED') {
@@ -533,7 +491,7 @@ export const update_apply = async (req, res) => {
       let stylist_id = apply.stylist_id;
 
       console.log(consult_id, stylist_id);
-      
+
 
       let consult_update = await Consult.update(
         { state: 'ACCEPTED', stylist_id: stylist_id },
@@ -654,6 +612,17 @@ export const consult_complete = async (req, res) => {
       { state: "COMPLETE" },
       { where: { id: consult_id } }
     )
+    let consult = await Consult.findOne({where : {id:consult_id}, raw:true});
+    let category = consult.category;
+    let user_id = consult.user_id;
+    let stylist_id = consult.stylist_id;
+    let portfolio = await Portfolio.findOne({where:{stylist_id:stylist_id},raw:true});
+    let amount = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
+    let payment = await Payment.create({source: stylist_id,target:user_id, amount: amount, type:"income"})
+    let user = await User.update({
+      credit : sequelize.literal('credit +'+amount)
+    },{where : {id:stylist_id}})
+
     res.json({ result: "Success" })
   } catch (err) {
     console.log("consultController.js consult_complete method\n ==> " + err);
@@ -671,14 +640,14 @@ export const stylist_info = async (req, res) => {
       where: { id: consult_id },
       raw: true
     })
-    
-    
+
+
     let user_id = consult.stylist_id;
     let user_info = await User.findOne({
       where: { id: user_id },
       raw: true
     })
-    
+
     user_info.state = consult.state;
     // 최근 리뷰 달기
     let review = await Review.findOne({
@@ -740,10 +709,10 @@ export const consult_for_review = async (req, res) => {
   try {
 
     const { user_id } = req.query;
-    
+
     let consult_list = await Consult.findAll({
       include: [ConsultWant],
-      where: { user_id: user_id, state :{[Op.like]:"COMPLETE"} },
+      where: { user_id: user_id, state: { [Op.like]: "COMPLETE" } },
     })
 
     // 리뷰 작성 여부
@@ -751,25 +720,25 @@ export const consult_for_review = async (req, res) => {
       let consult_id = consult.dataValues.id;
       let stylist_id = consult.dataValues.stylist_id;
       // 스타일리스트 정보
-      let stylist = await User.findOne({where : {id:stylist_id},raw :true})
+      let stylist = await User.findOne({ where: { id: stylist_id }, raw: true })
       consult.dataValues.stylist = stylist;
       // 리뷰 달기
       let review = await Review.findOne({
-        where : {consult_id : consult_id, user_id: user_id}
+        where: { consult_id: consult_id, user_id: user_id }
       })
       // 비용 달기
       let category = consult.dataValues.category;
       let portfolio = await Portfolio.findOne({
-        where : {stylist_id : stylist_id},
-        raw : true
+        where: { stylist_id: stylist_id },
+        raw: true
       })
       let price = category === 'coordi' ? portfolio.coordi_price : portfolio.my_price;
-      
+
       consult.dataValues.price = price;
       consult.dataValues.review = review;
     }
 
-    res.json({result : "Success",list:consult_list })
+    res.json({ result: "Success", list: consult_list })
   } catch (err) {
     console.log("consultController.js consult_for_review method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });

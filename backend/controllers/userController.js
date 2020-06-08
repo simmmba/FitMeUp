@@ -180,7 +180,6 @@ export const search = async (req, res) => {
                                 on portfolio.id = portfolio_tags.portfolio_id\
                                 where tag like :word)"
 
-
             stylist_search = await User.sequelize.query(
                 query, {
                 replacements: { word: word },
@@ -200,8 +199,6 @@ export const search = async (req, res) => {
                 replacements: { word: word },
                 type: sequelize.QueryTypes.SELECT
             });
-            console.log(stylist_search);
-            
         }
         search_list = await add_info(stylist_search);
 
