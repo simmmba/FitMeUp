@@ -22,6 +22,11 @@
         justify-content: center;
         align-items: center;
         margin: 0 7px;
+
+        .portfolioBtn {
+          margin-top: 20px;
+          @include button(240, 14);
+        }
       }
 
       .right_tab {
@@ -317,9 +322,9 @@
     .consultBox {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
-      height: 100%;
+      height: 80%;
       margin-top: 20px;
 
       .consultGrid {
@@ -419,7 +424,7 @@
       width: 50px;
     }
     .line {
-      border: solid 1px black;
+      border: solid 2px $gray;
       height: 100%;
     }
     .half {
@@ -428,9 +433,14 @@
     .creditHistoryList {
       width: 90%;
       height: 80%;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      // align-items: center;
       //border: solid black 1px;
       .creditHistoryBox {
-        //border: solid black 1px;
+        border: solid $gray 1px;
+        width: 100%;
         height: 18.5%;
         margin: 5px;
         display: flex;
@@ -442,7 +452,7 @@
           color: $red;
         }
         .blue {
-          color: #5643fa;
+          color: #4e40ca;
         }
         .contents {
           width: 50%;
@@ -458,7 +468,6 @@
         background: whitesmoke;
       }
     }
-
 
     .filebox {
       text-align: left;
@@ -488,6 +497,16 @@
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
       border: 0;
+    }
+  }
+
+  .MuiPaginationItem-outlinedSecondary.Mui-selected {
+    color: white;
+    border: 1px solid $red;
+    background-color: $red;
+
+    &:hover {
+      color: $red;
     }
   }
 }
