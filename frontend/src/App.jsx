@@ -21,7 +21,7 @@ import MyPageMain from "./components/MyPage/MyPageMain";
 import MyConsult from "./components/MyConsult/MyConsult";
 import Search from "./components/Search/Search";
 import MyConsultDetail from "./components/MyConsult/MyConsultDetail"
-import PortfolioUpdate from "./components/Portfolio/PortfolioDetail"
+import PortfolioUpdate from "./components/Portfolio/PortfolioUpdate"
 
 function App() {
   return (
@@ -35,9 +35,9 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/match" component={Matching} />
           <Route path="/consult/detail/:consultNo" component={ConsultDetail} />
-          <Route path="/portfolio/write" component={PortfolioWrite} />
-          <Route path="/portfolio/update" component={PortfolioUpdate} />
-          <Route path="/portfolio/:portfolioNo" component={PortfolioDetail} />
+          <Route path="/portfolio/write" component={PortfolioWrite} exact />
+          <Route path="/portfolio/update" component={PortfolioUpdate} exact />
+          <Route path="/portfolio/detail/:portfolioNo" component={PortfolioDetail} exact />
           <Route path="/chatting" component={Chatting} />
           <Route path="/mypage" component={MyPageMain} />
           <Route path="/myconsult" component={MyConsult} exact/>
