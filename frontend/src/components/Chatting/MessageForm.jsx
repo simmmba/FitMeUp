@@ -4,6 +4,7 @@ import firebase from '../../firebaseConfig'
 import { v4 as uuidv4 } from 'uuid'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import Tooltip from '@material-ui/core/Tooltip'
+import mime from "mime-types";
 import './MessageForm.scss'
 
 import FileUploadModal from './FileUploadModal'
@@ -16,7 +17,8 @@ class MessageForm extends Component {
     uploadTask: null,
     message: '',
     messagesRef: firebase.database().ref('messages'),
-    fileUploadModalIsOpen: false
+    fileUploadModalIsOpen: false,
+    files: [],
   }
 
   openModal = () => {

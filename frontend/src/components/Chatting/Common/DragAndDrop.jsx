@@ -50,9 +50,10 @@ class DragAndDrop extends Component {
     div.removeEventListener('drop', this.handleDrop)
   }
   render() {
+    const {dropbox} = this.props
     return (
       <div
-        style={this.props.dropbox}
+        style={dropbox}
         ref={this.dropRef}
       >
         {this.state.drag &&
@@ -80,7 +81,7 @@ class DragAndDrop extends Component {
                 fontSize: 36
               }}
             >
-              <div>이미지 업로드</div>
+              <div>업로드</div>
             </div>
           </div>
         }

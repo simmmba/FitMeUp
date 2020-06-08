@@ -1,4 +1,5 @@
 @import "../../styles/variable";
+@import "../../styles/utils";
 
 .chatting-side-panel {
   display: flex;
@@ -7,7 +8,7 @@
   justify-content: space-between;
   padding: 2rem 0;
   width: 10px;
-  background-color: $color-red-light;
+  background-color: $red;
 
   button {
     border: none;
