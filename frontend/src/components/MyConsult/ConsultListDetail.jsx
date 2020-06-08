@@ -100,7 +100,7 @@ const ConsultListDetail = ({ consult }) => {
             <img
               alt="style"
               className="styleimg"
-              src={consult.ConsultImages[0]}
+              src={consult.ConsultImages[0].image_path}
             />
           </div>
         )}

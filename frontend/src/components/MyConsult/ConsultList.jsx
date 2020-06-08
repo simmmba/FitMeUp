@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./ConsultList.scss";
 import axios from "axios";
-
 import { NavLink } from "react-router-dom";
 
 const ConsultList = ({ filter, consult }) => {
@@ -176,7 +175,7 @@ const ConsultList = ({ filter, consult }) => {
             <img
               alt="style"
               className="styleimg"
-              src={consult.ConsultImages[0]}
+              src={consult.ConsultImages[0].image_path}
             />
           </div>
         )}
