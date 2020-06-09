@@ -154,14 +154,14 @@ const ConsultDetail = (props) => {
         // 상담 수락한 경우
         alert("상담을 수락했습니다");
         // history로 채팅으로 이동
-        createChat();
+        createChat(request);
       })
       .catch((error) => {
         alert("설정에 실패했습니다");
       });
   };
 
-  const createChat = async () => {
+  const createChat = async (consult_id) => {
     const { key } = roomsRef.push();
 
     const consumer = {
@@ -178,8 +178,10 @@ const ConsultDetail = (props) => {
       id: key,
       consumer: consumer,
       provider: provider,
-      lastMessage: " ",
+      lastMessage: ' ',
       updated: firebase.database.ServerValue.TIMESTAMP,
+      consultId: consult_id,
+      status : '진행 중'
     };
 
     // 새 채팅룸 생성

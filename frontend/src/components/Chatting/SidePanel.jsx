@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import "./SidePanel.scss";
+import React, { Component } from 'react'
+import './SidePanel.scss'
 
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 
@@ -21,13 +21,12 @@ class SidePanel extends Component {
     const { currentUser } = this.props;
 
     return (
-      <div className="chatting-side-panel">
-        {/* <button onClick={this.openModal} type='button'>
-          <Tooltip title='방 만들기'>
-            <AddBoxIcon className='icon' />
-          </Tooltip>
-        </button> */}
-        <CreateRoomModal currentUser={currentUser} isOpen={CreateRoomModalIsOpen} closeModal={this.closeModal} />
+      <div className='chatting-side-panel'>
+        <CreateRoomModal
+          currentUser={currentUser}
+          isOpen={CreateRoomModalIsOpen}
+          closeModal={this.closeModal}
+        />
       </div>
     );
   }

@@ -89,8 +89,10 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
         id: key,
         consumer: consumer,
         provider: provider,
-        lastMessage: " ",
+        lastMessage: ' ',
         updated: firebase.database.ServerValue.TIMESTAMP,
+        consultId: val.consult_id,
+        status: '진행 중'
       };
 
       // 새 채팅룸 생성

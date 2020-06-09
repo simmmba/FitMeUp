@@ -66,14 +66,14 @@ export const get_sent_list = async function(req, res) {
 export const get_detail = async function(req, res) {
     try {
         const { mid, uid } = req.query;
-
         const found_message = await Message.findOne({
             where: {
-                id: mid
-            }
+                id:mid
+            },
+            raw:true
         })
 
-        if(found_message.target === uid) {
+        if(found_message.target == uid) {
             await Message.update({readed: 1}, {
                 where: {
                     id : mid

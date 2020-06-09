@@ -125,7 +125,10 @@ class RoomList extends Component {
                 className="avatar"
               />
               <div className="user-info-content">
-                <span className="display-name">{room.provider.nickname}</span>
+                <div className="name-wrapper">
+                  <span className="display-name">{room.provider.nickname}</span>
+                  <span className="status" >{room.status}</span>
+                </div>
                 <span className="desc">{room.lastMessage}</span>
               </div>
             </div>

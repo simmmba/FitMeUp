@@ -111,14 +111,14 @@ class Room extends Component {
           draw = true;
         }
         return (
-          <>
-            {draw && (
-              <div className="date-wrapper">
-                {year}년 {month}월 {day}일
-              </div>
-            )}
-            <Message key={message.timestamp} message={message} user={message.user} currentUser={this.props.currentUser} />
-          </>
+          <div key={message.timestamp}>
+            {draw && <div className="date-wrapper">{year}년 {month}월 {day}일</div>}
+            <Message
+              message={message}
+              user={message.user}
+              currentUser={this.props.currentUser}
+            />
+          </div>
         );
       })
     );
@@ -237,7 +237,7 @@ class Room extends Component {
     };
     return (
       <section className="room-messages">
-        <RoomHeader currentRoom={currentRoom} />
+        <RoomHeader currentRoom={currentRoom} currentUser={currentUser}/>
         <DragAndDrop dropbox={dropbox} handleDrop={this.handleDrop}>
           <div className="message-content" ref={this.messageContentRef}>
             {this.displayMessages(messages)}
