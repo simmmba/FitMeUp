@@ -19,9 +19,6 @@ const StylistStats = () => {
       .get(`${process.env.REACT_APP_URL}/statistics/score?stylist_id=` + loginUser.id)
       .then((res) => {
         setScoreInfo(res.data.info);
-        res.data.info.score_5 = 4;
-        res.data.info.score_4 = 2;
-        res.data.info.score_3 = 1;
         if (res.data.info.score_1 > 0) setIsScoreExist(true);
         if (res.data.info.score_2 > 0) setIsScoreExist(true);
         if (res.data.info.score_3 > 0) setIsScoreExist(true);
@@ -41,16 +38,6 @@ const StylistStats = () => {
         } else {
           setIsConsultExist(true);
           const consultings = [["월", "내 옷장 Pick", "스타일리스트 Pick"]];
-          res.data.info.push({
-            month: "5",
-            my: 5,
-            coordi: 6,
-          });
-          res.data.info.push({
-            month: "4",
-            my: 3,
-            coordi: 5,
-          });
           res.data.info.forEach((c) => {
             consultings.push([c.month + "월", parseInt(c.my), parseInt(c.coordi)]);
           });
@@ -68,17 +55,6 @@ const StylistStats = () => {
       } else {
         setIsCreditExist(true);
         const credits = [["월", "수익", "출금"]];
-
-        res.data.info.push({
-          month: "5",
-          income: 50000,
-          witdraw: 100000,
-        });
-        res.data.info.push({
-          month: "4",
-          income: 30000,
-          witdraw: 0,
-        });
         res.data.info.forEach((c) => {
           credits.push([c.month + "월", parseInt(c.income), parseInt(c.witdraw)]);
         });
