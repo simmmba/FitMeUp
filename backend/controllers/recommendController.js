@@ -8,7 +8,7 @@ export const recommend_by_score = async (req, res) => {
   try {
 
     let query = "select user.id, if(avg(score) is not null, round(avg(score),1), 0) avg_score\
-                ,count(*) avg_cnt from user left outer join review on user.id = review.target\
+                ,count(*) review_cnt from user left outer join review on user.id = review.target\
                 where type like 'stylist' group by user.id order by avg_score desc limit 9;"
 
     let recommends = await User.sequelize.query(query, {
@@ -71,15 +71,14 @@ export const recommend_by_consult = async (req, res) => {
       r.avg_score = 0;
       r.review_cnt = 0;
       let avg_score = await Review.findOne({
-        attributes: [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'avg_cnt']],
+        attributes: [[sequelize.fn('round', sequelize.fn('avg', sequelize.col('score')), 1), 'avg_score'], [sequelize.fn('count', sequelize.col('*')), 'review_cnt']],
         where: { target: stylist_id },
         raw: true
       });
 
-      
       if (avg_score) {
         r.avg_score = avg_score.avg_score;
-        r.avg_cnt = avg_score.avg_cnt;
+        r.review_cnt = avg_score.review_cnt;
       }
 
       r.portfolio_title = "";
