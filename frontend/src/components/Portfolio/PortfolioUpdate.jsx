@@ -25,22 +25,22 @@ class PortfolioUpdate extends React.Component {
 
   user = JSON.parse(window.sessionStorage.getItem("user"));
 
-  componentDidMount(){
+  componentDidMount() {
     // console.log(this.props.location.state)
     const portfolio = this.props.location.state.portfolio;
-    console.log(portfolio)
+    // console.log(portfolio)
     var tags = [];
-    for(let i=0; i<portfolio.Portfolio_tags.length; i++){
+    for (let i = 0; i < portfolio.Portfolio_tags.length; i++) {
       tags[i] = portfolio.Portfolio_tags[i].tag;
     }
 
     this.setState({
-      title:portfolio.title,
-      contents:portfolio.contents,
-      my_price:portfolio.my_price,
-      coordi_price:portfolio.coordi_price,
+      title: portfolio.title,
+      contents: portfolio.contents,
+      my_price: portfolio.my_price,
+      coordi_price: portfolio.coordi_price,
       tags: tags,
-    })
+    });
   }
 
   // 타이틀이랑 내용 변경
@@ -71,10 +71,7 @@ class PortfolioUpdate extends React.Component {
   // 태그 삭제하기
   deleteTag = (res) => {
     let forward = this.state.tags.slice(0, res.target.id);
-    let back = this.state.tags.slice(
-      Number(res.target.id) + 1,
-      this.state.tags.length
-    );
+    let back = this.state.tags.slice(Number(res.target.id) + 1, this.state.tags.length);
 
     this.setState({
       tags: forward.concat(back),
@@ -101,12 +98,7 @@ class PortfolioUpdate extends React.Component {
       return;
     }
 
-    if (
-      this.state.my_price < 1000 ||
-      this.state.coordi_price < 1000 ||
-      this.state.my_price % 100 !== 0 ||
-      this.state.coordi_price % 100 !== 0
-    ) {
+    if (this.state.my_price < 1000 || this.state.coordi_price < 1000 || this.state.my_price % 100 !== 0 || this.state.coordi_price % 100 !== 0) {
       alert("금액은 1000포인트 이상, 100포인트 단위로 설정 가능합니다.");
       return;
     }
@@ -189,16 +181,10 @@ class PortfolioUpdate extends React.Component {
   // 이미지 삭제하기
   deleteImg = (res) => {
     let forward = this.state.port_img.slice(0, res.target.id);
-    let back = this.state.port_img.slice(
-      Number(res.target.id) + 1,
-      this.state.port_base64.length
-    );
+    let back = this.state.port_img.slice(Number(res.target.id) + 1, this.state.port_base64.length);
 
     let forward64 = this.state.port_base64.slice(0, res.target.id);
-    let back64 = this.state.port_base64.slice(
-      Number(res.target.id) + 1,
-      this.state.port_base64.length
-    );
+    let back64 = this.state.port_base64.slice(Number(res.target.id) + 1, this.state.port_base64.length);
 
     this.setState({
       port_img: forward.concat(back),
@@ -208,11 +194,7 @@ class PortfolioUpdate extends React.Component {
 
   // 리뷰 취소 버튼
   formConfirm = () => {
-    if (
-      window.confirm(
-        "리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다."
-      )
-    ) {
+    if (window.confirm("리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다.")) {
       this.props.history.goBack();
     }
   };
@@ -232,7 +214,7 @@ class PortfolioUpdate extends React.Component {
     }
 
     // 금액 확인
-    if (!this.state.price_check){
+    if (!this.state.price_check) {
       alert("상담 비용을 설정해주세요");
       return;
     }
@@ -267,7 +249,7 @@ class PortfolioUpdate extends React.Component {
         contents: this.state.contents,
         tags: this.state.tags,
         my_price: this.state.my_price,
-        coordi_price : this.state.coordi_price
+        coordi_price: this.state.coordi_price,
       },
     })
       // 로그인 안되있는 거면
@@ -286,7 +268,7 @@ class PortfolioUpdate extends React.Component {
         })
           .then((res) => {
             alert("포트폴리오 수정 성공했습니다.");
-            history.push("/portfolio/detail/"+ this.user.id);
+            history.push("/portfolio/detail/" + this.user.id);
           })
           .catch((error) => {
             alert("포트폴리오를 수정하는데 실패했습니다.");
@@ -310,14 +292,7 @@ class PortfolioUpdate extends React.Component {
             <div>
               {/* 포트폴리오 제목 */}
               <div className="topic">포트폴리오 제목</div>
-              <input
-                type="text"
-                name="title"
-                onChange={this.changeValues}
-                className="input_title"
-                placeholder="제목을 입력해주세요"
-                value={this.state.title}
-              ></input>
+              <input type="text" name="title" onChange={this.changeValues} className="input_title" placeholder="제목을 입력해주세요" value={this.state.title}></input>
             </div>
             <div className="tag">
               <div className="topic">포트폴리오 태그</div>
@@ -337,11 +312,7 @@ class PortfolioUpdate extends React.Component {
                 {this.state.tags.map((tag, index) => (
                   <div className="tag_item" key={index}>
                     <span>{tag}</span>&nbsp;&nbsp;
-                    <span
-                      id={index}
-                      className="deletetag"
-                      onClick={this.deleteTag}
-                    >
+                    <span id={index} className="deletetag" onClick={this.deleteTag}>
                       X
                     </span>
                   </div>
@@ -362,54 +333,24 @@ class PortfolioUpdate extends React.Component {
                     step="100"
                     value={this.state.coordi_price}
                   ></input>
-                  <input
-                    type="number"
-                    name="my_price"
-                    onChange={this.changeValues}
-                    className="input_tag"
-                    placeholder="내 옷 추천 비용"
-                    min="1000"
-                    step="100"
-                    value={this.state.my_price}
-                  ></input>
+                  <input type="number" name="my_price" onChange={this.changeValues} className="input_tag" placeholder="내 옷 추천 비용" min="1000" step="100" value={this.state.my_price}></input>
                 </>
               ) : (
                 <>
-                  <input
-                    type="number"
-                    className="input_tag checkP"
-                    value={this.state.coordi_price}
-                    disabled
-                  ></input>
-                  <input
-                    type="number"
-                    className="input_tag checkP"
-                    value={this.state.my_price}
-                    disabled
-                  ></input>
+                  <input type="number" className="input_tag checkP" value={this.state.coordi_price} disabled></input>
+                  <input type="number" className="input_tag checkP" value={this.state.my_price} disabled></input>
                 </>
               )}
 
-              <div
-                className="plus_btn"
-                onClick={this.checkPrice}
-              >
+              <div className="plus_btn" onClick={this.checkPrice}>
                 {this.state.price_check ? "취소" : "설정"}
               </div>
             </div>
-            
 
             <div className="content">
               {/* 포트폴리오 설명 작성 */}
               <div className="topic">포트폴리오 설명</div>
-              <textarea
-                name="contents"
-                className="content_box"
-                style={style}
-                value={this.state.contents}
-                placeholder="자세하게 50자 이상 입력해주세요"
-                onChange={this.changeValues}
-              ></textarea>
+              <textarea name="contents" className="content_box" style={style} value={this.state.contents} placeholder="자세하게 50자 이상 입력해주세요" onChange={this.changeValues}></textarea>
             </div>
 
             <div className="main_img">
@@ -417,45 +358,25 @@ class PortfolioUpdate extends React.Component {
               <div className="filebox">
                 <label>
                   메인 사진 업로드
-                  <input
-                    type="file"
-                    name="main_img"
-                    accept="image/gif, image/jpeg, image/png"
-                    onChange={this.changeMainImg}
-                  />
+                  <input type="file" name="main_img" accept="image/gif, image/jpeg, image/png" onChange={this.changeMainImg} />
                 </label>
                 <span>16:9 비율의 사진을 올려주세요 </span>
               </div>
-              {this.state.main_base64 !== "" && (
-                <img alt="메인이미지" src={this.state.main_base64}></img>
-              )}
+              {this.state.main_base64 !== "" && <img alt="메인이미지" src={this.state.main_base64}></img>}
             </div>
             <div className="port_imgs">
               {/* 포트폴리오 이미지 리스트 넣는 부분 */}
               <div className="filebox">
                 <label>
                   포트폴리오 사진 업로드
-                  <input
-                    key={this.state.filekey}
-                    type="file"
-                    name="images"
-                    multiple
-                    accept="image/gif, image/jpeg, image/png"
-                    onChange={this.changePortImg}
-                  />
+                  <input key={this.state.filekey} type="file" name="images" multiple accept="image/gif, image/jpeg, image/png" onChange={this.changePortImg} />
                 </label>
               </div>
               {this.state.port_base64.map((base64, index) => (
                 <div className="port_img" key={index}>
                   <img alt="서브이미지" src={base64}></img>
                   {/* 이미지 등록 취소 버튼 */}
-                  <img
-                    alt="삭제"
-                    src="https://image.flaticon.com/icons/svg/458/458595.svg"
-                    className="X"
-                    id={index}
-                    onClick={this.deleteImg}
-                  ></img>
+                  <img alt="삭제" src="https://image.flaticon.com/icons/svg/458/458595.svg" className="X" id={index} onClick={this.deleteImg}></img>
                 </div>
               ))}
             </div>

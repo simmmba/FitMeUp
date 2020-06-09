@@ -1,4 +1,31 @@
+@import "../../styles/utils.scss";
+
 .explain {
   margin: 40px 0 30px 0;
   width: 100%;
+  // background-color: red;
+  padding: 0 50px;
+  text-align: left;
+
+  .block {
+    margin-bottom: 50px;
+
+    .summary {
+      // font-family: $main_font;
+      color: $red_hover;
+      font-weight: bold;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    b {
+      font-family: $main_font;
+    }
+
+    .detail {
+      color: black;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+  }
 }

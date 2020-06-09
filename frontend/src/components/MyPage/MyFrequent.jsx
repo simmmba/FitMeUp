@@ -5,18 +5,13 @@ import { Empty } from "antd";
 import { Link } from "react-router-dom";
 
 const MyFrequent = () => {
-  const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [stylistList, setStylistList] = useState([]);
 
   useEffect(() => {
-    get_stylist_list();
-  }, []);
-
-  const get_stylist_list = () => {
-    axios.get(`${process.env.REACT_APP_URL}/user/most_consulting?user_id=` + loginUser.id).then((res) => {
+    axios.get(`${process.env.REACT_APP_URL}/user/most_consulting?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
       setStylistList(res.data.stylists);
     });
-  };
+  }, []);
 
   return (
     <div className="right_tab">

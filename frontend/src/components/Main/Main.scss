@@ -19,8 +19,33 @@
       @include maxcenter;
 
       .btn {
-        @include button(300, 18);
         margin-left: 90px;
+        width: 300px;
+        padding: 10px;
+        text-align: center;
+        font-family: $main-font;
+        font-size: 19px;
+        background-color: white;
+        color: $red;
+        cursor: pointer;
+        border: 3px solid white;
+        transition: 0.4s;
+        border-radius: 3px;
+        text-decoration: none;
+
+        a {
+          color: white;
+        }
+
+        &:hover {
+          text-decoration: none;
+          color: white;
+          background: transparent;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
   }
@@ -64,11 +89,12 @@
 
     .mentionBottom {
       color: $darkgray;
+      font-size: 1.2rem;
       margin: 20px 0 40px 0;
     }
 
     .selectBtn {
-      @include button(200, 16);
+      @include button(240, 16);
       margin: 10px;
     }
   }

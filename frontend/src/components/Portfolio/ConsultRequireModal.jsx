@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { inject, observer } from "mobx-react";
-import Modal from "react-bootstrap/Modal";
+import { OverlayTrigger, Popover, Modal } from "react-bootstrap";
 import axios from "axios";
 import "./ConsultRequireModal.scss";
 
@@ -14,7 +14,6 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
   const [resultShow, setResultShow] = useState(false);
   const [remainPoint, setRemainPoint] = useState(user?.credit);
   const [usePoint, setUsePoint] = useState(0);
-  console.log(user);
 
   const handleRequire = () => {
     // 포인트가 있는지 확인
@@ -33,7 +32,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
       })
         .then((res) => {
           if (res.data.result === "Success") {
-            console.log("포인트 출금 성공");
+            // console.log("포인트 출금 성공");
             setRemainPoint(res.data.credit);
 
             // 상담 요청
@@ -72,7 +71,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
                   data: img,
                 })
                   .then(() => {
-                    console.log("사진 등록 성공");
+                    // console.log("사진 등록 성공");
                     setFinishedShow(false);
                     setResultShow(true);
                     reset();
@@ -84,8 +83,6 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
               .catch((error) => {
                 alert("상담 요청에 실패했습니다.");
               });
-          } else {
-            console.log("포인트 출금 실패");
           }
         })
         .catch((error) => {
@@ -127,52 +124,79 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
           <div className="mentionTop">스타일리스트에게 상담 받기 위해</div>
           <div className="mentionTop">원하는 서비스를 선택해주세요!</div>
           <div className="mentionBottom">47,505명의 스타일리스트가 활동 중이에요.</div>
-          <button
-            className="selectBtn"
-            onClick={() => {
-              if (user) {
-                if (user.credit < coordi_price) {
-                  setShow(false);
-                  setCreditShow(true);
-                } else {
-                  setConsult("category", "coordi");
-                  setStylist(stylist_id);
-                  setPrice(coordi_price);
-                  reset();
-                  history.push("/consult");
-                }
-              } else {
-                alert("로그인 후 핏미업 서비스를 이용해보세요!");
-                setShow(false);
-                history.push("/login");
-              }
-            }}
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Popover id="popover-basic">
+                <Popover.Title as="h3">스타일리스트의 PICK!</Popover.Title>
+                <Popover.Content>
+                  스타일리스트가 내게 어울리고, <br />
+                  내가 원하는 스타일을 추천해줍니다
+                </Popover.Content>
+              </Popover>
+            }
           >
-            코디 추천 받기
-          </button>
-          <button
-            className="selectBtn"
-            onClick={() => {
-              if (user) {
-                if (user.credit < my_price) {
-                  setShow(false);
-                  setCreditShow(true);
+            <button
+              className="selectBtn"
+              onClick={() => {
+                if (user) {
+                  if (user.credit < coordi_price) {
+                    setShow(false);
+                    setCreditShow(true);
+                  } else {
+                    setConsult("category", "coordi");
+                    setStylist(stylist_id);
+                    setPrice(coordi_price);
+                    reset();
+                    history.push("/consult");
+                  }
                 } else {
-                  setConsult("category", "my");
-                  setStylist(stylist_id);
-                  setPrice(my_price);
-                  reset();
-                  history.push("/consult");
+                  alert("로그인 후 핏미업 서비스를 이용해보세요!");
+                  setShow(false);
+                  history.push("/login");
                 }
-              } else {
-                alert("로그인 후 핏미업 서비스를 이용해보세요!");
-                setShow(false);
-                history.push("/login");
-              }
-            }}
+              }}
+            >
+              스타일리스트의&nbsp;&nbsp;PICK!
+            </button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            placement="right"
+            overlay={
+              <Popover id="popover-basic">
+                <Popover.Title as="h3">내 옷장에서 PICK!</Popover.Title>
+                <Popover.Content>
+                  스타일리스트가 내가 가진 옷으로
+                  <br />
+                  내게 어울리는 코디를 추천해줍니다.
+                </Popover.Content>
+              </Popover>
+            }
           >
-            내 옷 추천 받기
-          </button>
+            <button
+              className="selectBtn"
+              onClick={() => {
+                if (user) {
+                  if (user.credit < my_price) {
+                    setShow(false);
+                    setCreditShow(true);
+                  } else {
+                    setConsult("category", "my");
+                    setStylist(stylist_id);
+                    setPrice(my_price);
+                    reset();
+                    history.push("/consult");
+                  }
+                } else {
+                  alert("로그인 후 핏미업 서비스를 이용해보세요!");
+                  setShow(false);
+                  history.push("/login");
+                }
+              }}
+            >
+              내 옷장에서&nbsp;&nbsp;PICK!
+            </button>
+          </OverlayTrigger>
           <br />
           <br />
         </Modal.Body>

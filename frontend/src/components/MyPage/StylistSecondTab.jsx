@@ -53,7 +53,6 @@ const StylistSecondTab = () => {
           bottom: user.bottom,
         })
         .then((res) => {
-          console.log(res);
           if (res.data.result === "Success") {
             axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + loginUser.id).then((response) => {
               window.sessionStorage.setItem("user", JSON.stringify(response.data.user));
@@ -63,14 +62,12 @@ const StylistSecondTab = () => {
         })
         .catch((err) => {
           alert("정보 변경에 실패;;");
-          console.log(err);
         });
     }
     setModifyMode(!modifyMode);
   };
 
   const selectorOnChange = (e) => {
-    console.log(e.target.value);
     setSelectorValue(e.target.value);
   };
 

@@ -62,7 +62,6 @@ const Matching = () => {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res.data.list);
         setList(res.data.list);
         setLoading(false);
       })
@@ -106,9 +105,7 @@ const Matching = () => {
               <div key={tabitem[0]} className="col-4">
                 <div id={index} onClick={clickCategory}>
                   {tabitem[1]}
-                  {category_list[category][0] === tabitem[0] &&
-                    list.length !== 0 &&
-                    " (" + list.length + ")"}
+                  {category_list[category][0] === tabitem[0] && list.length !== 0 && " (" + list.length + ")"}
                 </div>
                 <div className={category_list[category][0] === tabitem[0] ? "focus" : ""} />
               </div>
@@ -130,19 +127,10 @@ const Matching = () => {
         {/* 상담 신청 목록 */}
         {loading && <Spin className="loading" size="large" />}
         <div className="list">
-          {!loading &&
-            list.map((match, index) => (
-              <MatchingList key={index} match={match}></MatchingList>
-            ))}
+          {!loading && list.map((match, index) => <MatchingList key={index} match={match}></MatchingList>)}
           {list.length === 0 && !loading && (
             <div className="nothing no_consult">
-              <Empty
-                description={
-                  <span className="description">
-                    해당하는 상담이 없습니다.
-                  </span>
-                }
-              />
+              <Empty description={<span className="description">해당하는 상담이 없습니다.</span>} />
             </div>
           )}
         </div>

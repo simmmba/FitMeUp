@@ -17,7 +17,17 @@ const GeneralThirdTab = () => {
   const [contents, setContents] = useState("");
 
   useEffect(() => {
-    get_received_message();
+    setMessageType(true);
+    axios
+      .get(`${process.env.REACT_APP_URL}/message/received?id=` + JSON.parse(window.sessionStorage.getItem("user")).id)
+      .then((res) => {
+        setMessageList(res.data.messages);
+        setCount(parseInt(res.data.messages.length / 5) + 1);
+        setPage(1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const get_received_message = () => {
@@ -106,13 +116,13 @@ const GeneralThirdTab = () => {
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1uOFms-ofcQ8ZzpT7yf4plp2tDs4mmNBaQeuNNMJQn3fE1mBM&usqp=CAU" alt="back" className="backButton" onClick={handleBackBtn} />
           <div className="center topMargin">
             <div className="col-4 center">
-              <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile" />
+              <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt="프로필이미지" className="smallProfile" />
             </div>
             <div className="col-8">
-              {loginUser.type==="general"?(
-                  <div className="leftAlign">{messageType ? message.source.name : message.target.name}</div>
-              ):(
-                  <div className="leftAlign">{messageType ? message.source.nickname : message.target.nickname}</div>
+              {loginUser.type === "general" ? (
+                <div className="leftAlign">{messageType ? message.source.name : message.target.name}</div>
+              ) : (
+                <div className="leftAlign">{messageType ? message.source.nickname : message.target.nickname}</div>
               )}
               <div className="rightAlign smallText">{message.createdAt.substring(0, 10) + " " + message.createdAt.substring(11, 16)}</div>
             </div>
@@ -158,27 +168,27 @@ const GeneralThirdTab = () => {
             </div>
             <div>
               {messageList.slice((page - 1) * 5, page * 5).map((m) => {
-                if (m) {
-                  return (
-                    <div className="center" key={m.id} onClick={() => handleMessageClick(m.id)}>
-                      <div className="message center">
-                        {m.readed ? <div /> : <div className="unread_message">&nbsp;</div>}
-                        <div className="col-4 center">
-                          <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt={"Profile Image"} className="smallProfile" />
-                        </div>
-                        <div className="col-8">
-                          {loginUser.type==="general"?(
-                              <div className="leftAlign">{messageType ? m.source.name : m.target.name}</div>
-                          ):(
-                              <div className="leftAlign">{messageType ? m.source.nickname : m.target.nickname}</div>
-                          )}
-                          <div className="leftAlign">{m.contents.length > 15 ? m.contents.substring(0, 15) + ".." : m.contents}</div>
-                          <div className="rightAlign smallText">{m.createdAt.substring(0, 10) + " " + m.createdAt.substring(11, 16)}</div>
-                        </div>
+                return m ? (
+                  <div className="center" key={m.id} onClick={() => handleMessageClick(m.id)}>
+                    <div className="message center">
+                      {m.readed ? <div /> : <div className="unread_message">&nbsp;</div>}
+                      <div className="col-4 center">
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cbdef037365169.573db7853cebb.jpg" alt="프로필이미지" className="smallProfile" />
+                      </div>
+                      <div className="col-8">
+                        {loginUser.type === "general" ? (
+                          <div className="leftAlign">{messageType ? m.source.name : m.target.name}</div>
+                        ) : (
+                          <div className="leftAlign">{messageType ? m.source.nickname : m.target.nickname}</div>
+                        )}
+                        <div className="leftAlign">{m.contents.length > 15 ? m.contents.substring(0, 15) + ".." : m.contents}</div>
+                        <div className="rightAlign smallText">{m.createdAt.substring(0, 10) + " " + m.createdAt.substring(11, 16)}</div>
                       </div>
                     </div>
-                  );
-                }
+                  </div>
+                ) : (
+                  <div key="0"></div>
+                );
               })}
             </div>
           </div>
