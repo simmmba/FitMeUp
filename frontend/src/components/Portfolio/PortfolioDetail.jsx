@@ -96,14 +96,14 @@ class PortfolioDetail extends React.Component {
                   <div className="avg_title">서비스 비용</div>
                   <br />
                   <div className="budget">
-                    코 디 추천 -&nbsp;
+                    스타일리스트의 PICK -&nbsp;
                     <b>
                       {this.state.portfolio?.User && this.state.portfolio.coordi_price}
                       &nbsp;Point
                     </b>
                   </div>
                   <div className="budget">
-                    내 옷 추천 -&nbsp;
+                    내 옷장에서 PICK -&nbsp;
                     <b>
                       {this.state.portfolio?.User && this.state.portfolio.my_price}
                       &nbsp;Point

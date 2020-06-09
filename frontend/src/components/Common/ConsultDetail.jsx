@@ -43,9 +43,7 @@ const ConsultDetail = (props) => {
   const req_list = () => {
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${
-        url[url.length - 1]
-      }&user_id=${user.id}`,
+      url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${url[url.length - 1]}&user_id=${user.id}`,
     })
       .then((res) => {
         console.log(res.data.consult);
@@ -71,8 +69,7 @@ const ConsultDetail = (props) => {
         setCategory(res.data.consult.category);
         if (res.data.consult?.applied !== "no") setApply(true);
         setState(res.data.consult.state);
-        if (res.data.consult.stylist_id)
-          setStylelist(res.data.consult.stylist_id);
+        if (res.data.consult.stylist_id) setStylelist(res.data.consult.stylist_id);
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
@@ -183,8 +180,8 @@ const ConsultDetail = (props) => {
       id: key,
       consumer: consumer,
       provider: provider,
-      lastMessage: ' ',
-      updated: firebase.database.ServerValue.TIMESTAMP
+      lastMessage: " ",
+      updated: firebase.database.ServerValue.TIMESTAMP,
     };
 
     // 새 채팅룸 생성
@@ -238,7 +235,6 @@ const ConsultDetail = (props) => {
       });
   };
 
-  
   return (
     <>
       <Header></Header>
@@ -246,9 +242,7 @@ const ConsultDetail = (props) => {
         <div className="processing">
           <div className="position">
             <br />
-            <div className="type">
-              {category === "coordi" ? "코디 추천 받기" : "내 옷 추천받기"}
-            </div>
+            <div className="type">{category === "coordi" ? "스타일리스트의 PICK" : "내 옷장에서 PICK"}</div>
             <div className="user">
               <img alt="style" className="profile" src={requser.profile_img} />
               <span className="nickname">{requser.nickname}</span>
@@ -287,29 +281,13 @@ const ConsultDetail = (props) => {
             )}
 
             {state === "COMPLETE" && (
-              <>
-                {user.type !== "stylist" ||
-                (user.type === "stylist" && user.id === stylist) ? (
-                  <div className="apply complete">상담 완료</div>
-                ) : (
-                  <div className="apply complete">상담 거절</div>
-                )}
-              </>
+              <>{user.type !== "stylist" || (user.type === "stylist" && user.id === stylist) ? <div className="apply complete">상담 완료</div> : <div className="apply complete">상담 거절</div>}</>
             )}
 
             {state === "ACCEPTED" && (
-              <>
-                {user.type !== "stylist" ||
-                (user.type === "stylist" && user.id === stylist) ? (
-                  <div className="apply complete">상담 진행 중</div>
-                ) : (
-                  <div className="apply complete">상담 거절</div>
-                )}
-              </>
+              <>{user.type !== "stylist" || (user.type === "stylist" && user.id === stylist) ? <div className="apply complete">상담 진행 중</div> : <div className="apply complete">상담 거절</div>}</>
             )}
-            {state === "DENIED" && (
-              <div className="apply complete">상담 거절</div>
-            )}
+            {state === "DENIED" && <div className="apply complete">상담 거절</div>}
           </div>
         </div>
 
@@ -339,18 +317,9 @@ const ConsultDetail = (props) => {
                 </tr>
                 <tr>
                   {list.map((item, index) => (
-                    <td key={index}>
-                      {item[2] ? item[2] + "" + item[1] : "-"}
-                    </td>
+                    <td key={index}>{item[2] ? item[2] + "" + item[1] : "-"}</td>
                   ))}
-                  {budget === null ? (
-                    <td>-</td>
-                  ) : (
-                    <td>
-                      {budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      원
-                    </td>
-                  )}
+                  {budget === null ? <td>-</td> : <td>{budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>}
                 </tr>
               </thead>
             </table>
@@ -367,12 +336,7 @@ const ConsultDetail = (props) => {
             <div className="sub_title">원하는 스타일</div>
             <div>
               {wantImg.map((img, index) => (
-                <img
-                  key={index}
-                  alt="style"
-                  className="styleimg"
-                  src={"/img/wantStyle/" + img.img}
-                />
+                <img key={index} alt="style" className="styleimg" src={"/img/wantStyle/" + img.img} />
               ))}
             </div>
             {myImg.length !== 0 && (
@@ -380,12 +344,7 @@ const ConsultDetail = (props) => {
                 <div className="sub_title">평소 입는 스타일</div>
                 <div>
                   {myImg.map((img, index) => (
-                    <img
-                      key={index}
-                      alt="style"
-                      className="styleimg"
-                      src={img.image_path}
-                    />
+                    <img key={index} alt="style" className="styleimg" src={img.image_path} />
                   ))}
                 </div>
               </>

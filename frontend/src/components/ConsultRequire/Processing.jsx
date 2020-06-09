@@ -5,13 +5,13 @@ import "./Processing.scss";
 
 const Processing = ({ percent, consult }) => {
   const category = () => {
-    if (consult.category === "coordi") return "코디 추천";
-    else return "내 옷 추천";
+    if (consult.category === "coordi") return "스타일리스트의 PICK";
+    else return "내 옷장에서 PICK";
   };
   return (
     <div className="processing">
       <div className="box">
-        <div className="select">{category()} 받기</div>
+        <div className="select">{category()}</div>
         <ProgressBar now={percent} />
       </div>
     </div>

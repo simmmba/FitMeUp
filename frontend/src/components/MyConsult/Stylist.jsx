@@ -221,10 +221,10 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
             <div className="portfolioName">{val.portfolio_title}</div>
             <div className="priceBox">
               <div className="price">
-                전체 코디 - <b>{val.coordi_price} Point</b>
+                스타일리스트 - <b>{val.coordi_price} Point</b>
               </div>
               <div className="price">
-                옷장 코디 - <b>{val.my_price} Point</b>
+                내 옷장 - <b>{val.my_price} Point</b>
               </div>
             </div>
           </div>
