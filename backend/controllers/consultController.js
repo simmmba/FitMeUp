@@ -538,7 +538,7 @@ export const apply_in_consult = async (req, res) => {
     const { consult_id } = req.query;
 
     let apply_list = await Apply.findAll({
-      attributes: ['id', 'stylist_id', 'consult_id', 'contents', 'state', 'user.nickname'],
+      attributes: ['id', 'stylist_id', 'consult_id', 'contents', 'state', 'user.nickname','user.profile_img'],
       include: [
         {
           attributes: [],
