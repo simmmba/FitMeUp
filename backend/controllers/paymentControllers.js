@@ -31,12 +31,6 @@ export const checkout = async (req, res) => {
             let user = User.update({ credit: checkout_credit }, { where: { id: source_id } })
             let payment = await Payment.create({ source: source_id,target : target_id, type: "checkout", amount })
             
-            // 스타일리스트
-            let stylist_credit = await User.findOne({ attributes: ['credit'], where: { id: target_id } })
-            let stylist_checkout_credit = parseInt(stylist_credit.dataValues.credit) + parseInt(amount)
-            let stylist = User.update({ credit: stylist_checkout_credit }, { where: { id: target_id } })
-            let stylist_payment = await Payment.create({ source: target_id, target: source_id, type: "income", amount })
-            
             res.json({ result : "Success" , credit : checkout_credit})
         } else {
             res.json({ result : "Fail", detail :"Amount exceeds currunt credit"})

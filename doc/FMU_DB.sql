@@ -8,7 +8,7 @@ CREATE TABLE USER(
     gender VARCHAR(10),
     age INT,
     nickname VARCHAR(50) NOT NULL UNIQUE,
-    portfolio_img VARCHAR(100),
+    profile_img VARCHAR(100),
     credit INT DEFAULT 0,
     platform VARCHAR(30),
     api_id VARCHAR(100),
