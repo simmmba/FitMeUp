@@ -19,8 +19,33 @@
       @include maxcenter;
 
       .btn {
-        @include button(300, 18);
         margin-left: 90px;
+        width: 300px;
+        padding: 10px;
+        text-align: center;
+        font-family: $main-font;
+        font-size: 19px;
+        background-color: white;
+        color: $red;
+        cursor: pointer;
+        border: 3px solid white;
+        transition: 0.4s;
+        border-radius: 3px;
+        text-decoration: none;
+
+        a {
+          color: white;
+        }
+
+        &:hover {
+          text-decoration: none;
+          color: white;
+          background-color: $red;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
   }
