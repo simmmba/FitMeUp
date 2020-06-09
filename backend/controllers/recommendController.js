@@ -8,7 +8,7 @@ export const recommend_by_score = async (req, res) => {
   try {
 
     let query = "select user.id, if(avg(score) is not null, round(avg(score),1), 0) avg_score\
-                from user left outer join review on user.id = review.target\
+                ,count(*) avg_cnt from user left outer join review on user.id = review.target\
                 where type like 'stylist' group by user.id order by avg_score desc limit 9;"
 
     let recommends = await User.sequelize.query(query, {
@@ -75,6 +75,8 @@ export const recommend_by_consult = async (req, res) => {
         where: { target: stylist_id },
         raw: true
       });
+
+      
       if (avg_score) {
         r.avg_score = avg_score.avg_score;
         r.avg_cnt = avg_score.avg_cnt;
