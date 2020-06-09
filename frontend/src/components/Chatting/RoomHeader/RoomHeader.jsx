@@ -117,6 +117,7 @@ class MessageHeader extends Component {
 
   completeEnd = () => {
     this.setState({ complete: false });
+    this.closeModal();
   };
 
   render() {
