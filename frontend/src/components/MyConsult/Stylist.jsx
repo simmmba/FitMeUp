@@ -20,49 +20,55 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
     if (category === "coordi") stylistPrice = val.coordi_price;
     else stylistPrice = val.my_price;
 
-    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id).then((res) => {
-      userCredit = res.data.user.credit;
+    axios
+      .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id)
+      .then((res) => {
+        userCredit = res.data.user.credit;
 
-      if (userCredit < stylistPrice) {
-        alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
-      } else {
-        axios({
-          method: "post",
-          url: `${process.env.REACT_APP_URL}/payment/checkout`,
-          data: { source_id: user.id, target_id: stylist_id, amount: stylistPrice },
-        })
-          .then((res) => {
-            if (res.data.result === "Success") {
-              console.log("포인트 출금 성공");
-
-              axios({
-                method: "put",
-                url: `${process.env.REACT_APP_URL}/consult/apply`,
-                data: {
-                  user_id: user.id,
-                  consult_id: val.consult_id,
-                  apply_id: val.id,
-                  state: "ACCEPTED",
-                },
-              })
-                .then((res) => {
-                  // axios가 잘되면
-                  alert("상담 수락이 완료되었습니다");
-                  // 채팅 생성
-                  createChat();
-                })
-                .catch((error) => {
-                  alert("상담 수락에 실패했습니다");
-                });
-            } else {
-              console.log("포인트 출금 실패");
-            }
+        if (userCredit < stylistPrice) {
+          alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
+        } else {
+          axios({
+            method: "post",
+            url: `${process.env.REACT_APP_URL}/payment/checkout`,
+            data: {
+              source_id: user.id,
+              target_id: stylist_id,
+              amount: stylistPrice,
+            },
           })
-          .catch((error) => {
-            alert("포인트 출금에 실패했습니다.");
-          });
-      }
-    });
+            .then((res) => {
+              if (res.data.result === "Success") {
+                console.log("포인트 출금 성공");
+
+                axios({
+                  method: "put",
+                  url: `${process.env.REACT_APP_URL}/consult/apply`,
+                  data: {
+                    user_id: user.id,
+                    consult_id: val.consult_id,
+                    apply_id: val.id,
+                    state: "ACCEPTED",
+                  },
+                })
+                  .then((res) => {
+                    // axios가 잘되면
+                    alert("상담 수락이 완료되었습니다");
+                    // 채팅 생성
+                    createChat();
+                  })
+                  .catch((error) => {
+                    alert("상담 수락에 실패했습니다");
+                  });
+              } else {
+                console.log("포인트 출금 실패");
+              }
+            })
+            .catch((error) => {
+              alert("포인트 출금에 실패했습니다.");
+            });
+        }
+      });
   };
 
   const createChat = async () => {
@@ -74,13 +80,17 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
     };
 
     try {
-      let provider = await axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`).then((res) => {
-        if (res.data.result === "Success") {
-          return res.data.user;
-        } else {
-          console.log(res.data.detail);
-        }
-      });
+      let provider = await axios
+        .get(
+          `${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`
+        )
+        .then((res) => {
+          if (res.data.result === "Success") {
+            return res.data.user;
+          } else {
+            console.log(res.data.detail);
+          }
+        });
 
       provider = {
         ...provider,
@@ -151,13 +161,12 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
 
   return (
     <div className="Stylist_Item">
-      <NavLink to={`/portfolio/detail/${val.stylist_id}`}>
-        <div className="plus">더보기</div>
-      </NavLink>
-
       {/* 받은 추천 이면 */}
       {filter === "0" && (
         <>
+          <NavLink to={`/portfolio/detail/${val.stylist_id}`}>
+            <div className="plus">더보기</div>
+          </NavLink>
           {/* 아직 수락한게 없으면 수락하기 */}
           {!stylist_id && (
             <div className="apply" onClick={approveConsult}>
@@ -177,7 +186,9 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
                 </div>
               )}
               {/* 완료면 */}
-              {val.state === "COMPLETE" && <div className="apply">상담 왼료</div>}
+              {val.state === "COMPLETE" && (
+                <div className="apply">상담 왼료</div>
+              )}
             </>
           )}
         </>
@@ -186,6 +197,9 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
       {/* 지정한 상담이면 */}
       {filter === "1" && (
         <>
+          <NavLink to={`/portfolio/detail/${val.id}`}>
+            <div className="plus">더보기</div>
+          </NavLink>
           {/* 대기중 */}
           {val.state === "REQUESTED" && <div className="apply">대기 중</div>}
           {/* 진행중 */}
@@ -246,7 +260,11 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
           <div className="reviewBox">
             <div className="recentReview">최근리뷰</div>
             <b>{val.recent_review !== null && val.recent_review.nickname}</b>
-            <span>{val.recent_review !== null ? val.recent_review.contents : "작성된 리뷰가 없습니다."}</span>
+            <span>
+              {val.recent_review !== null
+                ? val.recent_review.contents
+                : "작성된 리뷰가 없습니다."}
+            </span>
           </div>
         </div>
         {/* </Link> */}
