@@ -127,7 +127,7 @@ class RoomList extends Component {
               <div className="user-info-content">
                 <div className="name-wrapper">
                   <span className="display-name">{room.provider.nickname}</span>
-                  <span className="status" >진행 중</span>
+                  <span className="status" >{room.status}</span>
                 </div>
                 <span className="desc">{room.lastMessage}</span>
               </div>
