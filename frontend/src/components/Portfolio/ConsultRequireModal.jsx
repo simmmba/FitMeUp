@@ -14,7 +14,6 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
   const [resultShow, setResultShow] = useState(false);
   const [remainPoint, setRemainPoint] = useState(user?.credit);
   const [usePoint, setUsePoint] = useState(0);
-  console.log(user);
 
   const handleRequire = () => {
     // 포인트가 있는지 확인
@@ -33,7 +32,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
       })
         .then((res) => {
           if (res.data.result === "Success") {
-            console.log("포인트 출금 성공");
+            // console.log("포인트 출금 성공");
             setRemainPoint(res.data.credit);
 
             // 상담 요청
@@ -72,7 +71,7 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
                   data: img,
                 })
                   .then(() => {
-                    console.log("사진 등록 성공");
+                    // console.log("사진 등록 성공");
                     setFinishedShow(false);
                     setResultShow(true);
                     reset();
@@ -84,8 +83,6 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
               .catch((error) => {
                 alert("상담 요청에 실패했습니다.");
               });
-          } else {
-            console.log("포인트 출금 실패");
           }
         })
         .catch((error) => {

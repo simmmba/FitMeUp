@@ -18,7 +18,6 @@ class MyConsultDetail extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location.state);
     this.setState({
       consult: [this.props.location.state.consult],
     });
@@ -37,7 +36,6 @@ class MyConsultDetail extends React.Component {
     })
       .then((res) => {
         // axios가 잘되면
-        console.log(res.data.list);
         this.setState({
           list: res.data.list,
           loading: false,

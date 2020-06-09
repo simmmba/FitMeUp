@@ -29,7 +29,6 @@ const ConsultList = ({ filter, consult }) => {
       })
         .then((res) => {
           // 상담 수락한 경우
-          console.log(res);
           if (request === "ACCEPTED") {
             setRequest("ACCEPTED");
           } else {
@@ -111,11 +110,7 @@ const ConsultList = ({ filter, consult }) => {
         {user.type !== "general" && (
           <>
             <div className="items profile_items">
-              <img
-                alt="style"
-                className="profile"
-                src={consult.req_user.profile_img}
-              />
+              <img alt="style" className="profile" src={consult.req_user.profile_img} />
             </div>
             {/* 닉네임*/}
             <div className="items name">
@@ -162,31 +157,20 @@ const ConsultList = ({ filter, consult }) => {
 
         {/* 원하는 스타일 */}
         <div className="items">
-          <img
-            alt="style"
-            className="styleimg"
-            src={"/img/wantStyle/" + consult.ConsultWants[0].img}
-          />
+          <img alt="style" className="styleimg" src={"/img/wantStyle/" + consult.ConsultWants[0].img} />
         </div>
 
         {/* 평소 내 스타일 */}
         {consult.ConsultImages.length !== 0 && (
           <div className="items">
-            <img
-              alt="style"
-              className="styleimg"
-              src={consult.ConsultImages[0].image_path}
-            />
+            <img alt="style" className="styleimg" src={consult.ConsultImages[0].image_path} />
           </div>
         )}
 
         {/* 예산 */}
         {consult.budget !== null && (
           <div className="items">
-            <div>
-              {consult.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              원
-            </div>
+            <div>{consult.budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</div>
           </div>
         )}
 
@@ -223,11 +207,7 @@ const ConsultList = ({ filter, consult }) => {
                   <div className="apply" id="ACCEPTED" onClick={handleRequest}>
                     상담 수락
                   </div>
-                  <div
-                    className="apply cancel"
-                    id="DENIED"
-                    onClick={handleRequest}
-                  >
+                  <div className="apply cancel" id="DENIED" onClick={handleRequest}>
                     상담 거절
                   </div>
                 </>
@@ -243,9 +223,7 @@ const ConsultList = ({ filter, consult }) => {
               )}
 
               {/* 완료된 상담 */}
-              {consult.state === "COMPLETE" && (
-                <div className="apply cancel complete">상담 완료</div>
-              )}
+              {consult.state === "COMPLETE" && <div className="apply cancel complete">상담 완료</div>}
 
               {/* 거절한 상담 */}
               {(consult.state === "DENIED" || request === "DENIED") && (
@@ -275,9 +253,7 @@ const ConsultList = ({ filter, consult }) => {
                 </>
               )}
               {/* 거절 */}
-              {consult.state === "DENIED" && (
-                <div className="apply complete">상담 거절</div>
-              )}
+              {consult.state === "DENIED" && <div className="apply complete">상담 거절</div>}
 
               {/* 받음 */}
               {consult.state === "ACCEPTED" && (
@@ -322,17 +298,9 @@ const ConsultList = ({ filter, consult }) => {
               상담 삭제
             </div>
           )}
-          
+
           {/* 상담 수락 */}
-          {consult.state === "ACCEPTED" && (
-            <>
-              {filter === "0" ? (
-                <div className="apply notclick">상담 진행 중</div>
-              ) : (
-                <div className="apply notclick">상담 승인</div>
-              )}
-            </>
-          )}
+          {consult.state === "ACCEPTED" && <>{filter === "0" ? <div className="apply notclick">상담 진행 중</div> : <div className="apply notclick">상담 승인</div>}</>}
 
           {/* 상담 거절 */}
           {consult.state === "DENIED" && (
@@ -343,9 +311,7 @@ const ConsultList = ({ filter, consult }) => {
             </div>
           )}
           {/* 상담 완료 */}
-          {consult.state === "COMPLETE" && (
-            <div className="apply complete">상담 완료</div>
-          )}
+          {consult.state === "COMPLETE" && <div className="apply complete">상담 완료</div>}
         </>
       )}
     </div>

@@ -48,7 +48,6 @@ const MyInfo = () => {
           bottom: basicInfo.bottom,
         })
         .then((res) => {
-          console.log(res);
           if (res.data.result === "Success") {
             axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((response) => {
               window.sessionStorage.setItem("user", JSON.stringify(response.data.user));
@@ -67,7 +66,6 @@ const MyInfo = () => {
     setModifyMode(false);
   };
 
-  console.log(basicInfo.weight);
   return (
     <>
       <div className="middle_tab">

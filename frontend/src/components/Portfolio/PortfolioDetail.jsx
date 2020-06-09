@@ -36,7 +36,7 @@ class PortfolioDetail extends React.Component {
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           portfolio: res.data.portfolio,
           consult_cnt: res.data.consult_cnt,
@@ -54,7 +54,7 @@ class PortfolioDetail extends React.Component {
       url: `${process.env.REACT_APP_URL}/review/receive?user_id=${this.url[this.url.length - 1]}`,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           reviews: res.data.list,
           mloading: false,

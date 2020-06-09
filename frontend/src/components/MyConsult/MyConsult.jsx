@@ -79,7 +79,6 @@ class MyConsult extends React.Component {
       // 로그인 안되있는 거면
       .then((res) => {
         // alert("상담 요청 내역을 가져오는데 성공했습니다.");
-        console.log(res.data.list);
         this.setState({
           consult: res.data.list,
           loading: false,

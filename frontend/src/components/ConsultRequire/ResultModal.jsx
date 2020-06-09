@@ -65,8 +65,6 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
           data: img,
         })
           .then(() => {
-            console.log("사진 등록 성공");
-
             if (success) {
               setResultShow(true);
             } else {
@@ -93,11 +91,9 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
       })
         .then((res) => {
           if (res.data.result === "Success") {
-            console.log("포인트 출금 성공");
+            // console.log("포인트 출금 성공");
             setRemainPoint(res.data.credit);
             handleRequire(true);
-          } else {
-            console.log("포인트 출금 실패");
           }
         })
         .catch((error) => {

@@ -24,7 +24,7 @@ const GeneralFirstTab = () => {
   }, []);
 
   const handleImgChange = (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     let img = new FormData();
     img.append("img", e.target.files[0]);
     axios({

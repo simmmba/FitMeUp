@@ -46,8 +46,6 @@ const ConsultDetail = (props) => {
       url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${url[url.length - 1]}&user_id=${user.id}`,
     })
       .then((res) => {
-        console.log(res.data.consult);
-
         list[0].push(res.data.consult.gender);
         list[1].push(res.data.consult.age);
         list[2].push(res.data.consult.height);

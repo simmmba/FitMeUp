@@ -26,7 +26,6 @@ class Signup extends React.Component {
       alert("로그아웃 후 진행해주세요");
       history.goBack("");
     }
-
   }
 
   // 유저 타입 지정 - general, stylelist
@@ -44,26 +43,25 @@ class Signup extends React.Component {
     axios({
       method: "post",
       url: `${process.env.REACT_APP_URL}/user/login`,
-      data : {
-        platform:this.state.platform,
-        api_id:this.state.api_id
-      }
+      data: {
+        platform: this.state.platform,
+        api_id: this.state.api_id,
+      },
     })
       // 로그인 안되있는 거면
       .then((res) => {
-        console.log(res)
-        if(res.data.result === "Success"){
+        // console.log(res)
+        if (res.data.result === "Success") {
           window.sessionStorage.setItem("user", JSON.stringify(res.data.user));
           history.push("/");
           return;
         }
-        if(res.data.detail === "user not found"){
+        if (res.data.detail === "user not found") {
           alert("회원가입이 안된 유저입니다.");
         }
-
       })
       .catch((error) => {
-          alert("로그인 실패했습니다.");
+        alert("로그인 실패했습니다.");
       });
   };
 
@@ -125,15 +123,7 @@ class Signup extends React.Component {
               />
             </div>
             <div>
-              <KakaoLogin
-                id="kakao"
-                className="easy_login"
-                jsKey={process.env.REACT_APP_KAKAO}
-                buttonText="Kakao"
-                onSuccess={this.responseKakao}
-                onFailure={this.responseFail}
-                getProfile="true"
-              />
+              <KakaoLogin id="kakao" className="easy_login" jsKey={process.env.REACT_APP_KAKAO} buttonText="Kakao" onSuccess={this.responseKakao} onFailure={this.responseFail} getProfile="true" />
             </div>
             {/* login으로 가기 */}
             <div className="changeForm">

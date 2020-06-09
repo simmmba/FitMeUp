@@ -14,22 +14,22 @@ class ReviewUpdate extends React.Component {
       filekey: 0,
       images: [],
       base64: [],
-      target:""
+      target: "",
     };
   }
 
   user = JSON.parse(window.sessionStorage.getItem("user"));
 
-  componentDidMount(){
-    console.log(this.props)
+  componentDidMount() {
+    // console.log(this.props);
     const review = this.props.location.state.review;
 
     this.setState({
-      score:review.score,
-      contents:review.contents,
-      target:review.target,
-      id:review.id
-    })
+      score: review.score,
+      contents: review.contents,
+      target: review.target,
+      id: review.id,
+    });
   }
 
   // 타이틀이랑 내용 변경
@@ -57,9 +57,8 @@ class ReviewUpdate extends React.Component {
 
     // 파일 업로드 하기
     if (number !== undefined && number !== 0) {
-
-      if(number + now > 5) {
-        alert("이미지는 최대 다섯장까지 가능합니다.")
+      if (number + now > 5) {
+        alert("이미지는 최대 다섯장까지 가능합니다.");
         return;
       }
 
@@ -99,16 +98,10 @@ class ReviewUpdate extends React.Component {
   // 이미지 삭제하기
   deleteImg = (res) => {
     let forward = this.state.images.slice(0, res.target.id);
-    let back = this.state.images.slice(
-      Number(res.target.id) + 1,
-      this.state.images.length
-    );
+    let back = this.state.images.slice(Number(res.target.id) + 1, this.state.images.length);
 
     let forward64 = this.state.base64.slice(0, res.target.id);
-    let back64 = this.state.base64.slice(
-      Number(res.target.id) + 1,
-      this.state.base64.length
-    );
+    let back64 = this.state.base64.slice(Number(res.target.id) + 1, this.state.base64.length);
 
     this.setState({
       images: forward.concat(back),
@@ -118,11 +111,7 @@ class ReviewUpdate extends React.Component {
 
   // 리뷰 취소 버튼
   formConfirm = () => {
-    if (
-      window.confirm(
-        "리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다."
-      )
-    ) {
+    if (window.confirm("리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다.")) {
       this.props.history.goBack();
     }
   };
@@ -148,7 +137,7 @@ class ReviewUpdate extends React.Component {
       },
     })
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         if (this.state.images.length > 0) {
           let img = new FormData();
           // 메인 이미지 추가
@@ -192,10 +181,7 @@ class ReviewUpdate extends React.Component {
               {/* 점수 넣기 */}
               <div className="topic">전체 평점</div>
               <div className="total_score_select">
-                <Rate
-                  onChange={this.changeScore}
-                  value={this.state.score}
-                />
+                <Rate onChange={this.changeScore} value={this.state.score} />
                 &nbsp;&nbsp;({this.state.score})
               </div>
             </div>
@@ -203,14 +189,7 @@ class ReviewUpdate extends React.Component {
             <div className="content">
               {/* 포트폴리오 설명 작성 */}
               <div className="topic">리뷰 내용 작성</div>
-              <textarea
-                name="contents"
-                className="content_box"
-                style={style}
-                value={this.state.contents}
-                placeholder="10자 이상 입력해주세요"
-                onChange={this.changeValues}
-              ></textarea>
+              <textarea name="contents" className="content_box" style={style} value={this.state.contents} placeholder="10자 이상 입력해주세요" onChange={this.changeValues}></textarea>
             </div>
 
             <div className="port_imgs">
@@ -219,27 +198,14 @@ class ReviewUpdate extends React.Component {
                 <div className="port_img" key={index}>
                   <img alt="서브이미지" src={item}></img>
                   {/* 이미지 등록 취소 버튼 */}
-                  <img
-                    alt="삭제"
-                    src="https://image.flaticon.com/icons/svg/458/458595.svg"
-                    className="X"
-                    id={index}
-                    onClick={this.deleteImg}
-                  ></img>
+                  <img alt="삭제" src="https://image.flaticon.com/icons/svg/458/458595.svg" className="X" id={index} onClick={this.deleteImg}></img>
                 </div>
               ))}
               <div className="filebox">
                 <label>
                   <span>사진업로드</span>
                   <br />+
-                  <input
-                    key={this.state.filekey}
-                    type="file"
-                    name="images"
-                    multiple
-                    accept="image/gif, image/jpeg, image/png"
-                    onChange={this.changePortImg}
-                  />
+                  <input key={this.state.filekey} type="file" name="images" multiple accept="image/gif, image/jpeg, image/png" onChange={this.changePortImg} />
                 </label>
               </div>
             </div>

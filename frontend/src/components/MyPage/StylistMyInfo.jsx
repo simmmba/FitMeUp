@@ -56,7 +56,6 @@ const StylistMyInfo = () => {
         })
         .catch((err) => {
           alert("정보 변경에 실패;;");
-          console.log(err);
         });
     }
     setModifyMode(!modifyMode);

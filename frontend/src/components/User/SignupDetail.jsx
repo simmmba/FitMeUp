@@ -100,7 +100,7 @@ class SignupDetail extends React.Component {
       url: `${process.env.REACT_APP_URL}/user/dup_nickname?nickname=${e}`,
     })
       .then((res) => {
-        console.log(res.data.isDuplicate);
+        // console.log(res.data.isDuplicate);
         // 닉네임 있는 거면
         if (res.data.isDuplicate === true) {
           this.setState({
@@ -175,7 +175,7 @@ class SignupDetail extends React.Component {
         age: this.state.age,
         nickname: this.state.nickname,
         name: this.state.name,
-        phone: this.state.phone
+        phone: this.state.phone,
       },
     })
       // 회원 가입에 성공하면
@@ -200,11 +200,7 @@ class SignupDetail extends React.Component {
             {/* 약관 동의 부분 */}
             <div className="row">
               <div className="col-1">
-                <input
-                  type="checkbox"
-                  id="checkbox"
-                  onChange={this.clickAgree}
-                ></input>
+                <input type="checkbox" id="checkbox" onChange={this.clickAgree}></input>
               </div>
               <div className="col-11">
                 <label htmlFor="checkbox">전체동의 (필수)</label>
@@ -212,26 +208,12 @@ class SignupDetail extends React.Component {
               </div>
             </div>
             {/* 전문가일때만 뜨게 */}
-            {this.state.type === "stylist" && (
-              <Certification
-                setPhonenumber={this.setPhonenumber}
-                setName={this.setName}
-              />
-            )}
+            {this.state.type === "stylist" && <Certification setPhonenumber={this.setPhonenumber} setName={this.setName} />}
 
             {/* 닉네임 입력 */}
             <div className="nickname">
-              <input
-                type="text"
-                name="nickname"
-                onChange={this.onChange}
-                className="input_nickname"
-                placeholder="닉네임을 입력해주세요 (2~8자)"
-                value={this.state.nickname}
-              ></input>
-              {this.state.isnicknameVaild && (
-                <p className="nickname_check">중복된 닉네임입니다</p>
-              )}
+              <input type="text" name="nickname" onChange={this.onChange} className="input_nickname" placeholder="닉네임을 입력해주세요 (2~8자)" value={this.state.nickname}></input>
+              {this.state.isnicknameVaild && <p className="nickname_check">중복된 닉네임입니다</p>}
             </div>
             <div className="additional_info">
               <select name="gender" onChange={this.onChange}>
@@ -240,16 +222,7 @@ class SignupDetail extends React.Component {
                 </option>
                 <option value="male">남자</option>
               </select>
-              <input
-                type="number"
-                name="age"
-                min="0"
-                max="130"
-                onChange={this.onChange}
-                className="input_age"
-                placeholder="나이"
-                value={this.state.age}
-              ></input>
+              <input type="number" name="age" min="0" max="130" onChange={this.onChange} className="input_age" placeholder="나이" value={this.state.age}></input>
             </div>
             <div className="complete_btn" onClick={this.signupCheck}>
               가입 완료

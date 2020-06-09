@@ -17,7 +17,6 @@ const StylistFirstTab = () => {
       setUser(res.data.user);
     });
     axios.get(`${process.env.REACT_APP_URL}/consult/count_stylist?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
-      console.log(res.data.info);
       setAcceptedCount(res.data.info.accepted_cnt);
       setApplyCount(res.data.info.apply_cnt);
       setCompletedCount(res.data.info.complete_cnt);
@@ -33,7 +32,6 @@ const StylistFirstTab = () => {
   }, []);
 
   const handleImgChange = (e) => {
-    console.log(e.target.files[0]);
     let img = new FormData();
     img.append("img", e.target.files[0]);
     axios({
@@ -51,7 +49,6 @@ const StylistFirstTab = () => {
         alert("프로필 사진 등록 성공");
       })
       .catch((error) => {
-        console.log(error);
         alert("프로필 사진 등록 중 오류가 발생했습니다.");
       });
   };

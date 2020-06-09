@@ -39,11 +39,7 @@ class Room extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (
-      this.props.currentRoom &&
-      prevProps.currentRoom !== this.props.currentRoom &&
-      this.props.currentUser
-    ) {
+    if (this.props.currentRoom && prevProps.currentRoom !== this.props.currentRoom && this.props.currentUser) {
       await this.loadMessages();
       this.addListeners(this.props.currentRoom.id);
     }
@@ -68,10 +64,7 @@ class Room extends Component {
     const loadedMessages = [];
     ref.child(roomId).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
-      if (
-        !this.state.firstLoad ||
-        this.state.messages.length <= loadedMessages.length
-      ) {
+      if (!this.state.firstLoad || this.state.messages.length <= loadedMessages.length) {
         this.setState({
           messages: loadedMessages,
           firstLoad: false,
@@ -119,13 +112,12 @@ class Room extends Component {
         }
         return (
           <>
-            {draw && <div className="date-wrapper">{year}년 {month}월 {day}일</div>}
-            <Message
-              key={message.timestamp}
-              message={message}
-              user={message.user}
-              currentUser={this.props.currentUser}
-            />
+            {draw && (
+              <div className="date-wrapper">
+                {year}년 {month}월 {day}일
+              </div>
+            )}
+            <Message key={message.timestamp} message={message} user={message.user} currentUser={this.props.currentUser} />
           </>
         );
       })
@@ -171,9 +163,7 @@ class Room extends Component {
         this.state.uploadTask.on(
           "state_changed",
           (snap) => {
-            const percentUploaded = Math.round(
-              (snap.bytesTransferred / snap.totalBytes) * 100
-            );
+            const percentUploaded = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
             this.setPercentage(percentUploaded);
           },
           (err) => {
@@ -199,7 +189,7 @@ class Room extends Component {
   };
 
   sendFileMessage = (fileUrl, ref, pathToUpload) => {
-    console.log(fileUrl);
+    // console.log(fileUrl);
     ref
       .child(pathToUpload)
       .push()
@@ -254,12 +244,7 @@ class Room extends Component {
           </div>
         </DragAndDrop>
         <ProgressBar completed={percentUploaded} />
-        <MessageForm
-          scrollDown={this.scrollDown}
-          currentUser={currentUser}
-          currentRoom={currentRoom}
-          setPercent={this.setPercentage}
-        />
+        <MessageForm scrollDown={this.scrollDown} currentUser={currentUser} currentRoom={currentRoom} setPercent={this.setPercentage} />
       </section>
     );
   }

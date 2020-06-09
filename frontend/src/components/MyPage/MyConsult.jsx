@@ -19,7 +19,6 @@ const MyFrequent = () => {
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL}/consult/list_for_review/?user_id=` + loginUser.id).then((res) => {
-      console.log(res.data.list);
       setConsult(res.data.list);
       setCount(parseInt(res.data.list.length / 5) + 1);
       setPage(1);

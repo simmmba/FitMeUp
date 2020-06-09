@@ -44,7 +44,6 @@ const Withdraw = () => {
         },
       })
         .then((res) => {
-          console.log(res);
           setCredit(res.data.credit);
           setOngoing(true);
         })

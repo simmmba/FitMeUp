@@ -26,7 +26,6 @@ const StylistStats = () => {
         if (res.data.info.score_5 > 0) setIsScoreExist(true);
       })
       .catch((err) => {
-        console.log(err);
         alert("평점 통계 자료 조회 중 오류가 발생했습니다.");
       });
 
@@ -45,7 +44,6 @@ const StylistStats = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         alert("상담 통계 자료 조회 중 오류가 발생했습니다.");
       });
 
@@ -64,7 +62,6 @@ const StylistStats = () => {
   }, [loginUser.id]);
 
   const handleSelectorChange = (e) => {
-    console.log(e.target.value);
     setStat(e.target.value);
   };
 
