@@ -1,0 +1,117 @@
+@import "../../styles/utils.scss";
+
+.PhotoUpload {
+  //   border: 1px solid black;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+
+  .port_img {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+    width: 160px;
+    height: 160px;
+    // margin-top: 10px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      //   margin-bottom: 10px;
+    }
+    .X {
+      z-index: 3;
+      width: 18px;
+      height: 18px;
+      margin-top: -130px;
+      margin-left: -24px;
+      background-color: black;
+      padding: 3px;
+      filter: invert(100%);
+      cursor: pointer;
+    }
+  }
+
+  .filebox {
+    border: 1px dashed $darkgray;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $darkgray;
+    font-size: 16px;
+    margin: 0;
+    transition: 0.1s;
+    cursor: pointer;
+
+    &:hover {
+      color: $red;
+      border: 1px dashed $red;
+    }
+
+    span {
+      font-size: 22px;
+      font-family: $main_font;
+    }
+  }
+
+  .filebox input[type="file"] {
+    /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+}
+
+.ant-upload-select-picture-card i {
+  color: #999;
+  font-size: 32px;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+
+.ant-upload-list-picture .ant-upload-list-item,
+.ant-upload-list-picture-card .ant-upload-list-item {
+  padding: 0px;
+}
+
+.ant-upload-list-picture-card-container {
+  width: 225px;
+  height: 225px;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item {
+  width: 225px;
+  height: 225px;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-info::before {
+  width: 225px;
+  height: 225px;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  width: 225px;
+  height: 225px;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  &:hover {
+    border: 1px dashed $red;
+  }
+}
+
+.ant-upload-list-picture .ant-upload-list-item-thumbnail .anticon,
+.ant-upload-list-picture-card .ant-upload-list-item-thumbnail .anticon {
+  font-size: 40px;
+  margin-top: 60px;
+}

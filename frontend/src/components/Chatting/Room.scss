@@ -1,0 +1,20 @@
+@import "../../styles/variable";
+
+.room-messages {
+  position: relative;
+  width: 60vw;
+  background-color: '#fff';
+  height: 100%;
+  .message-content {
+    background-color: $color-white;
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+.date-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

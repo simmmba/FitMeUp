@@ -1,0 +1,180 @@
+@import "../../styles/utils.scss";
+.PortfolioWrite {
+    .processing {
+        margin-bottom: 30px;
+    }
+    .processing::after {
+        background-size: cover;
+        background-image: url("../../img/port-bg.jpg");
+    }
+
+    .PortfolioForm {
+        @include maxcenter;
+        padding: 10px;
+
+        .input_title,
+        .tag {
+            margin-bottom: 40px;
+        }
+
+        .input_title {
+            @include input(300);
+            width: 100%;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+            border: none;
+
+            &:focus {
+                box-shadow: 0 0 0 2px $red inset;
+            }
+        }
+
+        .tag {
+            .input_tag {
+                @include input(250);
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+                border: none;
+                margin-right: 10px;
+
+                &:focus {
+                    box-shadow: 0 0 0 2px $red inset;
+                }
+
+                &:disabled{
+                    background: $gray;
+                }
+            }
+            .plus_btn {
+                display: inline-block;
+                @include button(50, 14);
+            }
+
+            .tags {
+                margin-top: 10px;
+                .tag_item {
+                    display: inline-block;
+                    padding: 10px;
+                    background-color: $gray;
+                    margin-right: 10px;
+                    border-radius: 5px;
+
+                    .deletetag {
+                        font-family: $main-font;
+                        font-weight: bolder;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .content {
+            margin-bottom: 35px;
+            .content_box {
+                width: 100%;
+                padding: 10px;
+                background: white;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset;
+                border: none;
+
+                // textarea 사이즈 고정
+                resize: none;
+
+                &:focus {
+                    box-shadow: 0 0 0 2px $red inset;
+                }
+            }
+        }
+
+        .topic {
+            font-family: $main-font;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        // 16:9 : padding-top: 56.25%
+        .main_img {
+            img {
+                width: 640px;
+                height: 360px;
+                object-fit: cover;
+                margin-bottom: 20px;
+            }
+        }
+
+        .port_imgs {
+            margin-top: 20px;
+            .port_img {
+                display: inline-block;
+                margin-right: 30px;
+                margin-top: 10px;
+
+                img {
+                    // width: 150px;
+                    height: 150px;
+                    object-fit: cover;
+                    margin-bottom: 10px;
+                }
+                .X {
+                    z-index: 3;
+                    width: 15px;
+                    height: 15px;
+                    margin-top: -120px;
+                    margin-left: -25px;
+                    filter: invert(100%);
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .filebox {
+            text-align: left;
+        }
+        .filebox label {
+            margin-right: 15px;
+            display: inline-block;
+            padding: 0.5em 0.5em;
+            font-size: 15px;
+            line-height: normal;
+            vertical-align: middle;
+            border: none;
+            color: black;
+            background: rgba(228, 228, 228, 0.699);
+            border-radius: 0.25em;
+            cursor: pointer;
+        }
+
+        .filebox label:hover {
+            color: $red;
+        }
+
+        .filebox input[type="file"] {
+            /* 파일 필드 숨기기 */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .form_btn {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 40px;
+
+            div {
+                display: inline-block;
+                @include button(300, 18);
+            }
+
+            .cancel_btn {
+                margin-right: 10px;
+                background: $gray;
+                color: black;
+                font-weight: 600;
+
+                &:hover {
+                    background: #d1d1d1;
+                }
+            }
+        }
+    }
+}

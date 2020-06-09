@@ -1,0 +1,526 @@
+@import "../../styles/utils.scss";
+
+.MyPageBox {
+  background: $gray;
+  height: 100vh;
+
+  .MyPageMain {
+    margin-bottom: 100px;
+    @include maxcenter;
+
+    .contentBox {
+      display: flex;
+      width: 100%;
+      min-height: 70vh;
+
+      .left_tab {
+        font-size: 1.1rem;
+        width: 24%;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 7px;
+
+        .portfolioBtn {
+          margin-top: 20px;
+          @include button(240, 14);
+        }
+      }
+
+      .right_tab {
+        padding-top: 30px;
+        width: 24%;
+        margin: 0 7px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .middle_tab {
+        padding-top: 30px;
+        width: 52%;
+        margin: 0 7px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          color: $red_hover;
+        }
+      }
+    }
+
+    .center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .creditBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+
+      .credit {
+        font-family: $main_font;
+        font-size: 1.5rem;
+        margin-right: 5px;
+        display: flex;
+      }
+    }
+
+    .infoBox {
+      // border: 1px solid black;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .infoContent {
+        margin-top: 40px;
+      }
+    }
+
+    .nickname {
+      font-family: $main_font;
+      font-size: 1.5rem;
+      margin-bottom: 2px;
+    }
+
+    .MyPageMenu {
+      width: 100%;
+      height: 100px;
+      margin: 0px;
+      display: flex;
+      justify-content: center;
+
+      .leftMenu {
+        width: 24%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .middleMenu {
+        width: 52%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .rightMenu {
+        width: 24%;
+        margin: 0 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .selectBtn {
+        font-family: $main_font;
+        margin: 20px 10px 20px 10px;
+        width: 120px;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        background-color: white;
+        color: $darkgray;
+        cursor: pointer;
+        // border: none;
+        transition: 0.3s;
+        border-radius: 3px;
+        text-decoration: none;
+        border: 2px solid $gray;
+
+        &:hover {
+          color: $red;
+          text-decoration: none;
+          border: 2px solid $red;
+        }
+      }
+
+      .selectedBtn {
+        border: 2px solid $gray;
+        margin: 20px 10px 20px 10px;
+        width: 120px;
+        padding: 10px;
+        text-align: center;
+        font-family: $sub-font;
+        font-size: 16px;
+        color: $red;
+        cursor: pointer;
+        // border: none;
+        transition: 0.3s;
+        border-radius: 3px;
+        text-decoration: none;
+        font-family: $main_font;
+        background: white;
+
+        &:hover {
+          color: $red;
+          text-decoration: none;
+          border: 2px solid $red;
+        }
+      }
+    }
+
+    .smallSelectBtn {
+      @include whiteButton(120, 13);
+      margin: 10px;
+    }
+
+    .messageBtn {
+      @include whiteButton(120, 12);
+      margin: 0 10px 10px 10px;
+    }
+
+    .profile {
+      @include circle(130);
+      object-fit: cover;
+    }
+    .smallProfile {
+      @include circle(50);
+      object-fit: cover;
+    }
+    .topMargin {
+      margin-top: 20px;
+    }
+    .middleTopMargin {
+      margin-top: 40px;
+    }
+    .bigTopMargin {
+      margin-top: 100px;
+    }
+    .tdl {
+      width: 120px;
+      text-align: left;
+    }
+    .tdr {
+      width: 120px;
+      text-align: right;
+      font-weight: bold;
+    }
+    .messageBox {
+      height: 90%;
+    }
+    .unread_message {
+      background: $red;
+      height: 100%;
+      color: $red;
+    }
+    .message {
+      margin-top: 10px;
+      background: whitesmoke;
+      width: 90%;
+      height: 75px;
+      margin-left: 10px;
+      margin-right: 10px;
+      padding: 5px;
+      //border: $red solid 1px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .message:hover {
+      background: white;
+    }
+    .leftMargin {
+      margin-left: 30px;
+    }
+    .info {
+      margin-top: 30px;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 1.2em;
+      text-align: right;
+    }
+    .content {
+      text-align: left;
+    }
+    .contentFill {
+      text-align: left;
+      padding-left: 50px;
+    }
+    .input {
+      background: white;
+      border: 1px solid rgb(126, 126, 126);
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 70%;
+    }
+
+    .nothing {
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+
+      .ant-empty-image {
+        margin-bottom: 15px;
+      }
+
+      .description {
+        color: $darkgray;
+      }
+    }
+
+    .recentBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 10px 10px 30px 10px;
+
+      .stylist {
+        color: black;
+        width: 90%;
+        margin-bottom: 15px;
+        border: $red solid 2px;
+        border-radius: 5px;
+        transition: 0.3s;
+
+        &:hover {
+          background: $gray;
+        }
+
+        .cnt {
+          padding: 2px 0;
+          background: $red;
+          color: white;
+          border-bottom: 2px solid $red;
+          font-size: 1.1rem;
+        }
+
+        .stylistBox {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5px;
+
+          .stylistProfile {
+            @include circle(45);
+            object-fit: cover;
+            margin-right: 10px;
+          }
+
+          .name {
+            width: 150px;
+            @include overflow_hidden;
+          }
+        }
+      }
+    }
+
+    .consultBox {
+      display: flex;
+      flex-direction: column;
+      // justify-content: center;
+      align-items: center;
+      height: 80%;
+      margin-top: 20px;
+
+      .consultGrid {
+        width: 90%;
+
+        hr {
+          margin: 0;
+        }
+
+        .consultVal {
+          padding: 15px 20px;
+          display: flex;
+          width: 100%;
+
+          &:hover {
+            background-color: $gray;
+          }
+
+          .left {
+            width: 80%;
+            .first {
+              font-size: 20px;
+              font-family: $main_font;
+              margin-bottom: 3px;
+              display: flex;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+            .second {
+              display: flex;
+              font-size: 16px;
+
+              .consultNickname {
+                margin-right: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              .consultPrice {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              .consultScore {
+                margin-left: 20px;
+              }
+            }
+          }
+
+          .right {
+            width: 20%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .reviewBtn {
+              border: 1px solid black;
+
+              @include whiteButton(100, 15);
+            }
+          }
+        }
+      }
+    }
+
+    .leftAlign {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .rightAlign {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .smallText {
+      font-size: 0.8em;
+    }
+
+    .backButton {
+      width: 25px;
+      height: 25px;
+      margin-top: 20px;
+      margin-left: 5px;
+    }
+    .message_detail {
+      padding-left: 30px;
+      padding-right: 30px;
+      margin-top: 30px;
+      height: 260px;
+    }
+    .sendBtn {
+      height: 50px;
+      width: 50px;
+    }
+    .line {
+      border: solid 2px $gray;
+      height: 100%;
+    }
+    .half {
+      height: 50%;
+    }
+    .creditHistoryList {
+      width: 90%;
+      height: 80%;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      // align-items: center;
+      //border: solid black 1px;
+      .creditHistoryBox {
+        border: solid $gray 1px;
+        width: 100%;
+        height: 18.5%;
+        margin: 5px;
+        display: flex;
+        background: white;
+        .type {
+          width: 10%;
+        }
+        .red {
+          color: $red;
+        }
+        .blue {
+          color: #4e40ca;
+        }
+        .contents {
+          width: 50%;
+        }
+        .amount {
+          width: 20%;
+        }
+        .date {
+          width: 30%;
+        }
+      }
+      :hover {
+        background: whitesmoke;
+      }
+    }
+
+    .filebox {
+      text-align: left;
+
+      .profileImgBtn {
+        @include whiteButton(110, 11);
+      }
+    }
+    .filebox label {
+      display: inline-block;
+      padding: 0.5em 0.5em;
+      font-size: 15px;
+      line-height: normal;
+      vertical-align: middle;
+      border: none;
+      color: black;
+      border-radius: 0.25em;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .filebox label:hover {
+      color: $red;
+    }
+
+    .filebox input[type="file"] {
+      /* 파일 필드 숨기기 */
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .MuiPaginationItem-outlinedSecondary.Mui-selected {
+      color: white;
+      border: 1px solid $red;
+      background-color: $red;
+
+      &:hover {
+        color: $red;
+      }
+    }
+    .selector {
+      width: 30%;
+    }
+    .full_height {
+      height: 100%;
+    }
+    .leftPadding {
+      padding-left: 120px;
+    }
+  }
+}

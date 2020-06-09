@@ -1,0 +1,205 @@
+@import "../../styles/utils.scss";
+
+.Stylist {
+  @include maxcenter;
+
+  .title {
+    font-size: 1.7rem;
+    font-family: $main_font;
+    padding: 50px 0 40px 10px;
+  }
+
+  .searchOption {
+    padding: 0 0 20px 10px;
+    display: flex;
+
+    select {
+      width: 160px;
+      margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
+    }
+
+    input {
+      width: 500px;
+      margin-right: 10px;
+      height: 50px;
+      font-size: 1.1rem;
+    }
+
+    button {
+      @include button(70, 16);
+    }
+  }
+
+  .searchResult {
+    padding-left: 10px;
+    margin: 30px 0 100px 0;
+
+    @include loading(150);
+
+    .listBox {
+      display: flex;
+      padding: 0;
+      color: black;
+      width: 100%;
+
+      .left {
+        width: 272px;
+        margin-right: 20px;
+
+        .imgBox {
+          position: relative;
+          width: 272px;
+          height: 153px;
+          // overflow: hidden;
+
+          img {
+            object-fit: cover;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 5px;
+          }
+        }
+      }
+
+      .detailBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: left;
+        font-size: 15px;
+        // width: 80%;
+        width: auto;
+        max-width: 1200px;
+        width: 100%;
+
+        .portfolioBox {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+          width: 100%;
+
+          .portfolioName {
+            font-size: 1.2rem;
+            font-family: $main_font;
+            max-width: 830px;
+            height: 32px;
+            @include overflow_hidden;
+          }
+
+          .priceBox {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: $darkgray;
+            font-size: 14px;
+            width: 350px;
+
+            .price {
+              margin: 0 10px;
+            }
+          }
+        }
+
+        .nicknameBox {
+          display: flex;
+          align-items: center;
+
+          .profileImg {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            // overflow: hidden;
+            // padding-top: 100%;
+
+            img {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              border-radius: 60px;
+              object-fit: cover;
+            }
+          }
+        }
+
+        .evalBox {
+          display: flex;
+          align-items: center;
+          margin: 3px 0 8px 0;
+
+          .score {
+            font-size: 1.2rem;
+          }
+
+          .review {
+            color: $darkgray;
+          }
+
+          .consult {
+            margin-left: 18px;
+            color: $red_hover;
+            font-family: $main_font;
+            font-size: 1.2rem;
+          }
+        }
+
+        .reviewBox {
+          display: flex;
+          align-items: center;
+          width: 100%;
+
+          .recentReview {
+            border: 1px solid $darkgray;
+            padding: 2px 5px 2px 5px;
+            margin-right: 12px;
+            color: $darkgray;
+            text-align: center;
+            width: 100px;
+          }
+
+          b {
+            width: auto;
+            max-width: 150px;
+            @include overflow_hidden;
+            margin-right: 10px;
+          }
+
+          span {
+            width: auto;
+            max-width: 1000px;
+            @include overflow_hidden;
+          }
+        }
+      }
+    }
+
+    .nothing {
+      width: 100%;
+      margin-top: 150px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+
+      .ant-empty-image {
+        margin-bottom: 15px;
+      }
+
+      .description {
+        font-size: 1.2rem;
+        color: $darkgray;
+      }
+    }
+  }
+}

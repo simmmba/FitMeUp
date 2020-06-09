@@ -1,0 +1,113 @@
+@import "../../styles/utils.scss";
+@import "../../styles/variable.scss";
+
+.filemodal-button-wrapper {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.dropbox {
+  display: flex;
+  flex: 1;
+  height: 55vh;
+  width: 100%;
+  border: 2px dashed $red;
+  align-items: center;
+  justify-content: center;
+  // background-color: pink;
+
+  .images-box {
+    display: flex;
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  .dropbox-text {
+    font-size: 25px;
+  }
+
+  .image-wrapper {
+    display: flex;
+    width: 23%;
+    height: 50%;
+    padding: 0.2rem;
+    text-align: center;
+    border: 6px solid $color-white;
+    background-color: $color-grey-light-2;
+
+    .image {
+      display: block;
+      max-height: 100%;
+      max-width: 100%;
+      margin: auto;
+    }
+
+    &.clicked {
+      border: 6px solid $red;
+    }
+  }
+}
+
+.button-box {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  .icon {
+    color: $red;
+    font-size: 40px;
+  }
+}
+
+.clear-icon {
+  color: $red;
+}
+
+.send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  width: 135px;
+  height: 45px;
+  border-radius: 5px;
+  background-color: $color-red;
+  cursor: pointer;
+  font-size: 16px;
+  color: $color-white;
+  font-weight: bolder;
+  transition: opacity .3s;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),
+  0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+  0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled{
+    cursor: default;
+    opacity: .4;
+  }
+  
+  .loader {
+    border: 3px solid rgba(255,255,255,.3);
+    border-top: 3px solid $color-primary;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s ease-in-out infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,29 @@
+@import "../../styles/variable";
+@import "../../styles/utils";
+
+.chatting-side-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+  width: 10px;
+  background-color: $red;
+
+  button {
+    border: none;
+    background: none;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .icon {
+    color: $color-grey-light-2;
+    font-size: 44px !important;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+}

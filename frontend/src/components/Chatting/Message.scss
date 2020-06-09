@@ -1,0 +1,125 @@
+@import '../../styles/variable';
+@import '../../styles/utils';
+
+.room-message {
+  display: flex;
+  margin: 1rem 2rem 1rem 2rem;
+  &.my-message {
+    flex-flow: row-reverse;
+  }
+
+  .image-wrapper {
+    margin-top: 5px;
+    max-width: 300px;
+    height:auto;
+
+    .image-btn{
+      background: none;
+      border: none;
+    }
+  }
+  .message-img {
+    width: 100%;
+  }
+  .message-content {
+    flex: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    .time-wrapper{
+      position: absolute;
+      margin-left: .5rem;
+      margin-right: .5rem;
+      width: 70px;
+      float:right;
+      bottom:0;
+      left:0;
+      transform:translateX(-120%);
+    }
+
+    .time-wrapper2{
+      position: absolute;
+      margin-left: .5rem;
+      margin-right: .5rem;
+      width: 70px;
+      float:right;
+      bottom:0;
+      right:0;
+      transform:translateX(130%);
+    }
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    margin-right: 0.5rem;
+    margin-top: 3px;
+  }
+
+  .balloon {
+    position: relative;
+    margin-left: 7px;
+    min-height: 60px;
+    background: $gray;
+    border-radius: 10px;
+    float: left;
+    padding:15px;
+  }
+  
+  .balloon:after {
+    border-top: 15px solid  $gray;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: -15px;
+  }
+
+  .my-balloon {
+    position: relative;
+    margin-right: 7px;
+    min-height: 50px;
+    background: $red;
+    border-radius: 10px;
+    float: right;
+    padding:15px;
+  }
+  
+  .my-balloon:after {
+    border-top: 15px solid  $red;
+    border-left: 0px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: -15px;
+  }
+
+  .message-text {
+    display: flex;
+    margin-top: 3px;
+    margin-bottom: 0;
+    font-size: 14px;
+    &.my-message {
+      flex-flow: row-reverse;
+      color:$color-white;
+    }
+  }
+
+  .display-name {
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    &.my-message {
+      flex-flow: row-reverse;
+    }
+  }
+
+}
+
+.modal-img{
+  flex:1;
+}

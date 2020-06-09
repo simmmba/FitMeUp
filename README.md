@@ -32,6 +32,8 @@ npm start
 
 ```
 cd backend
+npm install
+npm start
 ```
 
 <br/>
@@ -39,8 +41,8 @@ cd backend
 <h4>기술 스택</h4>
 
 * frontend : React.js
-* Backend :
-* DB : 
+* Backend : Nodejs
+* DB : Mysql
 
 <br/>
 

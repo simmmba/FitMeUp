@@ -1,0 +1,15 @@
+@import '../../styles/utils.scss';
+@import '../../styles/variable.scss';
+
+.chatting {
+  @include maxcenter;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: calc(100vh - 60px);
+}
+
+button{
+  border:none;
+  background:none;
+}

@@ -1,0 +1,118 @@
+@import "../../styles/utils.scss";
+
+.consultRequire {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    // border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    // width: 80%;
+    @include midcenter;
+    min-height: 40vh;
+    margin-bottom: 5vh;
+
+    .main {
+      // border: 1px solid black;
+      width: 100%;
+
+      .question {
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin: 40px 0 30px 0;
+      }
+
+      .btnBox {
+        display: flex;
+        // flex-direction: column;
+        justify-content: flex-end;
+        // border: 1px solid black;
+        align-self: flex-end;
+        // align-items: flex-end;
+
+        margin: 50px 0 30px 0;
+
+        // .empty {
+        //   width: 100px;
+        //   height: 50px;
+        //   border: none;
+        // }
+
+        .preBtn {
+          background-color: white;
+          color: $red;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            color: $red_hover;
+          }
+        }
+
+        .passBtn {
+          background-color: white;
+          color: $red;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+          margin-right: 24px;
+
+          &:hover {
+            color: $red_hover;
+          }
+        }
+
+        .nextBtn {
+          background-color: $red;
+          color: white;
+          font-weight: bold;
+          width: 100px;
+          height: 50px;
+
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            background-color: $red_hover;
+          }
+        }
+
+        .reqBtn {
+          background-color: $red;
+          color: white;
+          font-weight: bold;
+          width: 170px;
+          height: 50px;
+
+          border: none;
+          border-radius: 5px;
+          transition: 0.2s;
+
+          &:hover {
+            background-color: $red_hover;
+          }
+        }
+      }
+    }
+
+    .col-5 {
+      // border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      // align-items: center;
+      text-align: center;
+    }
+  }
+}
