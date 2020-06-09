@@ -25,8 +25,8 @@ class Message extends Component {
     const { message, user, currentUser } = this.props;
     const time = new Date(message.timestamp);
     const hour =
-      time.getHours() - 12 > 0
-        ? "오후 " + time.getHours() - 12
+      time.getHours() - 12 > 1
+        ? "오후 " + (time.getHours() - 12)
         : "오전 " + time.getHours();
     const minute =
       time.getMinutes() / 10 < 1 ? "0" + time.getMinutes() : time.getMinutes();
