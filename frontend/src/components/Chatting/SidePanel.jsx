@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import AddBoxIcon from '@material-ui/icons/AddBox'
-import Tooltip from '@material-ui/core/Tooltip'
 import './SidePanel.scss'
 
 import CreateRoomModal from './CreateRoomModal/CreateRoomModal'
@@ -24,11 +22,6 @@ class SidePanel extends Component {
 
     return (
       <div className='chatting-side-panel'>
-        {/* <button onClick={this.openModal} type='button'>
-          <Tooltip title='방 만들기'>
-            <AddBoxIcon className='icon' />
-          </Tooltip>
-        </button> */}
         <CreateRoomModal
           currentUser={currentUser}
           isOpen={CreateRoomModalIsOpen}

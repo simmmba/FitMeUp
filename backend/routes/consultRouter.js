@@ -26,4 +26,6 @@ consultRouter.get("/complete", consult.consult_complete);
 consultRouter.get("/stylist_info", consult.stylist_info);
 consultRouter.get("/list_for_review", consult.consult_for_review);
 
+consultRouter.get("/count_user", consult.count_user);
+consultRouter.get("/count_stylist", consult.count_stylist);
 export default consultRouter;

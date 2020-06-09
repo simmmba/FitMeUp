@@ -14,15 +14,16 @@ class RoomList extends Component {
     activeRoom: "",
     user: this.props.currentUser,
     usersRef: firebase.database().ref("users"),
-    rooms: null,
+    rooms: [],
     loading: true,
     firstLoad: true,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { user } = this.state;
     if (user) {
-      this.addUserListener(user.id);
+      await this.loadRooms(user);
+      this.addListener(user.id);
     }
   }
 
@@ -33,7 +34,7 @@ class RoomList extends Component {
     this.removeListeners();
   }
 
-  setFirstRoom = async () => {
+  setFirstRoom = () => {
     const firstRoom = this.state.rooms[0];
     this.props.chatting.setCurrentRoom(firstRoom);
     this.setState({ firstLoad: false });
@@ -49,30 +50,50 @@ class RoomList extends Component {
    * DB에서 userId의 방 객체가 추가 될때마다 실행 됩니다.
    * @param userId
    */
-  addUserListener = async (userId) => {
+  addListener = (userId) => {
     const { usersRef } = this.state;
     const loadedRooms = [];
-    await usersRef
+    usersRef
       .child(userId)
       .child("rooms")
       .once("value")
       .then((snapshot) => {
-        usersRef
-          .child(userId)
-          .child("rooms")
-          .on("child_added", (snap) => {
-            loadedRooms.push(snap.val());
-            this.setState(
-              { rooms: loadedRooms, loading: false },
-              () => {
-                if (this.state.firstLoad) {
-                  this.setFirstRoom();
-                }
+        const rooms_snapshot = usersRef.child(userId).child("rooms");
+        rooms_snapshot.on("child_added", (snap) => {
+          loadedRooms.unshift(snap.val());
+          if (
+            !this.state.firstLoad ||
+            this.state.rooms.length <= loadedRooms.length
+          ) {
+            this.setState({ rooms: loadedRooms, loading: false }, () => {
+              if (this.state.firstLoad) {
+                this.setState({ firstLoad: false });
+                this.setFirstRoom();
               }
-            );
-          });
-        if (!snapshot.exists())
-          this.setState({ rooms: [], loading: false });
+            });
+          }
+        });
+
+        rooms_snapshot.on("child_changed", () => {
+          this.loadRooms(this.state.user);
+        });
+        if (!snapshot.exists()) this.setState({ rooms: [], loading: false });
+      });
+  };
+
+  loadRooms = async (user) => {
+    const { usersRef } = this.state;
+    const loadedRooms = [];
+    await usersRef
+      .child(user.id)
+      .child("rooms")
+      .once("value", (snapshot) => {
+        snapshot.forEach((snap) => {
+          loadedRooms.push(snap.val());
+        });
+      })
+      .then(() => {
+        this.setState({ rooms: loadedRooms, loading: false });
       });
   };
 
@@ -80,9 +101,9 @@ class RoomList extends Component {
     this.state.usersRef.off();
   };
 
-  displayRooms = (rooms) => {
+  displayRooms = () => {
+    const { rooms } = this.state;
     const { currentRoom } = this.props.chatting;
-    const { currentUser } = this.props;
     if (currentRoom) {
       return (
         rooms.length > 0 &&
@@ -98,12 +119,17 @@ class RoomList extends Component {
                 currentRoom.id === room.id ? "active" : ""
               }`}
             >
-              <Avatar alt="" src={currentUser.profile_img} className="avatar" />
+              <Avatar
+                alt=""
+                src={room.provider.profile_img}
+                className="avatar"
+              />
               <div className="user-info-content">
-                <span className="display-name">{currentUser.nickname}</span>
-                <span className="desc">
-                  {currentUser.type === "general" ? "일반유저" : "스타일리스트"}
-                </span>
+                <div className="name-wrapper">
+                  <span className="display-name">{room.provider.nickname}</span>
+                  <span className="status" >진행 중</span>
+                </div>
+                <span className="desc">{room.lastMessage}</span>
               </div>
             </div>
           </button>
@@ -119,7 +145,7 @@ class RoomList extends Component {
   );
 
   render() {
-    const { rooms, loading, user } = this.state;
+    const { loading, user } = this.state;
     return (
       <section className="room-list">
         <div className="search-box">
@@ -127,7 +153,7 @@ class RoomList extends Component {
           <InputBase placeholder="Search…" />
         </div>
         <div className="list-wrapper">
-          {loading ? this.displaySpinner(user) : this.displayRooms(rooms)}
+          {loading ? this.displaySpinner(user) : this.displayRooms()}
         </div>
       </section>
     );

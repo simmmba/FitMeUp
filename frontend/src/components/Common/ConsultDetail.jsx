@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import firebase from "../../firebaseConfig";
 import "./ConsultDetail.scss";
 import axios from "axios";
 
@@ -27,6 +28,8 @@ const ConsultDetail = (props) => {
     start_time: 0,
     end_time: 0,
   });
+  const [roomsRef] = useState(firebase.database().ref("rooms"));
+  const [usersRef] = useState(firebase.database().ref("users"));
 
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const url = window.location.href.split("/");
@@ -156,12 +159,88 @@ const ConsultDetail = (props) => {
         // 상담 수락한 경우
         alert("상담을 수락했습니다");
         // history로 채팅으로 이동
+        createChat(request);
       })
       .catch((error) => {
         alert("설정에 실패했습니다");
       });
   };
 
+  const createChat = async (consult_id) => {
+    const { key } = roomsRef.push();
+
+    const consumer = {
+      ...requser,
+      role: "consumer",
+    };
+
+    const provider = {
+      ...user,
+      role: "provider",
+    };
+
+    const newRoom = {
+      id: key,
+      consumer: consumer,
+      provider: provider,
+      lastMessage: ' ',
+      updated: firebase.database.ServerValue.TIMESTAMP,
+      consultId: consult_id,
+      status : '진행 중'
+    };
+
+    // 새 채팅룸 생성
+    roomsRef
+      .child(key)
+      .update(newRoom)
+      .then(() => {
+        // 소비자 정보 입력
+        roomsRef
+          .child(key)
+          .child("users")
+          .child(consumer.id)
+          .set(consumer)
+          .catch((err) => {
+            console.error(err);
+          });
+        // 스타일리스트 정보 입력
+        roomsRef
+          .child(key)
+          .child("users")
+          .child(provider.id)
+          .set(provider)
+          .catch((err) => {
+            console.error(err);
+          });
+
+        // 소비자 유저 db에 방정보 입력
+        usersRef
+          .child(consumer.id)
+          .child("rooms")
+          .child(key)
+          .set(newRoom)
+          .catch((err) => {
+            console.error(err);
+          });
+
+        // 스타일리스트 유저 db에 방정보 입력
+        usersRef
+          .child(provider.id)
+          .child("rooms")
+          .child(key)
+          .set(newRoom)
+          .catch((err) => {
+            console.error(err);
+          });
+
+        history.push("/chatting");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  
   return (
     <>
       <Header></Header>
@@ -233,7 +312,6 @@ const ConsultDetail = (props) => {
             {state === "DENIED" && (
               <div className="apply complete">상담 거절</div>
             )}
-
           </div>
         </div>
 

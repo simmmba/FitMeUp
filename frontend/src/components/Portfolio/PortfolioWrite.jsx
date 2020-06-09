@@ -193,7 +193,7 @@ class PortfolioWrite extends React.Component {
   formConfirm = () => {
     if (
       window.confirm(
-        "리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다."
+        "포트폴리오 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다."
       )
     ) {
       this.props.history.goBack();
@@ -202,6 +202,9 @@ class PortfolioWrite extends React.Component {
 
   // 작성 완료 버튼
   formSubmit = () => {
+
+    const { history } = this.props;
+
     // 타이틀 입력 확인
     if (this.state.title.length === 0) {
       alert("제목을 입력해주세요");
@@ -267,9 +270,11 @@ class PortfolioWrite extends React.Component {
         })
           .then((res) => {
             alert("포트폴리오를 작성 성공했습니다.");
+            history.push("/portfolio/detail/"+ this.user.id);
           })
           .catch((error) => {
             alert("포트폴리오를 작성하는데 실패했습니다.");
+            history.push("/portfolio/detail/"+ this.user.id);
           });
       })
       .catch((error) => {

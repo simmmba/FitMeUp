@@ -255,6 +255,8 @@ class PortfolioUpdate extends React.Component {
       return;
     }
 
+    const { history } = this.props;
+
     // 모든 조건 충족 시 axios 호출하기
     axios({
       method: "put",
@@ -284,6 +286,7 @@ class PortfolioUpdate extends React.Component {
         })
           .then((res) => {
             alert("포트폴리오 수정 성공했습니다.");
+            history.push("/portfolio/detail/"+ this.user.id);
           })
           .catch((error) => {
             alert("포트폴리오를 수정하는데 실패했습니다.");

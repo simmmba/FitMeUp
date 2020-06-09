@@ -106,7 +106,7 @@ const Payment = () => {
 
   const handlePointHistory = () => {
     setShow(false);
-    history.push("/mypage");
+    history.push("/mypage/credit");
   };
 
   const Payment = (

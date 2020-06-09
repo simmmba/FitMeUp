@@ -23,6 +23,9 @@ import Search from "./components/Search/Search";
 import MyConsultDetail from "./components/MyConsult/MyConsultDetail"
 import PortfolioUpdate from "./components/Portfolio/PortfolioUpdate"
 
+import ReviewWrite from "./components/Review/ReviewWrite"
+import ReviewUpdate from "./components/Review/ReviewUpdate"
+
 function App() {
   return (
     <div className="App">
@@ -43,6 +46,8 @@ function App() {
           <Route path="/myconsult" component={MyConsult} exact/>
           <Route path="/search" component={Search} />
           <Route path="/myconsult/detail" component={MyConsultDetail}/>
+          <Route path="/review/write" component={ReviewWrite} exact/>
+          <Route path="/review/update" component={ReviewUpdate} exact/>
         </Switch>
       </BrowserRouter>
     </div>
