@@ -75,6 +75,7 @@ export const payment_list = async (req, res) => {
         for (const payment of payments) {
             let user_id = payment.source;
             let stylist_id = payment.target;
+            let type = payment.type;
             let user, stylist;
 
             if (type === "income") {
