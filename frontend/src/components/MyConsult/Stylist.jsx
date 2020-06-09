@@ -6,7 +6,7 @@ import "./Stylist.scss";
 import { NavLink, withRouter } from "react-router-dom";
 import axios from "axios";
 
-const Stylist = ({ val, filter, stylist_id }) => {
+const Stylist = ({ val, filter, stylist_id, category }) => {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [roomsRef] = useState(firebase.database().ref("rooms"));
   const [usersRef] = useState(firebase.database().ref("users"));
@@ -14,33 +14,44 @@ const Stylist = ({ val, filter, stylist_id }) => {
 
   // 유저가 스타일리스트 선택
   const approveConsult = () => {
-    axios({
-      method: "put",
-      url: `${process.env.REACT_APP_URL}/consult/apply`,
-      data: {
-        user_id: user.id,
-        consult_id: val.consult_id,
-        apply_id: val.id,
-        state: "ACCEPTED",
-      },
-    })
-      .then((res) => {
-        // axios가 잘되면
-        alert("상담 수락이 완료되었습니다");
-        // 채팅 생성
-        createChat();
-      })
-      .catch((error) => {
-        alert("상담 수락에 실패했습니다");
-      });
+    // console.log(category);
+    let stylistPrice = 0;
+    let userCredit = 0;
+    if (category === "coordi") stylistPrice = val.coordi_price;
+    else stylistPrice = val.my_price;
+
+    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id).then((res) => {
+      userCredit = res.data.user.credit;
+      // console.log(stylistPrice);
+      // console.log(userCredit);
+      if (userCredit < stylistPrice) {
+        alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
+      } else {
+        axios({
+          method: "put",
+          url: `${process.env.REACT_APP_URL}/consult/apply`,
+          data: {
+            user_id: user.id,
+            consult_id: val.consult_id,
+            apply_id: val.id,
+            state: "ACCEPTED",
+          },
+        })
+          .then((res) => {
+            // axios가 잘되면
+            alert("상담 수락이 완료되었습니다");
+            // 채팅 생성
+            createChat();
+          })
+          .catch((error) => {
+            alert("상담 수락에 실패했습니다");
+          });
+      }
+    });
   };
 
   const createChat = async () => {
     const { key } = roomsRef.push();
-
-    const newRoom = {
-      id: key,
-    };
 
     const consumer = {
       ...user,
@@ -48,19 +59,25 @@ const Stylist = ({ val, filter, stylist_id }) => {
     };
 
     try {
-      let provider = await axios
-        .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`)
-        .then((res) => {
-          if (res.data.result === "Success") {
-            return res.data.user;
-          } else {
-            console.log(res.data.detail);
-          }
-        });
+      let provider = await axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`).then((res) => {
+        if (res.data.result === "Success") {
+          return res.data.user;
+        } else {
+          console.log(res.data.detail);
+        }
+      });
 
       provider = {
         ...provider,
         role: "provider",
+      };
+
+      const newRoom = {
+        id: key,
+        consumer: consumer,
+        provider: provider,
+        lastMessage: " ",
+        updated: firebase.database.ServerValue.TIMESTAMP,
       };
 
       // 새 채팅룸 생성
@@ -145,9 +162,7 @@ const Stylist = ({ val, filter, stylist_id }) => {
                 </div>
               )}
               {/* 완료면 */}
-              {val.state === "COMPLETE" && (
-                <div className="apply">상담 왼료</div>
-              )}
+              {val.state === "COMPLETE" && <div className="apply">상담 왼료</div>}
             </>
           )}
         </>
@@ -216,11 +231,7 @@ const Stylist = ({ val, filter, stylist_id }) => {
           <div className="reviewBox">
             <div className="recentReview">최근리뷰</div>
             <b>{val.recent_review !== null && val.recent_review.nickname}</b>
-            <span>
-              {val.recent_review !== null
-                ? val.recent_review.contents
-                : "작성된 리뷰가 없습니다."}
-            </span>
+            <span>{val.recent_review !== null ? val.recent_review.contents : "작성된 리뷰가 없습니다."}</span>
           </div>
         </div>
         {/* </Link> */}

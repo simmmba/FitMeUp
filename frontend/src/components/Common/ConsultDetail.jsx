@@ -169,10 +169,6 @@ const ConsultDetail = (props) => {
   const createChat = async () => {
     const { key } = roomsRef.push();
 
-    const newRoom = {
-      id: key,
-    };
-
     const consumer = {
       ...requser,
       role: "consumer",
@@ -181,6 +177,14 @@ const ConsultDetail = (props) => {
     const provider = {
       ...user,
       role: "provider",
+    };
+
+    const newRoom = {
+      id: key,
+      consumer: consumer,
+      provider: provider,
+      lastMessage: ' ',
+      updated: firebase.database.ServerValue.TIMESTAMP
     };
 
     // 새 채팅룸 생성
@@ -227,13 +231,14 @@ const ConsultDetail = (props) => {
             console.error(err);
           });
 
-          history.push('/chatting')
+        history.push("/chatting");
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
+  
   return (
     <>
       <Header></Header>

@@ -69,7 +69,10 @@ const Withdraw = () => {
     setPrice(0);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    window.location.reload(true);
+  };
 
   const handleRetry = () => {
     setOngoing(false);
@@ -79,6 +82,7 @@ const Withdraw = () => {
   const handlePointHistory = () => {
     setShow(false);
     history.push("/mypage/credit");
+    window.location.reload(true);
   };
 
   const WithdrawReq = (

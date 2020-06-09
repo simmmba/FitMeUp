@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import axios from "axios";
-import Modal from "react-bootstrap/Modal";
+import { OverlayTrigger, Popover, Modal } from "react-bootstrap";
 import "./ResultModal.scss";
 
 const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStylist, price, setPrice }) => {
@@ -125,13 +125,41 @@ const ResultModal = ({ setConsult, consult, reset, setKeyword, stylist, setStyli
         <Modal.Header className="mHeader" closeButton></Modal.Header>
         <Modal.Body className="body">
           <div className="Result">
-            <div className="service">원하는 요청을 선택해 주세요</div>
-            <Link to="/" className="reqBtn" onClick={() => handleRequire(false)}>
-              스타일리스트의 상담 연락 기다리기
-            </Link>
-            <Link to="/search" className="reqBtn" onClick={handleSearch}>
-              스타일리스트를 추천받아 직접 요청하기
-            </Link>
+            <div className="service">원하는 방식을 선택해 주세요</div>
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Popover id="popover-basic">
+                  <Popover.Title as="h3">스타일리스트 기다리기!</Popover.Title>
+                  <Popover.Content>
+                    모든 스타일리스트들에게 <br />
+                    나의 상담 내용이 게시됩니다. <br />
+                    스타일리스트의 연락을 기다려주세요.
+                  </Popover.Content>
+                </Popover>
+              }
+            >
+              <Link to="/" className="reqBtn" onClick={() => handleRequire(false)}>
+                스타일리스트 기다리기!
+              </Link>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Popover id="popover-basic">
+                  <Popover.Title as="h3">스타일리스트 알아보기!</Popover.Title>
+                  <Popover.Content>
+                    작성한 내용에 맞는 <br />
+                    스타일리스트를 검색해 <br />
+                    직접 상담 요청할 수 있습니다.
+                  </Popover.Content>
+                </Popover>
+              }
+            >
+              <Link to="/search" className="reqBtn" onClick={handleSearch}>
+                스타일리스트 알아보기!
+              </Link>
+            </OverlayTrigger>
             <br />
             <br />
           </div>
