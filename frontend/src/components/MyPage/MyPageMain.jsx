@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Route, Switch } from "react-router-dom";
 import Header from "../Common/Header";
 import "./MyPageMain.scss";
@@ -11,17 +11,29 @@ import MyFrequent from "./MyFrequent";
 import StylistMyInfo from "./StylistMyInfo";
 import StylistStats from "./StylistStats";
 import CreditHistory from "./CreditHistory";
+import { useHistory } from "react-router";
+import ScrollToTop from "../Common/ScrollToTop";
 
 const MyPageMain = () => {
   const loginUser = JSON.parse(window.sessionStorage.getItem("user"));
   const [rightTab, setRightTab] = useState("freq");
+  const history = useHistory();
 
   const rightBtn = (e) => {
     setRightTab(e.target.id);
   };
 
+  useEffect(() => {
+    // user가 없으면
+    if (!loginUser) {
+      alert("로그인 후 이용해주세요");
+      history.push("/login");
+    }
+  }, []);
+
   return (
     <div>
+      <ScrollToTop></ScrollToTop>
       <Header />
       <div className="MyPageBox">
         <div className="MyPageMain">
@@ -29,18 +41,35 @@ const MyPageMain = () => {
             <div className="MyPageMenu">
               <div className="leftMenu" />
               <div className="middleMenu">
-                <NavLink to="/mypage" className="selectBtn" activeClassName="selectedBtn" exact>
+                <NavLink
+                  to="/mypage"
+                  className="selectBtn"
+                  activeClassName="selectedBtn"
+                  exact
+                >
                   내 상담
                 </NavLink>
-                <NavLink to="/mypage/myinfo" className="selectBtn" activeClassName="selectedBtn">
+                <NavLink
+                  to="/mypage/myinfo"
+                  className="selectBtn"
+                  activeClassName="selectedBtn"
+                >
                   내 정보
                 </NavLink>
               </div>
               <div className="rightMenu">
-                <button id="freq" className={rightTab === "freq" ? "selectedBtn" : "selectBtn"} onClick={rightBtn}>
+                <button
+                  id="freq"
+                  className={rightTab === "freq" ? "selectedBtn" : "selectBtn"}
+                  onClick={rightBtn}
+                >
                   단골
                 </button>
-                <button id="msg" className={rightTab === "msg" ? "selectedBtn" : "selectBtn"} onClick={rightBtn}>
+                <button
+                  id="msg"
+                  className={rightTab === "msg" ? "selectedBtn" : "selectBtn"}
+                  onClick={rightBtn}
+                >
                   메세지
                 </button>
               </div>
@@ -60,10 +89,19 @@ const MyPageMain = () => {
             <div>
               <div className="MyPageMenu">
                 <div className="middleMenu">
-                  <NavLink to="/mypage" className="selectBtn" activeClassName="selectedBtn" exact>
+                  <NavLink
+                    to="/mypage"
+                    className="selectBtn"
+                    activeClassName="selectedBtn"
+                    exact
+                  >
                     통계
                   </NavLink>
-                  <NavLink to="/mypage/myinfo" className="selectBtn" activeClassName="selectedBtn">
+                  <NavLink
+                    to="/mypage/myinfo"
+                    className="selectBtn"
+                    activeClassName="selectedBtn"
+                  >
                     내 정보
                   </NavLink>
                 </div>
@@ -71,7 +109,11 @@ const MyPageMain = () => {
               <div className="contentBox">
                 <StylistFirstTab />
                 <Switch>
-                  <Route path={`/mypage`} component={StylistStats} exact={true} />
+                  <Route
+                    path={`/mypage`}
+                    component={StylistStats}
+                    exact={true}
+                  />
                   <Route path={`/mypage/myinfo`} component={StylistMyInfo} />
                   <Route path={`/mypage/credit`} component={CreditHistory} />
                 </Switch>

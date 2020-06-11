@@ -20,49 +20,51 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
     if (category === "coordi") stylistPrice = val.coordi_price;
     else stylistPrice = val.my_price;
 
-    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id).then((res) => {
-      userCredit = res.data.user.credit;
+    axios
+      .get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + user.id)
+      .then((res) => {
+        userCredit = res.data.user.credit;
 
-      if (userCredit < stylistPrice) {
-        alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
-      } else {
-        axios({
-          method: "post",
-          url: `${process.env.REACT_APP_URL}/payment/checkout`,
-          data: {
-            source_id: user.id,
-            target_id: stylist_id,
-            amount: stylistPrice,
-          },
-        })
-          .then((res) => {
-            if (res.data.result === "Success") {
-              axios({
-                method: "put",
-                url: `${process.env.REACT_APP_URL}/consult/apply`,
-                data: {
-                  user_id: user.id,
-                  consult_id: val.consult_id,
-                  apply_id: val.id,
-                  state: "ACCEPTED",
-                },
-              })
-                .then((res) => {
-                  // axios가 잘되면
-                  alert("상담 수락이 완료되었습니다");
-                  // 채팅 생성
-                  createChat();
-                })
-                .catch((error) => {
-                  alert("상담 수락에 실패했습니다");
-                });
-            }
+        if (userCredit < stylistPrice) {
+          alert("포인트가 부족합니다. \n충전 후 수락해주세요.");
+        } else {
+          axios({
+            method: "post",
+            url: `${process.env.REACT_APP_URL}/payment/checkout`,
+            data: {
+              source_id: user.id,
+              target_id: stylist_id,
+              amount: stylistPrice,
+            },
           })
-          .catch((error) => {
-            alert("포인트 출금에 실패했습니다.");
-          });
-      }
-    });
+            .then((res) => {
+              if (res.data.result === "Success") {
+                axios({
+                  method: "put",
+                  url: `${process.env.REACT_APP_URL}/consult/apply`,
+                  data: {
+                    user_id: user.id,
+                    consult_id: val.consult_id,
+                    apply_id: val.id,
+                    state: "ACCEPTED",
+                  },
+                })
+                  .then((res) => {
+                    // axios가 잘되면
+                    alert("상담 수락이 완료되었습니다");
+                    // 채팅 생성
+                    createChat();
+                  })
+                  .catch((error) => {
+                    alert("상담 수락에 실패했습니다");
+                  });
+              }
+            })
+            .catch((error) => {
+              alert("포인트 출금에 실패했습니다.");
+            });
+        }
+      });
   };
 
   const createChat = async () => {
@@ -74,11 +76,15 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
     };
 
     try {
-      let provider = await axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`).then((res) => {
-        if (res.data.result === "Success") {
-          return res.data.user;
-        }
-      });
+      let provider = await axios
+        .get(
+          `${process.env.REACT_APP_URL}/user/myinfo?user_id=${val.stylist_id}`
+        )
+        .then((res) => {
+          if (res.data.result === "Success") {
+            return res.data.user;
+          }
+        });
 
       provider = {
         ...provider,
@@ -89,10 +95,10 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
         id: key,
         consumer: consumer,
         provider: provider,
-        lastMessage: ' ',
+        lastMessage: " ",
         updated: firebase.database.ServerValue.TIMESTAMP,
         consultId: val.consult_id,
-        status: '진행 중'
+        status: "진행 중",
       };
 
       // 새 채팅룸 생성
@@ -169,14 +175,16 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
             <>
               {/* 진행중이면 */}
               {val.state === "ACCEPTED" && (
-                <div className="apply">
+                <div className="apply doing">
                   진행중
                   <br />
                   상담
                 </div>
               )}
               {/* 완료면 */}
-              {val.state === "COMPLETE" && <div className="apply">상담 왼료</div>}
+              {val.state === "COMPLETE" && (
+                <div className="apply doing">상담 완료</div>
+              )}
             </>
           )}
         </>
@@ -189,26 +197,25 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
             <div className="plus">더보기</div>
           </NavLink>
           {/* 대기중 */}
-          {val.state === "REQUESTED" && <div className="apply">대기 중</div>}
+          {val.state === "REQUESTED" && <div className="apply doing">대기 중</div>}
           {/* 진행중 */}
           {val.state === "ACCEPTED" && (
-            <div className="apply">
+            <div className="apply doing">
               진행중
               <br />
               상담
             </div>
           )}
-          {/* 거절 */}
-          {val.state === "DENIED" && (
-            <div className="apply">
-              거절된
-              <br />
-              상담
-            </div>
-          )}
           {/* 완료 */}
-          {val.state === "COMPLETE" && <div className="apply">상담 왼료</div>}
+          {val.state === "COMPLETE" && <div className="apply done">상담 왼료</div>}
         </>
+      )}
+      {val.state === "DENIED" && (
+        <div className="apply done">
+          거절된
+          <br />
+          상담
+        </div>
       )}
 
       <div className="listBox">
@@ -248,7 +255,11 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
           <div className="reviewBox">
             <div className="recentReview">최근리뷰</div>
             <b>{val.recent_review !== null && val.recent_review.nickname}</b>
-            <span>{val.recent_review !== null ? val.recent_review.contents : "작성된 리뷰가 없습니다."}</span>
+            <span>
+              {val.recent_review !== null
+                ? val.recent_review.contents
+                : "작성된 리뷰가 없습니다."}
+            </span>
           </div>
         </div>
         {/* </Link> */}

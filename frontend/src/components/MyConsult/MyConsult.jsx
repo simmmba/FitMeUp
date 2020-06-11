@@ -5,7 +5,14 @@ import Header from "../Common/Header";
 import ConsultList from "./ConsultList";
 import axios from "axios";
 import { Spin, Empty } from "antd";
+import ScrollToTop from "../Common/ScrollToTop";
+import { inject, observer } from "mobx-react";
 
+@inject((stores) => ({
+  setFilter: stores.filter.setFilter,
+  filter : stores.filter.filter
+}))
+@observer
 class MyConsult extends React.Component {
   user = JSON.parse(window.sessionStorage.getItem("user"));
 
@@ -33,12 +40,14 @@ class MyConsult extends React.Component {
     if (!this.user) {
       alert("로그인을 해야 이용 가능한 서비스 입니다.");
       history.push("/");
-    } else {
-      this.setState({
-        loading: true,
-      });
-      this.getList("0");
+      return;
     }
+
+    this.setState({
+      loading: true,
+      filter: this.props.filter
+    });
+    this.getList(this.props.filter);
   }
 
   // 필터 선택
@@ -47,6 +56,8 @@ class MyConsult extends React.Component {
       filter: res.target.id,
       loading: true,
     });
+
+    this.props.setFilter(res.target.id);
 
     this.getList(res.target.id);
   };
@@ -95,6 +106,7 @@ class MyConsult extends React.Component {
   render() {
     return (
       <>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <div className="MyConsult">
           {/* 요청 필터 */}
@@ -102,7 +114,12 @@ class MyConsult extends React.Component {
             {this.user?.type !== "general" ? (
               <>
                 {this.filter_stylist.map((item, index) => (
-                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                  <div
+                    key={index}
+                    id={index}
+                    onClick={this.clickFilter}
+                    className={item[0] === this.state.filter ? "focus" : ""}
+                  >
                     {item[1]}
                   </div>
                 ))}
@@ -110,7 +127,12 @@ class MyConsult extends React.Component {
             ) : (
               <>
                 {this.filter_general.map((item, index) => (
-                  <div key={index} id={index} onClick={this.clickFilter} className={item[0] === this.state.filter ? "focus" : ""}>
+                  <div
+                    key={index}
+                    id={index}
+                    onClick={this.clickFilter}
+                    className={item[0] === this.state.filter ? "focus" : ""}
+                  >
                     {item[1]}
                   </div>
                 ))}
@@ -118,12 +140,27 @@ class MyConsult extends React.Component {
             )}
           </div>
           {/* 받아온 상담 목록 */}
-          {this.state.loading && <Spin className="loading no_consult" size="large" />}
+          {this.state.loading && (
+            <Spin className="loading no_consult" size="large" />
+          )}
           <div>
-            {!this.state.loading && this.state.consult.map((consult, index) => <ConsultList key={index} filter={this.state.filter} consult={consult}></ConsultList>)}
+            {!this.state.loading &&
+              this.state.consult.map((consult, index) => (
+                <ConsultList
+                  key={index}
+                  filter={this.state.filter}
+                  consult={consult}
+                ></ConsultList>
+              ))}
             {this.state.consult.length === 0 && !this.state.loading && (
               <div className="nothing no_consult">
-                <Empty description={<span className="description">해당하는 상담이 없습니다.</span>} />
+                <Empty
+                  description={
+                    <span className="description">
+                      해당하는 상담이 없습니다.
+                    </span>
+                  }
+                />
               </div>
             )}
           </div>

@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 71.6px;
+  height: 58px;
   background-color: rgba($color-red-light, 0.1);
 
   .welcome-wrapper {
@@ -57,23 +57,26 @@
 
     .text {
       color: $red;
-    }
+      font-weight: 600;
 
-    &:hover {
-      opacity: 0.6;
+      &:hover{
+        color: $red-hover;
+      }
     }
   }
 
   .complete-btn-wrapper {
-    margin-right: 2rem;
+    margin-right: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 
     .complete-btn {
       background-color: $red;
-      padding: 1rem 2rem 1rem 2rem;
+      padding: 0.6rem 2rem 0.6rem 2rem;
       border-radius: 5px;
 
       &:hover {
-        opacity: 0.7;
+        background: $red-hover;
       }
     }
 

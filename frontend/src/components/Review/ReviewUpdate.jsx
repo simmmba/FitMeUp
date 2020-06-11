@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Header from "../Common/Header";
 import { Rate } from "antd";
+import ScrollToTop from "../Common/ScrollToTop";
 
 class ReviewUpdate extends React.Component {
   constructor(props) {
@@ -98,10 +99,16 @@ class ReviewUpdate extends React.Component {
   // 이미지 삭제하기
   deleteImg = (res) => {
     let forward = this.state.images.slice(0, res.target.id);
-    let back = this.state.images.slice(Number(res.target.id) + 1, this.state.images.length);
+    let back = this.state.images.slice(
+      Number(res.target.id) + 1,
+      this.state.images.length
+    );
 
     let forward64 = this.state.base64.slice(0, res.target.id);
-    let back64 = this.state.base64.slice(Number(res.target.id) + 1, this.state.base64.length);
+    let back64 = this.state.base64.slice(
+      Number(res.target.id) + 1,
+      this.state.base64.length
+    );
 
     this.setState({
       images: forward.concat(back),
@@ -111,7 +118,11 @@ class ReviewUpdate extends React.Component {
 
   // 리뷰 취소 버튼
   formConfirm = () => {
-    if (window.confirm("리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다.")) {
+    if (
+      window.confirm(
+        "리뷰 작성을 취소하시겠습니까?\n입력한 내용은 모두 사라집니다."
+      )
+    ) {
       this.props.history.goBack();
     }
   };
@@ -173,6 +184,7 @@ class ReviewUpdate extends React.Component {
     };
     return (
       <>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <div className="Review">
           <div className="processing" />
@@ -189,7 +201,14 @@ class ReviewUpdate extends React.Component {
             <div className="content">
               {/* 포트폴리오 설명 작성 */}
               <div className="topic">리뷰 내용 작성</div>
-              <textarea name="contents" className="content_box" style={style} value={this.state.contents} placeholder="10자 이상 입력해주세요" onChange={this.changeValues}></textarea>
+              <textarea
+                name="contents"
+                className="content_box"
+                style={style}
+                value={this.state.contents}
+                placeholder="10자 이상 입력해주세요"
+                onChange={this.changeValues}
+              ></textarea>
             </div>
 
             <div className="port_imgs">
@@ -198,14 +217,27 @@ class ReviewUpdate extends React.Component {
                 <div className="port_img" key={index}>
                   <img alt="서브이미지" src={item}></img>
                   {/* 이미지 등록 취소 버튼 */}
-                  <img alt="삭제" src="https://image.flaticon.com/icons/svg/458/458595.svg" className="X" id={index} onClick={this.deleteImg}></img>
+                  <img
+                    alt="삭제"
+                    src="https://image.flaticon.com/icons/svg/458/458595.svg"
+                    className="X"
+                    id={index}
+                    onClick={this.deleteImg}
+                  ></img>
                 </div>
               ))}
               <div className="filebox">
                 <label>
                   <span>사진업로드</span>
                   <br />+
-                  <input key={this.state.filekey} type="file" name="images" multiple accept="image/gif, image/jpeg, image/png" onChange={this.changePortImg} />
+                  <input
+                    key={this.state.filekey}
+                    type="file"
+                    name="images"
+                    multiple
+                    accept="image/gif, image/jpeg, image/png"
+                    onChange={this.changePortImg}
+                  />
                 </label>
               </div>
             </div>

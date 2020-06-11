@@ -1,5 +1,5 @@
 // import "date-fns";
-import React from "react";
+import React, { useEffect } from "react";
 // import { NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import Processing from "./Processing";
@@ -13,8 +13,23 @@ import Contents from "./Contents";
 import Explain from "./Explain";
 import Header from "../Common/Header";
 import "./ConsultRequire.scss";
+import { useHistory } from "react-router";
+import ScrollToTop from "../Common/ScrollToTop";
 
 const ConsultRequire = ({ questions, num }) => {
+
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const history = useHistory();
+
+  useEffect(() => {
+    // user가 없으면
+    if (!user) {
+      alert("로그인 후 이용해주세요");
+      history.goBack();
+      return;
+    }
+  }, []);
+
   const question = () => {
     return <div className="question">{questions[num]}</div>;
   };
@@ -42,6 +57,7 @@ const ConsultRequire = ({ questions, num }) => {
 
   return (
     <div className="consultRequire">
+      <ScrollToTop></ScrollToTop>
       <Header></Header>
       <Processing />
       <div className="content">
