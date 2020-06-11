@@ -68,7 +68,7 @@ const StylistFirstTab = () => {
           </div>
         </div>
       </div>
-      <div className="center topMargin">{user.name}</div>
+      <div className="center topMargin">{user.nickname}</div>
       <div className="center">스타일리스트</div>
       <div className="center middleTopMargin">{user.credit} Point</div>
       <div className="center">

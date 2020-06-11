@@ -155,10 +155,16 @@ export const read_receive_reviews = async (req, res) => {
     const { user_id } = req.query;
 
     let review_list = await Review.findAll({
-      include :[User, ReviewImage],
+      include :[ReviewImage],
       where :{target : user_id},
       order :[['createdAt','DESC']],
     })
+
+    for (const review of review_list) {
+      let id = review.dataValues.user_id;
+      let user = await User.findOne({where : {id :id},raw :true})
+      review.dataValues.User = user;
+    }
 
     res.json({ result: "Success", list: review_list });
 

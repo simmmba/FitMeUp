@@ -15,13 +15,19 @@
     cursor: pointer;
   }
 
+
+
   .plus {
     background-color: $gray;
     right: 100px;
     font-weight: 600;
     color: black;
     @media screen and (min-width: 1500px) {
-      left : calc(50% + 560px);
+      left: calc(50% + 560px);
+    }
+
+    &:hover {
+      color: $red;
     }
   }
 
@@ -30,7 +36,11 @@
     right: 10px;
     color: white;
     @media screen and (min-width: 1500px) {
-      left : calc(50% + 650px);
+      left: calc(50% + 650px);
+    }
+
+    &:hover {
+      background: $red_hover;
     }
   }
 
@@ -214,6 +224,28 @@
     .description {
       font-size: 1.2rem;
       color: $darkgray;
+    }
+  }
+
+  .doing {
+    background: $red_hover;
+    color: white;
+    cursor: default;
+
+    &:hover {
+      background: $red_hover;
+      color: white;
+    }
+  }
+
+  .done {
+    background: $darkgray;
+    color: white;
+    cursor: default;
+
+    &:hover {
+      background: $darkgray;
+      color: white;
     }
   }
 

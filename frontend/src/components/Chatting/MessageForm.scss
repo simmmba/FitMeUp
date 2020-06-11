@@ -2,7 +2,7 @@
 @import '../../styles/utils';
 
 .message-form {
-  height: 60px;
+  height: 50px;
   display: flex;
   flex-direction: column;
 
@@ -31,8 +31,8 @@
   .message-input {
     width: 100%;
     font-size: 16px;
-    padding: 2.1rem 1.5rem;
-    height: 4rem;
+    padding: 0 120px 0 10px;
+    height: 3.5rem;
     border: 1.4px solid $color-grey-light-2;
     border-left: none;
     color: $color-grey-dark;
@@ -41,14 +41,20 @@
   .send-btn{
     position: absolute;
     background-color: $red;
-    bottom:10px;
-    right:20px;
+    bottom:6px;
+    right:10px;
     border:none;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 5px;
+    width: 100px;
 
     .send-btn-text{
       color:$color-white;
+    }
+
+    &:hover{
+      background-color: $red-hover;
+      opacity: 1;
     }
   }
 }
