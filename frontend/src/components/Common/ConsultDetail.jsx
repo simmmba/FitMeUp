@@ -252,7 +252,7 @@ const ConsultDetail = (props) => {
           .child(consumer.id)
           .child("rooms")
           .child(key)
-          .set(newRoom)
+          .set({...newRoom, target:provider})
           .catch((err) => {
             console.error(err);
           });
@@ -262,7 +262,7 @@ const ConsultDetail = (props) => {
           .child(provider.id)
           .child("rooms")
           .child(key)
-          .set(newRoom)
+          .set({...newRoom, target:consumer})
           .catch((err) => {
             console.error(err);
           });
