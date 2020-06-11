@@ -493,8 +493,6 @@ export const update_apply = async (req, res) => {
       let consult_id = apply.consult_id;
       let stylist_id = apply.stylist_id;
 
-      console.log(consult_id, stylist_id);
-
 
       let consult_update = await Consult.update(
         { state: 'ACCEPTED', stylist_id: stylist_id },
@@ -550,10 +548,18 @@ export const apply_in_consult = async (req, res) => {
       raw: true
     })
 
+    let consult = await Consult.findOne({where:{id : consult_id}, raw:true});
+    let stylist_id = consult.stylist_id;
+
+
     for (const s of apply_list) {
-
+      // 상담 상태 처리
+      if( apply.stylist_id === stylist_id){
+        if(consult.state === 'COMPLETE'){
+          s.state = 'COMPLETE'
+        }
+      }
       let user_id = s.stylist_id;
-
       // 최근 리뷰 달기
       let review = await Review.findOne({
         where: { target: user_id },
@@ -596,6 +602,8 @@ export const apply_in_consult = async (req, res) => {
         group: ['stylist_id'],
         raw: true
       })
+
+      
 
       let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
       s.consult_cnt = consult_cnt;
