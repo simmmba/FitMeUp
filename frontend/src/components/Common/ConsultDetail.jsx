@@ -5,6 +5,7 @@ import "./ConsultDetail.scss";
 import axios from "axios";
 
 import Header from "../Common/Header";
+import ScrollToTop from "../Common/ScrollToTop";
 
 const ConsultDetail = (props) => {
   const [apply, setApply] = useState(false);
@@ -36,16 +37,53 @@ const ConsultDetail = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    req_list();
+    // user가 없으면
+    if (!user) {
+      alert("로그인 후 이용해주세요");
+      history.push("/login");
+    } else {
+      req_list();
+    }
   }, []);
+
+  // 채팅으로 이동
+  const goChatt = () => {
+    history.push("/chatting");
+  };
 
   // axios로 리스트를 부름
   const req_list = () => {
     axios({
       method: "get",
-      url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${url[url.length - 1]}&user_id=${user.id}`,
+      url: `${process.env.REACT_APP_URL}/consult/req?consult_id=${
+        url[url.length - 1]
+      }&user_id=${user.id}`,
     })
       .then((res) => {
+        console.log(res.data);
+
+        // general
+        if (user.type === "general") {
+          // 만약 본인이 아니면
+          if (res.data.consult.req_user.id !== user.id) {
+            alert("본인의 상담 내역이 아닙니다.");
+            history.goBack();
+            return;
+          }
+        }
+        // stylist
+        else {
+          // 지정된 스타일리스트이면
+          if (res.data.consult.appointed !== "false") {
+            // 지정된 스타일리스트인지 확인
+            if (res.data.consult.stylist_id !== user.id) {
+              alert("열람 권한이 없는 상담 내역입니다.");
+              history.goBack();
+              return;
+            }
+          }
+        }
+
         list[0].push(res.data.consult.gender);
         list[1].push(res.data.consult.age);
         list[2].push(res.data.consult.height);
@@ -67,7 +105,8 @@ const ConsultDetail = (props) => {
         setCategory(res.data.consult.category);
         if (res.data.consult?.applied !== "no") setApply(true);
         setState(res.data.consult.state);
-        if (res.data.consult.stylist_id) setStylelist(res.data.consult.stylist_id);
+        if (res.data.consult.stylist_id)
+          setStylelist(res.data.consult.stylist_id);
       })
       .catch((error) => {
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
@@ -178,10 +217,10 @@ const ConsultDetail = (props) => {
       id: key,
       consumer: consumer,
       provider: provider,
-      lastMessage: ' ',
+      lastMessage: " ",
       updated: firebase.database.ServerValue.TIMESTAMP,
       consultId: consult_id,
-      status : '진행 중'
+      status: "진행 중",
     };
 
     // 새 채팅룸 생성
@@ -237,12 +276,17 @@ const ConsultDetail = (props) => {
 
   return (
     <>
+      <ScrollToTop></ScrollToTop>
       <Header></Header>
       <div className="ConsultDetail">
         <div className="processing">
           <div className="position">
             <br />
-            <div className="type">{category === "coordi" ? "스타일리스트의 PICK" : "내 옷장에서 PICK"}</div>
+            <div className="type">
+              {category === "coordi"
+                ? "스타일리스트의 PICK"
+                : "내 옷장에서 PICK"}
+            </div>
             <div className="user">
               <img alt="style" className="profile" src={requser.profile_img} />
               <span className="nickname">{requser.nickname}</span>
@@ -281,13 +325,31 @@ const ConsultDetail = (props) => {
             )}
 
             {state === "COMPLETE" && (
-              <>{user.type !== "stylist" || (user.type === "stylist" && user.id === stylist) ? <div className="apply complete">상담 완료</div> : <div className="apply complete">상담 거절</div>}</>
+              <>
+                {user.type !== "stylist" || user.id === stylist ? (
+                  <div className="apply" onClick={goChatt}>
+                    상담 완료
+                  </div>
+                ) : (
+                  <div className="apply complete">상담 거절</div>
+                )}
+              </>
             )}
 
             {state === "ACCEPTED" && (
-              <>{user.type !== "stylist" || (user.type === "stylist" && user.id === stylist) ? <div className="apply complete">상담 진행 중</div> : <div className="apply complete">상담 거절</div>}</>
+              <>
+                {user.type !== "stylist" || user.id === stylist ? (
+                  <div className="apply" onClick={goChatt}>
+                    상담 진행 중
+                  </div>
+                ) : (
+                  <div className="apply complete">상담 거절</div>
+                )}
+              </>
             )}
-            {state === "DENIED" && <div className="apply complete">상담 거절</div>}
+            {state === "DENIED" && (
+              <div className="apply complete">상담 거절</div>
+            )}
           </div>
         </div>
 
@@ -317,9 +379,18 @@ const ConsultDetail = (props) => {
                 </tr>
                 <tr>
                   {list.map((item, index) => (
-                    <td key={index}>{item[2] ? item[2] + "" + item[1] : "-"}</td>
+                    <td key={index}>
+                      {item[2] ? item[2] + "" + item[1] : "-"}
+                    </td>
                   ))}
-                  {budget === null ? <td>-</td> : <td>{budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>}
+                  {budget === null ? (
+                    <td>-</td>
+                  ) : (
+                    <td>
+                      {budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      원
+                    </td>
+                  )}
                 </tr>
               </thead>
             </table>
@@ -336,7 +407,12 @@ const ConsultDetail = (props) => {
             <div className="sub_title">원하는 스타일</div>
             <div>
               {wantImg.map((img, index) => (
-                <img key={index} alt="style" className="styleimg" src={"/img/wantStyle/" + img.img} />
+                <img
+                  key={index}
+                  alt="style"
+                  className="styleimg"
+                  src={"/img/wantStyle/" + img.img}
+                />
               ))}
             </div>
             {myImg.length !== 0 && (
@@ -344,7 +420,12 @@ const ConsultDetail = (props) => {
                 <div className="sub_title">평소 입는 스타일</div>
                 <div>
                   {myImg.map((img, index) => (
-                    <img key={index} alt="style" className="styleimg" src={img.image_path} />
+                    <img
+                      key={index}
+                      alt="style"
+                      className="styleimg"
+                      src={img.image_path}
+                    />
                   ))}
                 </div>
               </>

@@ -3,11 +3,12 @@ import "./Main.scss";
 import Header from "../Common/Header";
 import ConsultRequireModal from "./ConsultRequireModal";
 import MainRecommend from "./MainRecommend";
+import ScrollToTop from "../Common/ScrollToTop";
 
 const Main = () => {
-
   return (
     <>
+      <ScrollToTop></ScrollToTop>
       <Header></Header>
       <div className="Main">
         <div className="intro">
@@ -17,7 +18,6 @@ const Main = () => {
           <MainRecommend />
         </div>
       </div>
-
     </>
   );
 };

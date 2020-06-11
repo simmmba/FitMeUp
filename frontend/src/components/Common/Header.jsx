@@ -1,12 +1,13 @@
 import React from "react";
-import { inject, observer} from 'mobx-react'
+import { inject, observer } from "mobx-react";
 import "./Header.scss";
 
 import { NavLink, withRouter } from "react-router-dom";
 
 @inject((stores) => ({
   reset: stores.search.reset,
-  clearRoom: stores.chatting.clearRoom
+  clearRoom: stores.chatting.clearRoom,
+  freset: stores.filter.freset,
 }))
 @observer
 class Header extends React.Component {
@@ -22,17 +23,18 @@ class Header extends React.Component {
 
   // 로그아웃 시 페이지 메인으로 이동
   logout = () => {
-    const { clearRoom } = this.props
+    const { clearRoom, freset } = this.props;
     const { history } = this.props;
     alert("로그아웃 되었습니다");
     clearRoom();
+    freset();
     window.sessionStorage.clear();
     history.push("/");
     window.location.reload();
   };
 
   render() {
-    const { reset } = this.props;
+    const { reset, freset } = this.props;
 
     return (
       <>
@@ -42,10 +44,21 @@ class Header extends React.Component {
               <NavLink to="/">Fit Me Up</NavLink>
             </div>
             <div className="col-7">
-              <NavLink to="/myconsult" className="header_menu" activeClassName="activeMenu">
+              <NavLink
+                to="/myconsult"
+                className="header_menu"
+                activeClassName="activeMenu"
+                onClick={() => {
+                  freset();
+                }}
+              >
                 내 상담
               </NavLink>
-              <NavLink to="/chatting" className="header_menu" activeClassName="activeMenu">
+              <NavLink
+                to="/chatting"
+                className="header_menu"
+                activeClassName="activeMenu"
+              >
                 채팅
               </NavLink>
               <NavLink
