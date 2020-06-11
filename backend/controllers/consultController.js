@@ -554,7 +554,7 @@ export const apply_in_consult = async (req, res) => {
 
     for (const s of apply_list) {
       // 상담 상태 처리
-      if( apply.stylist_id === stylist_id){
+      if( s.stylist_id === stylist_id){
         if(consult.state === 'COMPLETE'){
           s.state = 'COMPLETE'
         }
@@ -602,15 +602,13 @@ export const apply_in_consult = async (req, res) => {
         group: ['stylist_id'],
         raw: true
       })
-
-      
-
       let consult_cnt = consult_info ? consult_info.consult_cnt : 0;
       s.consult_cnt = consult_cnt;
     }
 
     res.json({ result: "Success", list: apply_list })
   } catch (err) {
+    
     console.log("consultController.js apply_in_consult method\n ==> " + err);
     res.status(500).json({ result: "Fail", detail: "500 Internal Server Error" });
   }
