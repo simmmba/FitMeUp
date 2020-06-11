@@ -24,7 +24,7 @@ class Chatting extends React.Component {
     const { currentRoom } = this.props.chatting
     return (
       <div>
-        <Header></Header>
+        <Header />
         <div className='chatting'>
           <SidePanel currentUser={this.user} />
           <RoomList currentUser={this.user} />

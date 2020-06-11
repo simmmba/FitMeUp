@@ -124,7 +124,7 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
             .child(consumer.id)
             .child("rooms")
             .child(key)
-            .set(newRoom)
+            .set({...newRoom, target:provider})
             .catch((err) => {
               console.error(err);
             });
@@ -134,7 +134,7 @@ const Stylist = ({ val, filter, stylist_id, category }) => {
             .child(provider.id)
             .child("rooms")
             .child(key)
-            .set(newRoom)
+            .set({...newRoom, target:consumer})
             .catch((err) => {
               console.error(err);
             });
