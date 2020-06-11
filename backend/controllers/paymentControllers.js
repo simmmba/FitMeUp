@@ -68,7 +68,7 @@ export const payment_list = async (req, res) => {
 
         let payments = await Payment.findAll({
             where: { source: user_id },
-            // order :[['createdAt','DESC']],
+            order :[['createdAt','ASC']],
             raw: true
         })
 
