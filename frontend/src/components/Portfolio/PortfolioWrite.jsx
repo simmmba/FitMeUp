@@ -3,6 +3,7 @@ import "./PortfolioWrite.scss";
 import axios from "axios";
 
 import Header from "../Common/Header";
+import ScrollToTop from "../Common/ScrollToTop";
 
 class PortfolioWrite extends React.Component {
   constructor(props) {
@@ -202,7 +203,6 @@ class PortfolioWrite extends React.Component {
 
   // 작성 완료 버튼
   formSubmit = () => {
-
     const { history } = this.props;
 
     // 타이틀 입력 확인
@@ -218,7 +218,7 @@ class PortfolioWrite extends React.Component {
     }
 
     // 금액 확인
-    if (!this.state.price_check){
+    if (!this.state.price_check) {
       alert("상담 비용을 설정해주세요");
       return;
     }
@@ -251,7 +251,7 @@ class PortfolioWrite extends React.Component {
         contents: this.state.contents,
         tags: this.state.tags,
         my_price: this.state.my_price,
-        coordi_price : this.state.coordi_price
+        coordi_price: this.state.coordi_price,
       },
     })
       // 로그인 안되있는 거면
@@ -270,11 +270,11 @@ class PortfolioWrite extends React.Component {
         })
           .then((res) => {
             alert("포트폴리오를 작성 성공했습니다.");
-            history.push("/portfolio/detail/"+ this.user.id);
+            history.push("/portfolio/detail/" + this.user.id);
           })
           .catch((error) => {
             alert("포트폴리오를 작성하는데 실패했습니다.");
-            history.push("/portfolio/detail/"+ this.user.id);
+            history.push("/portfolio/detail/" + this.user.id);
           });
       })
       .catch((error) => {
@@ -288,6 +288,7 @@ class PortfolioWrite extends React.Component {
     };
     return (
       <>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <div className="PortfolioWrite">
           <div className="processing" />
@@ -375,14 +376,10 @@ class PortfolioWrite extends React.Component {
                 </>
               )}
 
-              <div
-                className="plus_btn"
-                onClick={this.checkPrice}
-              >
+              <div className="plus_btn" onClick={this.checkPrice}>
                 {this.state.price_check ? "취소" : "설정"}
               </div>
             </div>
-            
 
             <div className="content">
               {/* 포트폴리오 설명 작성 */}

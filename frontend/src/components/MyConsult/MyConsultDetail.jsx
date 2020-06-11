@@ -6,6 +6,8 @@ import ConsultListDetial from "./ConsultListDetail";
 import axios from "axios";
 import { Spin, Empty } from "antd";
 import Stylist from "./Stylist";
+import { withRouter } from "react-router-dom";
+import ScrollToTop from "../Common/ScrollToTop";
 
 class MyConsultDetail extends React.Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class MyConsultDetail extends React.Component {
       url: axiosUrl,
     })
       .then((res) => {
+        console.log(res.data.list);
         // axios가 잘되면
         this.setState({
           list: res.data.list,
@@ -50,11 +53,22 @@ class MyConsultDetail extends React.Component {
   }
 
   render() {
+    if (this.props.location.state === undefined) {
+      alert("이용할 수 없는 서비스 입니다.");
+      this.props.history.goBack();
+      return;
+    }
+
     return (
       <>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <div className="MyConsultDetail">
-          {this.state.consult.length !== 0 && <ConsultListDetial consult={this.state.consult[0]}></ConsultListDetial>}
+          {this.state.consult.length !== 0 && (
+            <ConsultListDetial
+              consult={this.state.consult[0]}
+            ></ConsultListDetial>
+          )}
 
           {this.props.location.state.filter === "0" ? (
             <>
@@ -84,10 +98,16 @@ class MyConsultDetail extends React.Component {
             </>
           )}
 
-          {this.state.loading && <Spin className="loading no_consult" size="large" />}
+          {this.state.loading && (
+            <Spin className="loading no_consult" size="large" />
+          )}
           {this.state.list.length === 0 && !this.state.loading && (
             <div className="nothing no_consult">
-              <Empty description={<span className="description">해당하는 상담이 없습니다.</span>} />
+              <Empty
+                description={
+                  <span className="description">해당하는 상담이 없습니다.</span>
+                }
+              />
             </div>
           )}
         </div>
@@ -96,4 +116,4 @@ class MyConsultDetail extends React.Component {
   }
 }
 
-export default MyConsultDetail;
+export default withRouter(MyConsultDetail);

@@ -233,7 +233,7 @@ class Room extends Component {
     const dropbox = {
       position: "relative",
       width: "100%",
-      height: "calc(100% - 71.6px - 75px)",
+      height: "calc(100% - 71.6px - 46px)",
     };
     return (
       <section className="room-messages">
