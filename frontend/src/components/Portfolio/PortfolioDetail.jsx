@@ -190,9 +190,6 @@ class PortfolioDetail extends React.Component {
                         key={index}
                         alt="myimg"
                         src={port_img.image_path}
-                        onClick={() => {
-                          window.open(port_img.image_path);
-                        }}
                       ></img>
                     )
                   )}
