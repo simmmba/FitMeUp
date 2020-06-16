@@ -6,7 +6,7 @@ import axios from "axios";
 import "./ConsultRequireModal.scss";
 
 const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, coordi_price, my_price, consult, setStylist, setPrice }) => {
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  let user = JSON.parse(window.sessionStorage.getItem("user"));
   const history = useHistory();
   const [show, setShow] = useState(false);
   const [finishedShow, setFinishedShow] = useState(false);
@@ -34,6 +34,9 @@ const ConsultRequireModal = ({ setConsult, reset, stylist_id, stylist_nickname, 
           if (res.data.result === "Success") {
             // console.log("포인트 출금 성공");
             setRemainPoint(res.data.credit);
+            user.credit = res.data.credit;
+            window.sessionStorage.removeItem("user");
+            window.sessionStorage.setItem("user", JSON.stringify(user));
 
             // 상담 요청
             axios({

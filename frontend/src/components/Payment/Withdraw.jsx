@@ -12,6 +12,7 @@ const Withdraw = () => {
   const [ongoing, setOngoing] = useState(false);
   const [price, setPrice] = useState(0);
   const [credit, setCredit] = useState(0);
+  let user = JSON.parse(window.sessionStorage.getItem("user"));
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
@@ -45,6 +46,9 @@ const Withdraw = () => {
       })
         .then((res) => {
           setCredit(res.data.credit);
+          user.credit = res.data.credit;
+          window.sessionStorage.removeItem("user");
+          window.sessionStorage.setItem("user", JSON.stringify(user));
           setOngoing(true);
         })
         .catch((error) => {

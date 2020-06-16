@@ -16,6 +16,7 @@ const Payment = () => {
   const [payMethod, setPayMethod] = useState("card");
   const [result, setResult] = useState("");
   const [credit, setCredit] = useState(0);
+  let user = JSON.parse(window.sessionStorage.getItem("user"));
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -68,8 +69,10 @@ const Payment = () => {
         },
       })
         .then((res) => {
-          // console.log(res);
           setCredit(res.data.credit);
+          user.credit = res.data.credit;
+          window.sessionStorage.removeItem("user");
+          window.sessionStorage.setItem("user", JSON.stringify(user));
         })
         .catch((error) => {
           alert(error);
