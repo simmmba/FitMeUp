@@ -53,7 +53,7 @@ const Stylist = ({ keyword, option, order, result, setResult, setKeyword, setOpt
 
     axios.get(`${process.env.REACT_APP_URL}/user/search?option=${option}&keyword=${keyword}&sort=${value}`).then((res) => {
       setResult(res.data.stylists);
-      console.log(res.data);
+      // console.log(res.data);
       setLoading(true);
     });
   };

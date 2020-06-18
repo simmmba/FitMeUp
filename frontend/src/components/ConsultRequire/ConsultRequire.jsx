@@ -18,12 +18,12 @@ import ScrollToTop from "../Common/ScrollToTop";
 
 const ConsultRequire = ({ questions, num }) => {
 
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  // const user = JSON.parse(window.sessionStorage.getItem("user"));
   const history = useHistory();
 
   useEffect(() => {
     // user가 없으면
-    if (!user) {
+    if (!JSON.parse(window.sessionStorage.getItem("user"))) {
       alert("로그인 후 이용해주세요");
       history.goBack();
       return;

@@ -115,11 +115,11 @@ class MessageHeader extends Component {
                   })
               })
           } else {
-            console.log(res.data.detail)
+            //console.log(res.data.detail)
           }
         })
     } catch (e) {
-      console.log(e.message)
+      //console.log(e.message)
     }
   }
 

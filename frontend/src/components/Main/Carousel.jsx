@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Slider from "react-slick";
 import { Spin } from "antd";
@@ -43,36 +43,59 @@ const Carousel = (props) => {
     nextArrow: <NextArrow />,
   };
 
+  const history = useHistory();
+
+  const [mouse, setMouse] = useState({
+    mouse_x: 0,
+    mouse_y: 0
+  })
+
+  const { mouse_x, mouse_y } = mouse
+
+  const mousedown = (e) => {
+    setMouse({
+      ...mouse,
+      mouse_x: e.clientX,
+      mouse_y: e.clientY
+    })
+  }
+
+  const mouseup = (e) => {
+    if (Math.abs(e.clientX - mouse_x) <= 1 && Math.abs(e.clientY - mouse_y) <= 1) {
+      history.push(`/portfolio/detail/${e.target.id}`);
+    }
+  }
+
   const CarouselList = list.map((val, idx) => (
-    <div className="listBox" key={idx}>
-      <div className="imgBox">
-        <img alt="이미지" src={val.portfolio_img === null || val.portfolio_img === "/default.jpg" ? defaultImg : val.portfolio_img} />
+    <div className="listBox" key={idx} id={val.id} onMouseDown={mousedown} onMouseUp={mouseup}>
+      <div className="imgBox" id={val.id}>
+        <img id={val.id} alt="이미지" src={val.portfolio_img === null || val.portfolio_img === "/default.jpg" ? defaultImg : val.portfolio_img} />
       </div>
-      <div className="contentBox">
-        <div className="profileImg">
-          <img alt="프로필이미지" src={val.User.profile_img === null || val.User.profile_img === "/default.jpg" ? defaultImg : val.User.profile_img} />
+      <div className="contentBox" id={val.id}>
+        <div className="profileImg" id={val.id}>
+          <img alt="프로필이미지" id={val.id} src={val.User.profile_img === null || val.User.profile_img === "/default.jpg" ? defaultImg : val.User.profile_img} />
         </div>
-        <div className="content">
-          <div className="left">
-            <div className="subject">{val.portfolio_title}</div>
-            <div className="detail">
-              <div className="name">{val.User.nickname} 스타일리스트</div>
+        <div className="content" id={val.id}>
+          <div className="left" id={val.id}>
+            <div className="subject" id={val.id}>{val.portfolio_title}</div>
+            <div className="detail" id={val.id}>
+              <div className="name" id={val.id}>{val.User.nickname} 스타일리스트</div>
             </div>
-            <div className="cnt">
-              <img alt="score" src={star} />
-              <div>
-                {val.avg_score} <span>({val.review_cnt}개)</span>
+            <div className="cnt" id={val.id}>
+              <img alt="score" id={val.id} src={star} />
+              <div id={val.id}>
+                {val.avg_score} <span id={val.id}>({val.review_cnt}개)</span>
               </div>
-              <div className="consultCnt">
-                <span>{val.consult_cnt}</span>회 상담
+              <div className="consultCnt" id={val.id}>
+                <span id={val.id}>{val.consult_cnt}</span>회 상담
               </div>
             </div>
           </div>
-          <div className="right">
+          {/* <div className="right">
             <Link to={`/portfolio/detail/${val.id}`}>
               <div className="moreBtn">더보기</div>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

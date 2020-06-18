@@ -14,7 +14,7 @@
   }
 
   .user_type {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
   input[type="radio"] {
@@ -45,22 +45,25 @@
   .easy_login {
     font-family: $eng_font;
     outline: none;
-    border: 1px solid transparent;
     text-align: center;
     width: 250px;
     height: 40px;
-    background: $red;
+    background-image: url("https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_large_wide.png");
+    background-size: cover;
     cursor: pointer;
     font-size: 20px;
-    margin-bottom: 3vh;
+    margin-bottom: 20px;
     color: white;
     border-radius: 3px;
 
     span {
-      font-family: $eng_font;
-      font-size: 20px;
-      color: white;
-      background: $red;
+      font-family: $sub_font;
+      font-size: 18px;
+      color: black;
+      background-image: url("../../img/google.png");
+      background-size: cover;
+      // border: 1px solid red;
+
       width: 100%;
       height: 41px;
       border-radius: 3px;
@@ -69,14 +72,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    &:hover {
-      background: $red_hover;
-
-      span {
-        background: $red_hover;
-      }
     }
   }
 
