@@ -115,7 +115,7 @@ class Signup extends React.Component {
                 id="google"
                 className="easy_login"
                 clientId={process.env.REACT_APP_GOOGLE}
-                buttonText="Google"
+                buttonText=" "
                 icon=""
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseFail}
@@ -123,7 +123,15 @@ class Signup extends React.Component {
               />
             </div>
             <div>
-              <KakaoLogin id="kakao" className="easy_login" jsKey={process.env.REACT_APP_KAKAO} buttonText="Kakao" onSuccess={this.responseKakao} onFailure={this.responseFail} getProfile="true" />
+              <KakaoLogin
+                id="kakao"
+                className="easy_login"
+                jsKey={process.env.REACT_APP_KAKAO}
+                buttonText=" "
+                onSuccess={this.responseKakao}
+                onFailure={this.responseFail}
+                getProfile="true"
+              />
             </div>
             {/* login으로 가기 */}
             <div className="changeForm">

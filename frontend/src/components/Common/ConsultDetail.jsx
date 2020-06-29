@@ -41,9 +41,9 @@ const ConsultDetail = (props) => {
     if (!user) {
       alert("로그인 후 이용해주세요");
       history.push("/login");
-    } else {
-      req_list();
+      return;
     }
+    req_list();
   }, []);
 
   // 채팅으로 이동
@@ -252,7 +252,7 @@ const ConsultDetail = (props) => {
           .child(consumer.id)
           .child("rooms")
           .child(key)
-          .set({...newRoom, target:provider})
+          .set({ ...newRoom, target: provider })
           .catch((err) => {
             console.error(err);
           });
@@ -262,7 +262,7 @@ const ConsultDetail = (props) => {
           .child(provider.id)
           .child("rooms")
           .child(key)
-          .set({...newRoom, target:consumer})
+          .set({ ...newRoom, target: consumer })
           .catch((err) => {
             console.error(err);
           });

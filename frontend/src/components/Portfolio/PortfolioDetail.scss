@@ -128,7 +128,7 @@
             background: $gray;
             padding-left: 3px;
             padding-right: 3px;
-            // cursor: pointer;
+            cursor: default;
             margin-bottom: 10px;
         }
     }
@@ -138,17 +138,12 @@
         margin-bottom: 40px;
         font-size: 15px;
         color: rgb(82, 82, 82);
-        // text-align: center;
     }
 
     .img_list {
-        // width: 80%;
-        // text-align: center;
-
         img {
             width: calc(50% - 15px);
             margin-bottom: 30px;
-            cursor: pointer;
 
             &:nth-child(odd) {
                 margin-right: 30px;

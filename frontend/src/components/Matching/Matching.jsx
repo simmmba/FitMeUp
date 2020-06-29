@@ -26,7 +26,7 @@ const Matching = ({
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  // const user = JSON.parse(window.sessionStorage.getItem("user"));
   const history = useHistory();
 
   let category_list = [
@@ -55,19 +55,37 @@ const Matching = ({
   // 리액트 컴포넌트가 렌더링 될 때마다 특정 작업을 수행하도록 설정
   // 마운트 될때 + 값 변경 시 실행
   useEffect(() => {
+    let user = JSON.parse(window.sessionStorage.getItem("user"));
+    let category_list = [
+      ["entire", "전체"],
+      ["my", "내 옷"],
+      ["coordi", "코디"],
+    ];
+  
+    let gender_list = [
+      ["entire", "전체"],
+      ["여자", "여자"],
+      ["남자", "남자"],
+    ];
+  
+    let date_list = [
+      ["newest", "최신순"],
+      ["oldest", "등록순"],
+    ];
+  
+    let apply_list = [
+      ["entire", "전체 상담"],
+      ["yes", "신청 상담"],
+      ["no", "미신청 상담"],
+    ];
+
     if (!user || user.type === "general") {
       alert("스타일리스트만 이용 가능한 서비스 입니다.");
       history.goBack();
       return;
     }
-
-    req_list();
     setList([]);
     setLoading(true);
-  }, [category, gender, date, apply]);
-
-  // axios로 리스트를 부름
-  const req_list = () => {
     axios({
       method: "post",
       url: `${process.env.REACT_APP_URL}/consult/reqlist`,
@@ -88,7 +106,7 @@ const Matching = ({
         setLoading(false);
         alert("상담 요청 내역을 가져오는데 실패했습니다.");
       });
-  };
+  }, [category, gender, date, apply]);
 
   // tab을 바꾸면 axois 새로 호출 및 표시
   const clickCategory = (e) => {

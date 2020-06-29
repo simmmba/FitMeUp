@@ -5,16 +5,13 @@ import "./MyPageMain.scss";
 import axios from "axios";
 
 const GeneralFirstTab = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(JSON.parse(window.sessionStorage.getItem("user")));
   const [requestedCount, setRequestedCount] = useState(0);
   const [acceptedCount, setAcceptedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [applyCount, setApplyCount] = useState(0);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL}/user/myinfo?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
-      setUser(res.data.user);
-    });
     axios.get(`${process.env.REACT_APP_URL}/consult/count_user?user_id=` + JSON.parse(window.sessionStorage.getItem("user")).id).then((res) => {
       setAcceptedCount(res.data.info.accepted_cnt);
       setApplyCount(res.data.info.apply_cnt);

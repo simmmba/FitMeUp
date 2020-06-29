@@ -22,7 +22,9 @@ class Chatting extends React.Component {
     const { history } = this.props;
 
     if (!this.user) {
-      history.push("/login");
+<<<<<<< HEAD
+      alert("로그인을 해야 이용 가능한 서비스 입니다.");
+      history.goBack();
     } else {
       usersRef
         .child(this.user.id)

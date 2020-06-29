@@ -37,7 +37,6 @@ class MyConsultDetail extends React.Component {
       url: axiosUrl,
     })
       .then((res) => {
-        console.log(res.data.list);
         // axios가 잘되면
         this.setState({
           list: res.data.list,

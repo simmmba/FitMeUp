@@ -6,6 +6,7 @@
   .listBox {
     text-align: center;
     padding: 0 10px 10px 10px;
+    cursor: pointer;
 
     .imgBox {
       position: relative;
@@ -67,7 +68,7 @@
         padding-left: 10px;
 
         .left {
-          width: 70%;
+          width: 100%;
           text-align: left;
 
           .subject {
