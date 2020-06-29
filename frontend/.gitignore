@@ -34,5 +34,6 @@ yarn-error.log*
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+.cache
 
 # End of https://www.toptal.com/developers/gitignore/api/firebase
